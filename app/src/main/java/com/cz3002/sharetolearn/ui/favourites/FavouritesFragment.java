@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn.ui.tools;
+package com.cz3002.sharetolearn.ui.favourites;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.cz3002.sharetolearn.R;
 
-public class ToolsFragment extends Fragment {
+public class FavouritesFragment extends Fragment {
 
-    private ToolsViewModel toolsViewModel;
+    private FavouritesViewModel favouritesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        toolsViewModel =
-                ViewModelProviders.of(this).get(ToolsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_tools, container, false);
+        favouritesViewModel =
+                ViewModelProviders.of(this).get(FavouritesViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_favourites, container, false);
         final TextView textView = root.findViewById(R.id.text_tools);
-        toolsViewModel.getText().observe(this, new Observer<String>() {
+        favouritesViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

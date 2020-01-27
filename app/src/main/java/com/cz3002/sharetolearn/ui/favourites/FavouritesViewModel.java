@@ -1,16 +1,16 @@
-package com.cz3002.sharetolearn.ui.tools;
+package com.cz3002.sharetolearn.ui.favourites;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ToolsViewModel extends ViewModel {
+public class FavouritesViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public ToolsViewModel() {
+    public FavouritesViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is tools fragment");
+        mText.setValue("This is favourites fragment");
     }
 
     public LiveData<String> getText() {

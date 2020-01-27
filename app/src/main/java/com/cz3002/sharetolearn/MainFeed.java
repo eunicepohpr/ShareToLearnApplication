@@ -35,7 +35,7 @@ public class MainFeed extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Create posts", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -45,7 +45,7 @@ public class MainFeed extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools)
+                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
