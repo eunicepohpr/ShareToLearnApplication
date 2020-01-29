@@ -2,11 +2,15 @@ package com.cz3002.sharetolearn;
 
 import android.os.Bundle;
 
+import com.cz3002.sharetolearn.ui.pyp.PypFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.FrameLayout;
 
 public class MainFeed extends AppCompatActivity {
 
@@ -44,8 +49,8 @@ public class MainFeed extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+                R.id.nav_home, R.id.nav_discussion, R.id.nav_pyp,
+                R.id.nav_favourites, R.id.nav_courseconfig)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -59,6 +64,31 @@ public class MainFeed extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_feed, menu);
         return true;
     }
+
+/*    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_courseconfig:
+                PypFragment fragment = new PypFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FrameLayout fl = (FrameLayout) findViewById(R.id.nav_host_fragment);
+                fl.removeAllViews();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.nav_host_fragment,fragment);
+                fragmentTransaction.commit();
+                //Sharing
+                *//*Intent shareIntent = new Intent (Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                String shareBody = "your body here";
+                String shareSub = "Your subject here";
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
+                shareIntent.putExtra (Intent.EXTRA_TEXT, shareBody);
+                startActivity (Intent.createChooser (shareIntent,"Share App Locker"));*//*
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
 
     @Override
     public boolean onSupportNavigateUp() {

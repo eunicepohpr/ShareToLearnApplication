@@ -6,12 +6,13 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_courseconfig">Course Configuration</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_discussion">Discussion</string>
     <string name="menu_pyp">Past Year Papers</string>
     <string name="menu_favourites">Favourites</string>
+    <string name="menu_courseconfig">Course Configuration</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 </resources>

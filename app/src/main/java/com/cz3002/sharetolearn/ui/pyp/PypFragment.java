@@ -23,7 +23,7 @@ public class PypFragment extends Fragment {
         pypViewModel =
                 ViewModelProviders.of(this).get(PypViewModel.class);
         View root = inflater.inflate(R.layout.fragment_pyp, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
+        final TextView textView = root.findViewById(R.id.text_pyp);
         pypViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

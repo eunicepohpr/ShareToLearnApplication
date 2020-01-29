@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn.ui.send;
+package com.cz3002.sharetolearn.ui.courseconfig;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,19 +12,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.cz3002.sharetolearn.MainFeed;
 import com.cz3002.sharetolearn.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class SendFragment extends Fragment {
+public class CourseConfigFragment extends Fragment {
 
-    private SendViewModel sendViewModel;
+    private CourseConfigViewModel courseConfigViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        sendViewModel =
-                ViewModelProviders.of(this).get(SendViewModel.class);
+        courseConfigViewModel =
+                ViewModelProviders.of(this).get(CourseConfigViewModel.class);
         View root = inflater.inflate(R.layout.fragment_send, container, false);
+
         final TextView textView = root.findViewById(R.id.text_send);
-        sendViewModel.getText().observe(this, new Observer<String>() {
+        courseConfigViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
