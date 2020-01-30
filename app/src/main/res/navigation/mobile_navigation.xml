@@ -33,5 +33,5 @@
         android:id="@+id/nav_courseconfig"
         android:name="com.cz3002.sharetolearn.ui.courseconfig.CourseConfigFragment"
         android:label="@string/menu_courseconfig"
-        tools:layout="@layout/fragment_send" />
+        tools:layout="@layout/fragment_courseconfig" />
 </navigation>
