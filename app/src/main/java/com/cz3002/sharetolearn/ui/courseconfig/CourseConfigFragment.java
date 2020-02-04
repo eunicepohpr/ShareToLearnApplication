@@ -1,6 +1,5 @@
 package com.cz3002.sharetolearn.ui.courseconfig;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,17 +7,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.ListFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.cz3002.sharetolearn.CourseAdapter;
-import com.cz3002.sharetolearn.MainFeed;
+import com.cz3002.sharetolearn.ui.CourseAdapter;
+import com.cz3002.sharetolearn.ui.MainFeed;
 import com.cz3002.sharetolearn.R;
 
 import java.util.ArrayList;

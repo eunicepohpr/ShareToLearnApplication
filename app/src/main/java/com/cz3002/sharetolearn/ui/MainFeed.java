@@ -1,7 +1,8 @@
-package com.cz3002.sharetolearn;
+package com.cz3002.sharetolearn.ui;
 
 import android.os.Bundle;
 
+import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.ui.pyp.PypFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;

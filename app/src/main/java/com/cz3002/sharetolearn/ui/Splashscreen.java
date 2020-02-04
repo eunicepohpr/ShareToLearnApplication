@@ -1,10 +1,12 @@
-package com.cz3002.sharetolearn;
+package com.cz3002.sharetolearn.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ProgressBar;
+
+import com.cz3002.sharetolearn.R;
 
 public class Splashscreen extends AppCompatActivity {
     private ProgressBar progressBar;

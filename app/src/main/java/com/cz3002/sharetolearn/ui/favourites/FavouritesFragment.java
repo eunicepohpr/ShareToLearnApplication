@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.cz3002.sharetolearn.MainFeed;
+import com.cz3002.sharetolearn.ui.MainFeed;
 import com.cz3002.sharetolearn.R;
 
 public class FavouritesFragment extends Fragment {

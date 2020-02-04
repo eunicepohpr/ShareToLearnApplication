@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn;
+package com.cz3002.sharetolearn.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.cz3002.sharetolearn.R;
 
 import java.util.ArrayList;
 

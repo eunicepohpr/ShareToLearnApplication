@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "194757378374",
+    "firebase_url": "https://sharetolearn-1de3c.firebaseio.com",
+    "project_id": "sharetolearn-1de3c",
+    "storage_bucket": "sharetolearn-1de3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194757378374:android:80e04f8096895940df6547",
+        "android_client_info": {
+          "package_name": "com.cz3002.sharetolearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194757378374-plj7p388f70kjlncab1h1kpg38e9j8op.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cz3002.sharetolearn",
+            "certificate_hash": "6c17abf2cabbf837ed543a9eb3b241895431f957"
+          }
+        },
+        {
+          "client_id": "194757378374-1uqmim2ntc7rc8gp2nvi9ulam812v4n0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9R5KfX-0Y5rIX9ri1Q4P1BWfNtKjbl5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194757378374-1uqmim2ntc7rc8gp2nvi9ulam812v4n0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

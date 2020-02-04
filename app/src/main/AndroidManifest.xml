@@ -10,12 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainFeed"
+            android:name=".ui.MainFeed"
             android:label="@string/title_activity_main_feed"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SignUp" />
-        <activity android:name=".SignIn" />
-        <activity android:name=".Splashscreen">
+        <activity android:name=".ui.SignUp" />
+        <activity android:name=".ui.SignIn" />
+        <activity android:name=".ui.Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
