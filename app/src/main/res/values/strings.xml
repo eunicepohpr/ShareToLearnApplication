@@ -9,10 +9,14 @@
     <string name="action_courseconfig">Course Configuration</string>
 
     <string name="menu_home">Home</string>
+    <string name="menu_profile">My Profile</string>
+    <string name="menu_courses">Courses</string>
+    <string name="menu_course_review">Course Review</string>
     <string name="menu_discussion">Discussion</string>
-    <string name="menu_pyp">Past Year Papers</string>
+    <string name="menu_pyp">PYP</string>
     <string name="menu_favourites">Favourites</string>
     <string name="menu_courseconfig">Course Configuration</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="menu_chat">Chat</string>
 </resources>

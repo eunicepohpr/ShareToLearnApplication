@@ -3,15 +3,11 @@ package com.cz3002.sharetolearn.ui;
 import android.os.Bundle;
 
 import com.cz3002.sharetolearn.R;
-import com.cz3002.sharetolearn.ui.pyp.PypFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.widget.FrameLayout;
 
 public class MainFeed extends AppCompatActivity {
 
@@ -51,8 +46,8 @@ public class MainFeed extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_discussion, R.id.nav_pyp,
-                R.id.nav_favourites, R.id.nav_courseconfig)
+                R.id.nav_home, R.id.nav_profile, R.id.nav_courses,
+                R.id.nav_course_review)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

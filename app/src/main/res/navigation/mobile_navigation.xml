@@ -12,26 +12,44 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_discussion"
-        android:name="com.cz3002.sharetolearn.ui.discussion.DiscussionFragment"
-        android:label="@string/menu_discussion"
-        tools:layout="@layout/fragment_discussion" />
+        android:id="@+id/nav_profile"
+        android:name="com.cz3002.sharetolearn.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/profile_fragment" />
 
     <fragment
-        android:id="@+id/nav_pyp"
-        android:name="com.cz3002.sharetolearn.ui.pyp.PypFragment"
-        android:label="@string/menu_pyp"
-        tools:layout="@layout/fragment_pyp" />
+        android:id="@+id/nav_courses"
+        android:name="com.cz3002.sharetolearn.ui.courses.CoursesFragment"
+        android:label="@string/menu_courses"
+        tools:layout="@layout/courses_fragment" />
 
     <fragment
-        android:id="@+id/nav_favourites"
-        android:name="com.cz3002.sharetolearn.ui.favourites.FavouritesFragment"
-        android:label="@string/menu_favourites"
-        tools:layout="@layout/fragment_favourites" />
+        android:id="@+id/nav_course_review"
+        android:name="com.cz3002.sharetolearn.ui.coursereview.CourseReviewFragment"
+        android:label="@string/menu_course_review"
+        tools:layout="@layout/course_review_fragment" />
 
-    <fragment
-        android:id="@+id/nav_courseconfig"
-        android:name="com.cz3002.sharetolearn.ui.courseconfig.CourseConfigFragment"
-        android:label="@string/menu_courseconfig"
-        tools:layout="@layout/fragment_courseconfig" />
+<!--    <fragment-->
+<!--        android:id="@+id/nav_discussion"-->
+<!--        android:name="com.cz3002.sharetolearn.ui.discussion.DiscussionFragment"-->
+<!--        android:label="@string/menu_discussion"-->
+<!--        tools:layout="@layout/fragment_discussion" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/nav_pyp"-->
+<!--        android:name="com.cz3002.sharetolearn.ui.pyp.PypFragment"-->
+<!--        android:label="@string/menu_pyp"-->
+<!--        tools:layout="@layout/fragment_pyp" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/nav_favourites"-->
+<!--        android:name="com.cz3002.sharetolearn.ui.favourites.FavouritesFragment"-->
+<!--        android:label="@string/menu_favourites"-->
+<!--        tools:layout="@layout/fragment_favourites" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/nav_courseconfig"-->
+<!--        android:name="com.cz3002.sharetolearn.ui.courseconfig.CourseConfigFragment"-->
+<!--        android:label="@string/menu_courseconfig"-->
+<!--        tools:layout="@layout/fragment_courseconfig" />-->
 </navigation>

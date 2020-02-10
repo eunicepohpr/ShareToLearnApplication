@@ -34,7 +34,7 @@ public class CourseConfigFragment extends Fragment {
         ((MainFeed) getActivity()).hideFloatingActionButton();
 
         courseList = (ListView) root.findViewById(android.R.id.list);
-        courseSelected = (ImageView) root.findViewById(R.id.listitem_courseselected);
+//        courseSelected = (ImageView) root.findViewById(R.id.listitem_courseselected);
 
         courseConfigViewModel.getCourseList().observe(this, new Observer<ArrayList<String>>() {
             @Override

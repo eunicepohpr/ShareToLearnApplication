@@ -9,21 +9,33 @@
             android:icon="@drawable/home"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_discussion"
-            android:icon="@drawable/dialogue"
-            android:title="@string/menu_discussion" />
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/profile"
+            android:title="@string/menu_profile" />
         <item
-            android:id="@+id/nav_pyp"
-            android:icon="@drawable/exam"
-            android:title="@string/menu_pyp" />
+            android:id="@+id/nav_courses"
+            android:icon="@drawable/courses"
+            android:title="@string/menu_courses" />
         <item
-            android:id="@+id/nav_favourites"
-            android:icon="@drawable/liked"
-            android:title="@string/menu_favourites" />
-        <item
-            android:id="@+id/nav_courseconfig"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_courseconfig" />
+            android:id="@+id/nav_course_review"
+            android:icon="@drawable/coursereview"
+            android:title="@string/menu_course_review" />
+<!--        <item-->
+<!--            android:id="@+id/nav_discussion"-->
+<!--            android:icon="@drawable/dialogue"-->
+<!--            android:title="@string/menu_discussion" />-->
+<!--        <item-->
+<!--            android:id="@+id/nav_pyp"-->
+<!--            android:icon="@drawable/exam"-->
+<!--            android:title="@string/menu_pyp" />-->
+<!--        <item-->
+<!--            android:id="@+id/nav_favourites"-->
+<!--            android:icon="@drawable/liked"-->
+<!--            android:title="@string/menu_favourites" />-->
+<!--        <item-->
+<!--            android:id="@+id/nav_courseconfig"-->
+<!--            android:icon="@drawable/ic_menu_manage"-->
+<!--            android:title="@string/menu_courseconfig" />-->
     </group>
 
 <!--    <item android:title="Communicate">
