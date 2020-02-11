@@ -19,13 +19,21 @@
             android:textColor="@color/colorBlack"
             android:text="TextView" />
 
-        <EditText
-            android:id="@+id/answer"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Answer" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:maxLines="3"
+                android:minLines="3"
+                android:textSize="18dp" />
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </LinearLayout>

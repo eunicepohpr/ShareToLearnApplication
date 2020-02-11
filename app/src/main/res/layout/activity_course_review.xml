@@ -18,9 +18,10 @@
     </ListView>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#4FD8A91B"
+        android:layout_margin="10dp"
         android:text="Save" />
 </LinearLayout>

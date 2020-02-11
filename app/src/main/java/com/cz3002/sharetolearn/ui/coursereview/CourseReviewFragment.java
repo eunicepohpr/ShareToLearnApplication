@@ -60,13 +60,6 @@ public class CourseReviewFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String msg = adapterView.getItemAtPosition(position).toString();
                 startActivity(new Intent(getActivity(), CourseReviewActivity.class));
-/*                if(courseSelected.getVisibility() == View.INVISIBLE){
-                    msg = adapterView.getItemAtPosition(position).toString();
-                    Toast.makeText(getActivity(), msg,Toast.LENGTH_LONG).show();
-                }else{
-                    msg = "NOT INVISIBLE";
-                    Toast.makeText(getActivity(), msg,Toast.LENGTH_LONG).show();
-                }*/
             }
         });
     }

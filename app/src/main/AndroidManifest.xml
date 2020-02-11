@@ -9,10 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.CourseReviewActivity"></activity>
+        <activity
+            android:name=".ui.AddCourseActivity"
+            android:label="@string/title_activity_add_course">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".ui.CourseReviewActivity"
+            android:label="@string/title_activity_course_review" />
         <activity
             android:name=".ui.DiscussionPypChatActivity"
-            android:label="Learning Forum" />
+            android:label="@string/title_activity_discussion_pyp_chat" />
         <activity
             android:name=".ui.MainFeed"
             android:label="@string/title_activity_main_feed"

@@ -43,7 +43,6 @@ public class DiscussionPypChatActivity extends AppCompatActivity implements Bott
             case R.id.nav_chat:
                 selectedFragment = new ChatFragment();
                 break;
-
         }
         return loadFragment(selectedFragment);
     }

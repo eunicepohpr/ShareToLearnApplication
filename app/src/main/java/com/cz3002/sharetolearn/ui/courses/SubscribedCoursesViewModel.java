@@ -6,11 +6,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class CoursesViewModel extends ViewModel {
+public class SubscribedCoursesViewModel extends ViewModel {
     private MutableLiveData<ArrayList<String>> mCourses;
     private ArrayList<String> courseList;
 
-    public CoursesViewModel(){
+    public SubscribedCoursesViewModel(){
         courseList = new ArrayList<String>();
         courseList.add("CZ2005 Operating System");
         courseList.add("CZ1011 Engineering Mathematics I");

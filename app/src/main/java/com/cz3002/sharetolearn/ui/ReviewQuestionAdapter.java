@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cz3002.sharetolearn.R;
@@ -24,10 +25,12 @@ public class ReviewQuestionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String s = questionList.get(position);
+        String question = (position+1)+". "+questionList.get(position);
         if (convertView == null) convertView = inflater.inflate(R.layout.listitem_question, null);
-        TextView courseCodeTV = convertView.findViewById(R.id.question);
-        courseCodeTV.setText(questionList.get(position));
+        TextView questionTextView = convertView.findViewById(R.id.question);
+        EditText answerEditText = convertView.findViewById(R.id.answer);
+        questionTextView.setText(question);
+        answerEditText.setText("Answer");
         return convertView;
     }
 
