@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -14,20 +14,26 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.cz3002.sharetolearn.R;
 
+import java.util.List;
+
 public class DiscussionFragment extends Fragment {
 
     private DiscussionViewModel discussionViewModel;
+    private ListView discussionThreadsListView;
+    private DiscussionThreadAdapter discussionThreadAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         discussionViewModel =
                 ViewModelProviders.of(this).get(DiscussionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_discussion, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        discussionViewModel.getText().observe(this, new Observer<String>() {
+        discussionThreadsListView = root.findViewById(R.id.discussion_thread_list);
+        discussionViewModel.getDiscussionThreads().observe(this, new Observer<List<DiscussionThread>>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onChanged(@Nullable List<DiscussionThread> discussionThreads) {
+                discussionThreadAdapter = new DiscussionThreadAdapter(getActivity(), discussionThreads);
+                discussionThreadsListView.setAdapter(discussionThreadAdapter);
+                discussionThreadAdapter.notifyDataSetChanged();
             }
         });
         return root;
