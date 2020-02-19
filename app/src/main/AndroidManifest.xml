@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.AddCourseActivity"
+            android:name=".View.AddCourseActivity"
             android:label="@string/title_activity_add_course">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -20,18 +20,18 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".ui.CourseReviewActivity"
+            android:name=".View.CourseReviewActivity"
             android:label="@string/title_activity_course_review" />
         <activity
-            android:name=".ui.DiscussionPypChatActivity"
+            android:name=".View.DiscussionPypChatActivity"
             android:label="@string/title_activity_discussion_pyp_chat" />
         <activity
-            android:name=".ui.MainFeed"
+            android:name=".View.MainFeed"
             android:label="@string/title_activity_main_feed"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.SignUp" />
-        <activity android:name=".ui.SignIn" />
-        <activity android:name=".ui.Splashscreen">
+        <activity android:name=".View.SignUp" />
+        <activity android:name=".View.SignIn" />
+        <activity android:name=".View.Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

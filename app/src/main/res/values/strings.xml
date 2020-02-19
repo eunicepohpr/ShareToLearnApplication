@@ -4,12 +4,9 @@
     <string name="title_activity_course_review">Course Feedback Form</string>
     <string name="title_activity_discussion_pyp_chat">Learning Forum</string>
     <string name="title_activity_add_course">Add Course</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_courseconfig">Course Configuration</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_profile">My Profile</string>
@@ -17,9 +14,5 @@
     <string name="menu_course_review">Course Review</string>
     <string name="menu_discussion">Discussion</string>
     <string name="menu_pyp">PYP</string>
-    <string name="menu_favourites">Favourites</string>
-    <string name="menu_courseconfig">Course Configuration</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
     <string name="menu_chat">Chat</string>
 </resources>

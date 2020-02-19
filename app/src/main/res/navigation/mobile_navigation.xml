@@ -7,37 +7,37 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.cz3002.sharetolearn.ui.home.HomeFragment"
+        android:name="com.cz3002.sharetolearn.View.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.cz3002.sharetolearn.ui.profile.ProfileFragment"
+        android:name="com.cz3002.sharetolearn.View.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/profile_fragment" />
 
     <fragment
         android:id="@+id/nav_courses"
-        android:name="com.cz3002.sharetolearn.ui.courses.CoursesFragment"
+        android:name="com.cz3002.sharetolearn.View.CoursesFragment"
         android:label="@string/menu_courses"
         tools:layout="@layout/courses_fragment" />
 
     <fragment
         android:id="@+id/nav_course_review"
-        android:name="com.cz3002.sharetolearn.ui.coursereview.CourseReviewFragment"
+        android:name="com.cz3002.sharetolearn.View.CourseReviewFragment"
         android:label="@string/menu_course_review"
         tools:layout="@layout/course_review_fragment" />
 
 <!--    <fragment-->
 <!--        android:id="@+id/nav_discussion"-->
-<!--        android:name="com.cz3002.sharetolearn.ui.discussion.DiscussionFragment"-->
+<!--        android:name="com.cz3002.sharetolearn.View.DiscussionFragment"-->
 <!--        android:label="@string/menu_discussion"-->
 <!--        tools:layout="@layout/fragment_discussion" />-->
 
 <!--    <fragment-->
 <!--        android:id="@+id/nav_pyp"-->
-<!--        android:name="com.cz3002.sharetolearn.ui.pyp.PypFragment"-->
+<!--        android:name="com.cz3002.sharetolearn.View.PypFragment"-->
 <!--        android:label="@string/menu_pyp"-->
 <!--        tools:layout="@layout/fragment_pyp" />-->
 
