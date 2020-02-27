@@ -40,7 +40,7 @@
             android:text="Sign in"
             android:id="@+id/SignInBtn"
             android:layout_marginTop="25dp"
-            android:background="@color/colorDarkRed"
+            android:background="@color/colourNavy"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"/>
 

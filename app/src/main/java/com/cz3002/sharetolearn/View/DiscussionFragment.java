@@ -16,6 +16,8 @@ import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.ui.discussion.DiscussionThread;
 import com.cz3002.sharetolearn.ui.discussion.DiscussionThreadAdapter;
 import com.cz3002.sharetolearn.viewModel.DiscussionViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class DiscussionFragment extends Fragment {
     private DiscussionViewModel discussionViewModel;
     private ListView discussionThreadsListView;
     private DiscussionThreadAdapter discussionThreadAdapter;
+    private FloatingActionButton fab;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,6 +34,16 @@ public class DiscussionFragment extends Fragment {
                 ViewModelProviders.of(this).get(DiscussionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_discussion, container, false);
         discussionThreadsListView = root.findViewById(R.id.discussion_thread_list);
+
+        fab = root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         discussionViewModel.getDiscussionThreads().observe(this, new Observer<List<DiscussionThread>>() {
             @Override
             public void onChanged(@Nullable List<DiscussionThread> discussionThreads) {
