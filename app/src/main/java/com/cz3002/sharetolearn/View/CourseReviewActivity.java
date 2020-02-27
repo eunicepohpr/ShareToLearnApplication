@@ -34,12 +34,12 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     @Override
     protected void onResume() {
         super.onResume();
-        questionListView = findViewById(R.id.question_list);
+        /*questionListView = findViewById(R.id.question_list);
 
         questionViewModel = ViewModelProviders.of(this).get(ReviewQuestionViewModel.class);
         ArrayList<String> questionList = questionViewModel.getQuestionList().getValue();
         reviewQuestionAdapter = new ReviewQuestionAdapter(getApplicationContext(), questionList);
-        questionListView.setAdapter(reviewQuestionAdapter);
+        questionListView.setAdapter(reviewQuestionAdapter);*/
     }
 
 
