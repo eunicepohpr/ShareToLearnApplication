@@ -1,6 +1,7 @@
 package com.cz3002.sharetolearn.models;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
@@ -9,21 +10,28 @@ public class DiscussionResponse {
     private Discussion discussion;
     private User postedBy;
     private String answer;
-    private ArrayList<User> downvotes;
-    private ArrayList<User> upvotes;
+    private DocumentReference discussionKey;
+    private DocumentReference postedByKey;
+    private ArrayList<DocumentReference> downvoteKeys;
+    private ArrayList<DocumentReference> upvoteKeys;
     private Timestamp postedDateTime;
+//    private ArrayList<User> downvotes;
+//    private ArrayList<User> upvotes;
 
     public DiscussionResponse() {
     }
 
-    public DiscussionResponse(String key, Discussion discussion, User postedBy, String answer, Timestamp postedDateTime) {
+    public DiscussionResponse(String key, DocumentReference discussionKey, DocumentReference postedByKey,
+                              String answer, Timestamp postedDateTime) {
         this.key = key;
-        this.discussion = discussion;
-        this.postedBy = postedBy;
+        this.discussionKey = discussionKey;
+        this.postedByKey = postedByKey;
         this.answer = answer;
-        this.downvotes = new ArrayList<User>();
-        this.upvotes = new ArrayList<User>();
         this.postedDateTime = postedDateTime;
+        this.downvoteKeys = new ArrayList<>();
+        this.upvoteKeys = new ArrayList<>();
+//        this.downvotes = new ArrayList<>();
+//        this.upvotes = new ArrayList<>();
     }
 
 
@@ -63,32 +71,6 @@ public class DiscussionResponse {
     }
 
 
-    public ArrayList<User> getDownvotes() {
-        return downvotes;
-    }
-
-    public void setDownvotes(ArrayList<User> downvotes) {
-        this.downvotes = downvotes;
-    }
-
-    public void addDownvotes(User user){
-        this.downvotes.add(user);
-    }
-
-
-    public ArrayList<User> getUpvotes() {
-        return upvotes;
-    }
-
-    public void setUpvotes(ArrayList<User> upvotes) {
-        this.upvotes = upvotes;
-    }
-
-    public void addUpvotes(User user){
-        this.upvotes.add(user);
-    }
-
-
     public Timestamp getPostedDateTime() {
         return postedDateTime;
     }
@@ -96,4 +78,74 @@ public class DiscussionResponse {
     public void setPostedDateTime(Timestamp postedDateTime) {
         this.postedDateTime = postedDateTime;
     }
+
+
+    public ArrayList<DocumentReference> getDownvoteKeys() {
+        return downvoteKeys;
+    }
+
+    public void setDownvoteKeys(ArrayList<DocumentReference> downvoteKeys) {
+        this.downvoteKeys = downvoteKeys;
+    }
+
+    public void addDownvoteKey(DocumentReference downvoteKey) {
+        this.downvoteKeys.add(downvoteKey);
+    }
+
+
+    public ArrayList<DocumentReference> getUpvoteKeys() {
+        return upvoteKeys;
+    }
+
+    public void setUpvoteKeys(ArrayList<DocumentReference> upvoteKeys) {
+        this.upvoteKeys = upvoteKeys;
+    }
+
+    public void addUpvoteKey(DocumentReference upvoteKey) {
+        this.upvoteKeys.add(upvoteKey);
+    }
+
+
+    public DocumentReference getDiscussionKey() {
+        return discussionKey;
+    }
+
+    public void setDiscussionKey(DocumentReference discussionKey) {
+        this.discussionKey = discussionKey;
+    }
+
+
+    public DocumentReference getPostedByKey() {
+        return postedByKey;
+    }
+
+    public void setPostedByKey(DocumentReference postedByKey) {
+        this.postedByKey = postedByKey;
+    }
+
+
+//    public ArrayList<User> getDownvotes() {
+//        return downvotes;
+//    }
+//
+//    public void setDownvotes(ArrayList<User> downvotes) {
+//        this.downvotes = downvotes;
+//    }
+//
+//    public void addDownvotes(User user){
+//        this.downvotes.add(user);
+//    }
+//
+//
+//    public ArrayList<User> getUpvotes() {
+//        return upvotes;
+//    }
+//
+//    public void setUpvotes(ArrayList<User> upvotes) {
+//        this.upvotes = upvotes;
+//    }
+//
+//    public void addUpvotes(User user){
+//        this.upvotes.add(user);
+//    }
 }

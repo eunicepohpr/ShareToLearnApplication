@@ -1,21 +1,23 @@
 package com.cz3002.sharetolearn.models;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 
-class CourseReview {
+public class CourseReview {
     private String key;
     private double rating;
     private Timestamp ratedDateTime;
     private User ratedBy;
+    private DocumentReference ratedByKey;
 
     public CourseReview() {
     }
 
-    public CourseReview(String key, double rating, Timestamp ratedDateTime, User ratedBy) {
+    public CourseReview(String key, double rating, Timestamp ratedDateTime, DocumentReference ratedByKey) {
         this.key = key;
         this.rating = rating;
         this.ratedDateTime = ratedDateTime;
-        this.ratedBy = ratedBy;
+        this.ratedByKey = ratedByKey;
     }
 
     public String getKey() {
@@ -51,5 +53,14 @@ class CourseReview {
 
     public void setRatedBy(User ratedBy) {
         this.ratedBy = ratedBy;
+    }
+
+
+    public DocumentReference getRatedByKey() {
+        return ratedByKey;
+    }
+
+    public void setRatedByKey(DocumentReference ratedByKey) {
+        this.ratedByKey = ratedByKey;
     }
 }

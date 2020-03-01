@@ -1,15 +1,19 @@
 package com.cz3002.sharetolearn.models;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.ArrayList;
 
 public class Course {
     private String key;
     private String courseCode;
-    private ArrayList<User> registeredUsers;
+    private ArrayList<DocumentReference> registeredUserKeys;
     private String title;
     private String description;
-    private ArrayList<CourseReview> reviews;
+    private ArrayList<DocumentReference> reviewKeys;
     private String courseAssessment;
+//    private ArrayList<User> registeredUsers;
+//    private ArrayList<CourseReview> reviews;
 //    private ArrayList<Chat> chatMessages;
 
     public Course() {
@@ -19,11 +23,13 @@ public class Course {
                   String description, String courseAssessment) {
         this.key = key;
         this.courseCode = courseCode;
-        this.registeredUsers = new ArrayList<User>();
+        this.registeredUserKeys = new ArrayList<>();
         this.title = title;
         this.description = description;
-        this.reviews = new ArrayList<CourseReview>();
+        this.reviewKeys = new ArrayList<>();
         this.courseAssessment = courseAssessment;
+//        this.registeredUsers = new ArrayList<>();
+//        this.reviews = new ArrayList<>();
 //        this.chatMessages = new ArrayList<Chat>();
     }
 
@@ -46,19 +52,6 @@ public class Course {
     }
 
 
-    public ArrayList<User> getRegisteredUsers() {
-        return registeredUsers;
-    }
-
-    public void setRegisteredUsers(ArrayList<User> registered) {
-        this.registeredUsers = registered;
-    }
-
-    public void addRegisteredUser(User user) {
-        this.registeredUsers.add(user);
-    }
-
-
     public String getTitle() {
         return title;
     }
@@ -77,19 +70,6 @@ public class Course {
     }
 
 
-    public ArrayList<CourseReview> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(ArrayList<CourseReview> reviews) {
-        this.reviews = reviews;
-    }
-
-    public void addReview(CourseReview review) {
-        this.reviews.add(review);
-    }
-
-
     public String getCourseAssessment() {
         return courseAssessment;
     }
@@ -98,6 +78,57 @@ public class Course {
         this.courseAssessment = courseAssessment;
     }
 
+
+    public ArrayList<DocumentReference> getRegisteredUserKeys() {
+        return registeredUserKeys;
+    }
+
+    public void setRegisteredUserKeys(ArrayList<DocumentReference> registeredUserKeys) {
+        this.registeredUserKeys = registeredUserKeys;
+    }
+
+    public void addRegisteredUserKeys(DocumentReference userKey) {
+        this.registeredUserKeys.add(userKey);
+    }
+
+
+    public ArrayList<DocumentReference> getReviewKeys() {
+        return reviewKeys;
+    }
+
+    public void setReviewKeys(ArrayList<DocumentReference> reviewKeys) {
+        this.reviewKeys = reviewKeys;
+    }
+
+    public void addReviewKeys(DocumentReference reviewKey) {
+        this.reviewKeys.add(reviewKey);
+    }
+
+
+//    public ArrayList<User> getRegisteredUsers() {
+//        return registeredUsers;
+//    }
+//
+//    public void setRegisteredUsers(ArrayList<User> registered) {
+//        this.registeredUsers = registered;
+//    }
+//
+//    public void addRegisteredUser(User user) {
+//        this.registeredUsers.add(user);
+//    }
+//
+//
+//    public ArrayList<CourseReview> getReviews() {
+//        return reviews;
+//    }
+//
+//    public void setReviews(ArrayList<CourseReview> reviews) {
+//        this.reviews = reviews;
+//    }
+//
+//    public void addReview(CourseReview review) {
+//        this.reviews.add(review);
+//    }
 
 //    public ArrayList<Chat> getChatMessages() {
 //        return chatMessages;
