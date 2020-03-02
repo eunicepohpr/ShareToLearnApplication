@@ -6,7 +6,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
@@ -18,6 +22,7 @@ public class AddCourseActivity extends AppCompatActivity {
     private UnsubscribedCoursesViewModel unsubscribedCoursesViewModel;
     private ListView courseListView;
     private CourseAdapter courseAdapter;
+    private ImageView courseSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +35,23 @@ public class AddCourseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         courseListView = findViewById(R.id.course_list);
+        courseSelected = findViewById(R.id.listitem_courseselected);
 
         unsubscribedCoursesViewModel = ViewModelProviders.of(this).get(UnsubscribedCoursesViewModel.class);
         ArrayList<String> courseList = unsubscribedCoursesViewModel.getCourseList().getValue();
         courseAdapter = new CourseAdapter(getApplicationContext(), courseList);
         courseListView.setAdapter(courseAdapter);
+
+        courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String msg = adapterView.getItemAtPosition(position).toString();
+                Toast toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
+                toast.show();
+
+                //courseSelected.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 //    @Override
