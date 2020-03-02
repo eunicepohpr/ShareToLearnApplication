@@ -26,13 +26,13 @@ public class ChatFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         chatViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
         View root = inflater.inflate(R.layout.chat_fragment, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        chatViewModel.getText().observe(this, new Observer<String>() {
+        //final TextView textView = root.findViewById(R.id.text_gallery);
+        /*chatViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 
