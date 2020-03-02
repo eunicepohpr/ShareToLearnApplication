@@ -9,10 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".View.Discussion"
+            android:label="@string/title_activity_discussion"></activity>
         <activity
             android:name=".View.AddDiscussion"
-            android:label="@string/title_activity_add_discussion">
-        </activity>
+            android:label="@string/title_activity_add_discussion"></activity>
         <activity
             android:name=".View.AddCourseActivity"
             android:label="@string/title_activity_add_course">

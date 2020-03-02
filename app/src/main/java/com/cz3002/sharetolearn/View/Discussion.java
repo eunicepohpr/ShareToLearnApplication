@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import com.cz3002.sharetolearn.R;
 
-public class AddDiscussion extends AppCompatActivity {
+public class Discussion extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_discussion);
+        setContentView(R.layout.activity_discussion);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

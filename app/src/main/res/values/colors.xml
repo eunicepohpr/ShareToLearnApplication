@@ -9,4 +9,5 @@
     <color name="colorSnow">#FFFAFA</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGrey">#696969</color>
+    <color name="colorLightGrey">#DDDDDD</color>
 </resources>

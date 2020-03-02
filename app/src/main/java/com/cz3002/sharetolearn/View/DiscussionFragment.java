@@ -66,8 +66,10 @@ public class DiscussionFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String msg = adapterView.getItemAtPosition(position).toString();
-                Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);
-                toast.show();
+                Intent launchactivity = new  Intent(getContext(), Discussion.class);
+                startActivity(launchactivity);
+                /*Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);
+                toast.show();*/
                 //startActivity(new Intent(getActivity(), DiscussionPypChatActivity.class));
             }
         });
