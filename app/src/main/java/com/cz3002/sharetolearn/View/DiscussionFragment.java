@@ -42,8 +42,10 @@ public class DiscussionFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent launchactivity = new  Intent(getContext(), AddDiscussion.class);
+                startActivity(launchactivity);
+                /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
 

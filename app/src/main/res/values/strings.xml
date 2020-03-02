@@ -4,6 +4,7 @@
     <string name="title_activity_course_review">Course Feedback Form</string>
     <string name="title_activity_discussion_pyp_chat">Learning Forum</string>
     <string name="title_activity_add_course">Add Course</string>
+    <string name="title_activity_add_discussion">Add Discussion</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_email">android.studio@android.com</string>
