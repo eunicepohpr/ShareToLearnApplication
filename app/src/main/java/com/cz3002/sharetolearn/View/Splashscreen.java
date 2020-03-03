@@ -118,7 +118,6 @@ public class Splashscreen extends AppCompatActivity {
                             courses.put(key, course); // add to hashmap
                         }
                     }
-                    addToSQLite(ShareToLearn.TABLE_NAME, ShareToLearn.COURSES, courses);
                 }
             }
         });
