@@ -1,10 +1,13 @@
 package com.cz3002.sharetolearn.View;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -39,8 +42,10 @@ public class DiscussionFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent launchactivity = new  Intent(getContext(), AddDiscussion.class);
+                startActivity(launchactivity);
+                /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
 
@@ -53,5 +58,20 @@ public class DiscussionFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        discussionThreadsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String msg = adapterView.getItemAtPosition(position).toString();
+                Intent launchactivity = new  Intent(getContext(), Discussion.class);
+                startActivity(launchactivity);
+                /*Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);
+                toast.show();*/
+                //startActivity(new Intent(getActivity(), DiscussionPypChatActivity.class));
+            }
+        });
     }
 }

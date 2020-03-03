@@ -20,15 +20,25 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     private ReviewQuestionViewModel questionViewModel;
     private ListView questionListView;
     private ReviewQuestionAdapter reviewQuestionAdapter;
+    private Button postReview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_review);
+        //setContentView(R.layout.activity_course_review);
+        setContentView(R.layout.course_review_fragment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(this);
+        /*Button saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(this);*/
+
+        postReview = findViewById(R.id.writeReview_button);
+        postReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_course_review);
+            }
+        });
     }
 
     @Override

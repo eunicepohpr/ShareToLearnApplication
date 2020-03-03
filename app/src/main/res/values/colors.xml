@@ -8,4 +8,6 @@
     <color name="colourNavy">#243E6F</color>
     <color name="colorSnow">#FFFAFA</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorGrey">#696969</color>
+    <color name="colorLightGrey">#DDDDDD</color>
 </resources>

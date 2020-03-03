@@ -8,8 +8,8 @@ public class ChatViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
     public ChatViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is chat fragment");
+        /*mText = new MutableLiveData<>();
+        mText.setValue("This is chat fragment");*/
     }
 
     public LiveData<String> getText() {

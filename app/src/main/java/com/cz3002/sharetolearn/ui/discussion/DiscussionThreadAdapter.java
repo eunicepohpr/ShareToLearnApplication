@@ -44,7 +44,7 @@ public class DiscussionThreadAdapter extends BaseAdapter {
         int likes = discussionThread.getLikes();
 
         if (view == null) view = inflater.inflate(R.layout.listitem_discussion_thread, null);
-        TextView topicTextView = view.findViewById(R.id.topic);
+        TextView topicTextView = view.findViewById(R.id.topic_title);
         topicTextView.setText(topic);
         TextView commentNumberTextView = view.findViewById(R.id.comment_number);
         commentNumberTextView.setText(Integer.toString(commentNumber));
