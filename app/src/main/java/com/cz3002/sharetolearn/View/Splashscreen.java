@@ -3,12 +3,17 @@ package com.cz3002.sharetolearn.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.SQLite.ShareToLearn;
+import com.cz3002.sharetolearn.SQLite.ShareToLearnDbHelper;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.models.Discussion;
@@ -19,16 +24,17 @@ import com.cz3002.sharetolearn.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Splashscreen extends AppCompatActivity {
     private ProgressBar progressBar;
@@ -43,6 +49,7 @@ public class Splashscreen extends AppCompatActivity {
     private HashMap<String, PYPResponse> pypResponses = new HashMap<>();
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    private ShareToLearnDbHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +118,7 @@ public class Splashscreen extends AppCompatActivity {
                             courses.put(key, course); // add to hashmap
                         }
                     }
+                    addToSQLite(ShareToLearn.TABLE_NAME, ShareToLearn.COURSES, courses);
                 }
             }
         });
@@ -333,4 +341,49 @@ public class Splashscreen extends AppCompatActivity {
             }
         });
     }
+
+//    public void addToSQLite(String TABLE_NAME, String COLUMN_NAME, HashMap<String, Course> obj) {
+//        dbHelper = new ShareToLearnDbHelper(getApplicationContext());
+//
+//        try {
+//            SQLiteDatabase db = dbHelper.getWritableDatabase();
+//            ContentValues values = new ContentValues();
+//            GsonBuilder gsonMapBuilder = new GsonBuilder();
+//
+//            Gson gson = gsonMapBuilder.create();
+//            Type type = new TypeToken<HashMap<String, Course>>(){}.getType();
+//            String json = gson.toJson(obj, type);
+//            Log.d("ADDING TO DB", json);
+//            values.put(COLUMN_NAME, json); //add question to table
+//            db.insertOrThrow(TABLE_NAME, null, values);
+//
+//        } catch (Exception e) {
+//            Log.e("ERROR at addToSQLite", e.toString());
+//        } finally {
+//            dbHelper.close();
+//        }
+//
+//    }
+//
+//    public HashMap<String, Object> getFromSQLite(String TABLE_NAME, String COLUMN_NAME) {
+//        String[] FROM = {COLUMN_NAME};
+//        dbHelper = new ShareToLearnDbHelper(getApplicationContext());
+//        HashMap<String, Object> map = new HashMap<String, Object>();
+//        try {
+//            SQLiteDatabase db = dbHelper.getReadableDatabase();
+//            Cursor cursor = db.query(TABLE_NAME, FROM, null, null, null, null, null);
+//            Log.d("SQLiteDB", cursor.toString());
+//            while (cursor.moveToNext()) {
+//                for (int j = 0; j < cursor.getCount(); j++) {
+//                    String content = cursor.getString(0);
+//                    Log.d("SQLiteDB: ", content);
+//                    Gson gson = new Gson();
+//                    map = (HashMap<String, Object>) gson.fromJson(content, map.getClass());
+//                }
+//            }
+//            return map;
+//        } finally {
+//            dbHelper.close();
+//        }
+//    }
 }
