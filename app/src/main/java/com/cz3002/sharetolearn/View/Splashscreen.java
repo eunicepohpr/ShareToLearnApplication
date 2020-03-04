@@ -3,23 +3,18 @@ package com.cz3002.sharetolearn.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.cz3002.sharetolearn.R;
-import com.cz3002.sharetolearn.SQLite.ShareToLearn;
-import com.cz3002.sharetolearn.SQLite.ShareToLearnDbHelper;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.models.Discussion;
 import com.cz3002.sharetolearn.models.DiscussionResponse;
 import com.cz3002.sharetolearn.models.PYP;
 import com.cz3002.sharetolearn.models.PYPResponse;
+import com.cz3002.sharetolearn.models.ShareToLearnApplication;
 import com.cz3002.sharetolearn.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,11 +23,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,6 +32,7 @@ public class Splashscreen extends AppCompatActivity {
     private ProgressBar progressBar;
     private int progress;
 
+    private ShareToLearnApplication shareToLearnApp = new ShareToLearnApplication();
     private HashMap<String, Course> courses = new HashMap<>();
     private HashMap<String, User> users = new HashMap<>();
     private HashMap<String, Discussion> discussions = new HashMap<>();
@@ -74,6 +67,9 @@ public class Splashscreen extends AppCompatActivity {
                         progressBar.setProgress(progress);
                     }
                     Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                    Bundle args = new Bundle();
+//                    args.putSerializable("ShareToLearnApp", shareToLearnApp);
+                    intent.putExtra("BUNDLE", args);
                     //to direct it to this activity after the splash screen finishes
                     startActivity(intent);
                     finish(); //to stop it from rerunning
@@ -107,18 +103,18 @@ public class Splashscreen extends AppCompatActivity {
                             String a = String.valueOf(document.get("reviews"));
                             if (a != "null" || a != null || a != "[]")
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("reviews"))
-                                    course.addRegisteredUserKeys(registeredUser);
+                                    course.addRegisteredUserKeys(registeredUser.getPath());
 
                             // get list of registered users
                             String b = String.valueOf(document.get("registered"));
                             if (b != "null" || b != null || b != "[]")
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("registered"))
-                                    course.addReviewKeys(registeredUser);
+                                    course.addReviewKeys(registeredUser.getPath());
 
                             courses.put(key, course); // add to hashmap
                         }
                     }
-                    addToSQLite(ShareToLearn.TABLE_NAME, ShareToLearn.COURSES, courses);
+                    shareToLearnApp.setCourses(courses);
                 }
             }
         });
@@ -146,27 +142,30 @@ public class Splashscreen extends AppCompatActivity {
                             String b = String.valueOf(document.get("registered"));
                             if (b != "null" || b != null || b != "[]")
                                 for (DocumentReference registeredCourse : (ArrayList<DocumentReference>) document.get("registered"))
-                                    user.addRegisteredCourseKey(registeredCourse);
+                                    user.addRegisteredCourseKey(registeredCourse.getPath());
 
                             // get list of user likes
                             HashMap<String, Object> userLikes = (HashMap<String, Object>) document.get("likes");
-                            ArrayList<DocumentReference> pypLikes = userLikes.containsKey("pyp") ? (ArrayList<DocumentReference>) userLikes.get("pyp") : new ArrayList<DocumentReference>();
-                            ArrayList<DocumentReference> discussionLikes = userLikes.containsKey("discussion") ? (ArrayList<DocumentReference>) userLikes.get("discussion") : new ArrayList<DocumentReference>();
-
-                            user.setPypLikeKeys(pypLikes);
-                            user.setDiscussionLikeKeys(discussionLikes);
+                            if (userLikes.containsKey("pyp"))
+                                for (DocumentReference pypLike : (ArrayList<DocumentReference>) userLikes.get("pyp"))
+                                    user.addPypLikeKey(pypLike.getPath());
+                            if (userLikes.containsKey("discussion"))
+                                for (DocumentReference discussionLike : (ArrayList<DocumentReference>) userLikes.get("discussion"))
+                                    user.addDiscussionLikeKey(discussionLike.getPath());
 
                             // get list of user likes
                             HashMap<String, Object> userRatings = (HashMap<String, Object>) document.get("ratings");
-                            ArrayList<DocumentReference> pypRatings = userRatings.containsKey("pyp") ? (ArrayList<DocumentReference>) userLikes.get("pyp") : new ArrayList<DocumentReference>();
-                            ArrayList<DocumentReference> discussionRatings = userRatings.containsKey("discussion") ? (ArrayList<DocumentReference>) userLikes.get("discussion") : new ArrayList<DocumentReference>();
-
-                            user.setPypRatingKeys(pypRatings);
-                            user.setDiscussionRatingKeys(discussionRatings);
+                            if (userRatings.containsKey("pyp"))
+                                for (DocumentReference pypRating : (ArrayList<DocumentReference>) userRatings.get("pyp"))
+                                    user.addPypRatingKey(pypRating.getPath());
+                            if (userRatings.containsKey("discussion"))
+                                for (DocumentReference discussionRating : (ArrayList<DocumentReference>) userRatings.get("discussion"))
+                                    user.addDiscussionRatingKey(discussionRating.getPath());
 
                             users.put(key, user); // add to hashmap
                         }
                     }
+                    shareToLearnApp.setUsers(users);
                 }
             }
         });
@@ -187,23 +186,24 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference courseKey = document.getDocumentReference("course");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            Discussion discussion = new Discussion(key, courseKey, question, postedByKey, title, postedDateTime);
+                            Discussion discussion = new Discussion(key, courseKey.getPath(), question, postedByKey.getPath(), title, postedDateTime);
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
                             if (a != "null" || a != null || a != "[]")
                                 for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
-                                    discussion.addResponseKey(response);
+                                    discussion.addResponseKey(response.getPath());
 
                             // get list of user likes
                             String b = String.valueOf(document.get("likes"));
                             if (b != "null" || b != null || b != "[]")
                                 for (DocumentReference userLike : (ArrayList<DocumentReference>) document.get("likes"))
-                                    discussion.addLikeKey(userLike);
+                                    discussion.addLikeKey(userLike.getPath());
 
                             discussions.put(key, discussion); //add to hashmap
                         }
                     }
+                    shareToLearnApp.setDiscussions(discussions);
                 }
             }
         });
@@ -224,23 +224,24 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference courseKey = document.getDocumentReference("course");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            PYP pyp = new PYP(key, courseKey, postedByKey, question, title, postedDateTime);
+                            PYP pyp = new PYP(key, courseKey.getPath(), postedByKey.getPath(), question, title, postedDateTime);
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
                             if (a != "null" || a != null || a != "[]")
                                 for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
-                                    pyp.addResponseKey(response);
+                                    pyp.addResponseKey(response.getPath());
 
                             // get list of user likes
                             String b = String.valueOf(document.get("likes"));
                             if (b != "null" || b != null || b != "[]")
                                 for (DocumentReference userLike : (ArrayList<DocumentReference>) document.get("likes"))
-                                    pyp.addLikeKey(userLike);
+                                    pyp.addLikeKey(userLike.getPath());
 
                             pyps.put(key, pyp); // add to hashmap
                         }
                     }
+                    shareToLearnApp.setPyps(pyps);
                 }
             }
         });
@@ -258,12 +259,16 @@ public class Splashscreen extends AppCompatActivity {
                             Double rating = document.getDouble("rating");
                             Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
                             DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
+                            String description = document.getString("description");
+                            DocumentReference courseKey = document.getDocumentReference("course");
 
-                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime, ratedByKey);
+                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime,
+                                    description, courseKey.getPath(), ratedByKey.getPath());
 
                             courseReviews.put(key, courseReview); // add to hashmap
                         }
                     }
+                    shareToLearnApp.setCourseReviews(courseReviews);
                 }
             }
         });
@@ -283,23 +288,24 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference discussionKey = document.getDocumentReference("discussion");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            DiscussionResponse discussionResponse = new DiscussionResponse(key, discussionKey, postedByKey, answer, postedDateTime);
+                            DiscussionResponse discussionResponse = new DiscussionResponse(key, discussionKey.getPath(), postedByKey.getPath(), answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
                             if (a != "null" || a != null || a != "[]")
                                 for (DocumentReference upvote : (ArrayList<DocumentReference>) document.get("upvotes"))
-                                    discussionResponse.addUpvoteKey(upvote);
+                                    discussionResponse.addUpvoteKey(upvote.getPath());
 
                             // get list of downvotes
                             String b = String.valueOf(document.get("downvotes"));
                             if (b != "null" || b != null || b != "[]")
                                 for (DocumentReference downvote : (ArrayList<DocumentReference>) document.get("downvotes"))
-                                    discussionResponse.addDownvoteKey(downvote);
+                                    discussionResponse.addDownvoteKey(downvote.getPath());
 
                             discussionResponses.put(key, discussionResponse);
                         }
                     }
+                    shareToLearnApp.setDiscussionResponses(discussionResponses);
                 }
             }
         });
@@ -320,23 +326,24 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference pypKey = document.getDocumentReference("pyp");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            PYPResponse pypResponse = new PYPResponse(key, postedByKey, pypKey, working, answer, postedDateTime);
+                            PYPResponse pypResponse = new PYPResponse(key, postedByKey.getPath(), pypKey.getPath(), working, answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
                             if (a != "null" || a != null || a != "[]")
                                 for (DocumentReference upvote : (ArrayList<DocumentReference>) document.get("upvotes"))
-                                    pypResponse.addUpvoteKey(upvote);
+                                    pypResponse.addUpvoteKey(upvote.getPath());
 
                             // get list of downvotes
                             String b = String.valueOf(document.get("downvotes"));
                             if (b != "null" || b != null || b != "[]")
                                 for (DocumentReference downvote : (ArrayList<DocumentReference>) document.get("downvotes"))
-                                    pypResponse.addDownvoteKey(downvote);
+                                    pypResponse.addDownvoteKey(downvote.getPath());
 
                             pypResponses.put(key, pypResponse);
                         }
                     }
+                    shareToLearnApp.setPypResponses(pypResponses);
                 }
             }
         });

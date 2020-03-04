@@ -7,18 +7,24 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.models.ShareToLearnApplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SignIn extends AppCompatActivity {
     private Button login, create;
     private EditText emailTV, pwdTV;
+    private ShareToLearnApplication shareToLearnApp;
 //    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        shareToLearnApp = (ShareToLearnApplication) args.getSerializable("ShareToLearnApp");
 
 //        mAuth = FirebaseAuth.getInstance();
 

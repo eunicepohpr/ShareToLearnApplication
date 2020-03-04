@@ -1,23 +1,29 @@
 package com.cz3002.sharetolearn.models;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 
-public class CourseReview {
+import java.io.Serializable;
+
+public class CourseReview implements Serializable {
     private String key;
     private double rating;
     private Timestamp ratedDateTime;
     private User ratedBy;
-    private DocumentReference ratedByKey;
+    private String description;
+    private String courseKey;
+    private String ratedByKey;
 
     public CourseReview() {
     }
 
-    public CourseReview(String key, double rating, Timestamp ratedDateTime, DocumentReference ratedByKey) {
+    public CourseReview(String key, double rating, Timestamp ratedDateTime, String ratedByKey,
+                        String description, String courseKey) {
         this.key = key;
         this.rating = rating;
         this.ratedDateTime = ratedDateTime;
         this.ratedByKey = ratedByKey;
+        this.description = description;
+        this.courseKey = courseKey;
     }
 
     public String getKey() {
@@ -56,11 +62,29 @@ public class CourseReview {
     }
 
 
-    public DocumentReference getRatedByKey() {
+    public String getRatedByKey() {
         return ratedByKey;
     }
 
-    public void setRatedByKey(DocumentReference ratedByKey) {
+    public void setRatedByKey(String ratedByKey) {
         this.ratedByKey = ratedByKey;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    public String getCourseKey() {
+        return courseKey;
+    }
+
+    public void setCourseKey(String courseKey) {
+        this.courseKey = courseKey;
     }
 }

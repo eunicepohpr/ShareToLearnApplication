@@ -2,7 +2,9 @@ package com.cz3002.sharetolearn.models;
 
 import com.google.firebase.Timestamp;
 
-public class Chat {
+import java.io.Serializable;
+
+public class Chat implements Serializable {
     private Course course;
     private Timestamp postedDateTime;
     private String message;

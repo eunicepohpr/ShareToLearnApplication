@@ -1,28 +1,28 @@
 package com.cz3002.sharetolearn.models;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PYP {
+public class PYP implements Serializable {
     private String key;
     private Course course;
     private User postedBy;
     private String question;
     private String title;
     private Timestamp postedDateTime;
-    private DocumentReference courseKey;
-    private DocumentReference postedByKey;
-    private ArrayList<DocumentReference> responseKeys;
-    private ArrayList<DocumentReference> likeKeys;
+    private String courseKey;
+    private String postedByKey;
+    private ArrayList<String> responseKeys;
+    private ArrayList<String> likeKeys;
 //    private ArrayList<PYPResponse> responses;
 //    private ArrayList<User> likes;
 
     public PYP() {
     }
 
-    public PYP(String key, DocumentReference courseKey, DocumentReference postedByKey,
+    public PYP(String key, String courseKey, String postedByKey,
                String question, String title, Timestamp postedDateTime) {
         this.key = key;
         this.courseKey = courseKey;
@@ -91,46 +91,46 @@ public class PYP {
     }
 
 
-    public ArrayList<DocumentReference> getResponseKeys() {
+    public ArrayList<String> getResponseKeys() {
         return responseKeys;
     }
 
-    public void setResponseKeys(ArrayList<DocumentReference> responseKeys) {
+    public void setResponseKeys(ArrayList<String> responseKeys) {
         this.responseKeys = responseKeys;
     }
 
-    public void addResponseKey(DocumentReference responseKey) {
+    public void addResponseKey(String responseKey) {
         this.responseKeys.add(responseKey);
     }
 
 
-    public ArrayList<DocumentReference> getLikeKeys() {
+    public ArrayList<String> getLikeKeys() {
         return likeKeys;
     }
 
-    public void setLikeKeys(ArrayList<DocumentReference> likeKeys) {
+    public void setLikeKeys(ArrayList<String> likeKeys) {
         this.likeKeys = likeKeys;
     }
 
-    public void addLikeKey(DocumentReference likeKey) {
+    public void addLikeKey(String likeKey) {
         this.likeKeys.add(likeKey);
     }
 
 
-    public DocumentReference getCourseKey() {
+    public String getCourseKey() {
         return courseKey;
     }
 
-    public void setCourseKey(DocumentReference courseKey) {
+    public void setCourseKey(String courseKey) {
         this.courseKey = courseKey;
     }
 
 
-    public DocumentReference getPostedByKey() {
+    public String getPostedByKey() {
         return postedByKey;
     }
 
-    public void setPostedByKey(DocumentReference postedByKey) {
+    public void setPostedByKey(String postedByKey) {
         this.postedByKey = postedByKey;
     }
 

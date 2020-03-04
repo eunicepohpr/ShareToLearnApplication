@@ -1,21 +1,20 @@
 package com.cz3002.sharetolearn.models;
 
-import com.google.firebase.firestore.DocumentReference;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     private String key;
     private String biography;
     private String email;
     private String courseOfStudy;
     private String expectedYearOfGrad;
     private String name;
-    private ArrayList<DocumentReference> registeredCourseKeys;
-    private ArrayList<DocumentReference> discussionLikeKeys;
-    private ArrayList<DocumentReference> pypLikeKeys;
-    private ArrayList<DocumentReference> discussionRatingKeys;
-    private ArrayList<DocumentReference> pypRatingKeys;
+    private ArrayList<String> registeredCourseKeys;
+    private ArrayList<String> discussionLikeKeys;
+    private ArrayList<String> pypLikeKeys;
+    private ArrayList<String> discussionRatingKeys;
+    private ArrayList<String> pypRatingKeys;
 //    private ArrayList<Course> registeredCourses;
 //    private ArrayList<Discussion> discussionLikes;
 //    private ArrayList<PYP> pypLikes;
@@ -99,67 +98,67 @@ public class User {
     }
 
 
-    public ArrayList<DocumentReference> getRegisteredCourseKeys() {
+    public ArrayList<String> getRegisteredCourseKeys() {
         return registeredCourseKeys;
     }
 
-    public void setRegisteredCourseKeys(ArrayList<DocumentReference> registeredCourseKeys) {
+    public void setRegisteredCourseKeys(ArrayList<String> registeredCourseKeys) {
         this.registeredCourseKeys = registeredCourseKeys;
     }
 
-    public void addRegisteredCourseKey(DocumentReference registeredCourseKey) {
+    public void addRegisteredCourseKey(String registeredCourseKey) {
         this.registeredCourseKeys.add(registeredCourseKey);
     }
 
 
-    public ArrayList<DocumentReference> getDiscussionLikeKeys() {
+    public ArrayList<String> getDiscussionLikeKeys() {
         return discussionLikeKeys;
     }
 
-    public void setDiscussionLikeKeys(ArrayList<DocumentReference> discussionLikeKeys) {
+    public void setDiscussionLikeKeys(ArrayList<String> discussionLikeKeys) {
         this.discussionLikeKeys = discussionLikeKeys;
     }
 
-    public void addDiscussionLikeKey(DocumentReference discussionLikeKey) {
+    public void addDiscussionLikeKey(String discussionLikeKey) {
         this.discussionLikeKeys.add(discussionLikeKey);
     }
 
 
-    public ArrayList<DocumentReference> getPypLikeKeys() {
+    public ArrayList<String> getPypLikeKeys() {
         return pypLikeKeys;
     }
 
-    public void setPypLikeKeys(ArrayList<DocumentReference> pypLikeKeys) {
+    public void setPypLikeKeys(ArrayList<String> pypLikeKeys) {
         this.pypLikeKeys = pypLikeKeys;
     }
 
-    public void addPypLikeKey(DocumentReference pypLikeKey) {
+    public void addPypLikeKey(String pypLikeKey) {
         this.pypRatingKeys.add(pypLikeKey);
     }
 
 
-    public ArrayList<DocumentReference> getDiscussionRatingKeys() {
+    public ArrayList<String> getDiscussionRatingKeys() {
         return discussionRatingKeys;
     }
 
-    public void setDiscussionRatingKeys(ArrayList<DocumentReference> discussionRatingKeys) {
+    public void setDiscussionRatingKeys(ArrayList<String> discussionRatingKeys) {
         this.discussionRatingKeys = discussionRatingKeys;
     }
 
-    public void addDiscussionRatingKey(DocumentReference discussionRatingKey) {
+    public void addDiscussionRatingKey(String discussionRatingKey) {
         this.discussionRatingKeys.add(discussionRatingKey);
     }
 
 
-    public ArrayList<DocumentReference> getPypRatingKeys() {
+    public ArrayList<String> getPypRatingKeys() {
         return pypRatingKeys;
     }
 
-    public void setPypRatingKeys(ArrayList<DocumentReference> pypRatingKeys) {
+    public void setPypRatingKeys(ArrayList<String> pypRatingKeys) {
         this.pypRatingKeys = pypRatingKeys;
     }
 
-    public void addPypRatingKey(DocumentReference pypRatingKey) {
+    public void addPypRatingKey(String pypRatingKey) {
         this.pypRatingKeys.add(pypRatingKey);
     }
 

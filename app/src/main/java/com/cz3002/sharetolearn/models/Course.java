@@ -1,16 +1,15 @@
 package com.cz3002.sharetolearn.models;
 
-import com.google.firebase.firestore.DocumentReference;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Course {
+public class Course implements Serializable {
     private String key;
     private String courseCode;
-    private ArrayList<DocumentReference> registeredUserKeys;
+    private ArrayList<String> registeredUserKeys;
     private String title;
     private String description;
-    private ArrayList<DocumentReference> reviewKeys;
+    private ArrayList<String> reviewKeys;
     private String courseAssessment;
 //    private ArrayList<User> registeredUsers;
 //    private ArrayList<CourseReview> reviews;
@@ -79,28 +78,28 @@ public class Course {
     }
 
 
-    public ArrayList<DocumentReference> getRegisteredUserKeys() {
+    public ArrayList<String> getRegisteredUserKeys() {
         return registeredUserKeys;
     }
 
-    public void setRegisteredUserKeys(ArrayList<DocumentReference> registeredUserKeys) {
+    public void setRegisteredUserKeys(ArrayList<String> registeredUserKeys) {
         this.registeredUserKeys = registeredUserKeys;
     }
 
-    public void addRegisteredUserKeys(DocumentReference userKey) {
+    public void addRegisteredUserKeys(String userKey) {
         this.registeredUserKeys.add(userKey);
     }
 
 
-    public ArrayList<DocumentReference> getReviewKeys() {
+    public ArrayList<String> getReviewKeys() {
         return reviewKeys;
     }
 
-    public void setReviewKeys(ArrayList<DocumentReference> reviewKeys) {
+    public void setReviewKeys(ArrayList<String> reviewKeys) {
         this.reviewKeys = reviewKeys;
     }
 
-    public void addReviewKeys(DocumentReference reviewKey) {
+    public void addReviewKeys(String reviewKey) {
         this.reviewKeys.add(reviewKey);
     }
 

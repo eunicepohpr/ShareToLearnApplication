@@ -1,19 +1,19 @@
 package com.cz3002.sharetolearn.models;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DiscussionResponse {
+public class DiscussionResponse implements Serializable {
     private String key;
     private Discussion discussion;
     private User postedBy;
     private String answer;
-    private DocumentReference discussionKey;
-    private DocumentReference postedByKey;
-    private ArrayList<DocumentReference> downvoteKeys;
-    private ArrayList<DocumentReference> upvoteKeys;
+    private String discussionKey;
+    private String postedByKey;
+    private ArrayList<String> downvoteKeys;
+    private ArrayList<String> upvoteKeys;
     private Timestamp postedDateTime;
 //    private ArrayList<User> downvotes;
 //    private ArrayList<User> upvotes;
@@ -21,7 +21,7 @@ public class DiscussionResponse {
     public DiscussionResponse() {
     }
 
-    public DiscussionResponse(String key, DocumentReference discussionKey, DocumentReference postedByKey,
+    public DiscussionResponse(String key, String discussionKey, String postedByKey,
                               String answer, Timestamp postedDateTime) {
         this.key = key;
         this.discussionKey = discussionKey;
@@ -80,46 +80,46 @@ public class DiscussionResponse {
     }
 
 
-    public ArrayList<DocumentReference> getDownvoteKeys() {
+    public ArrayList<String> getDownvoteKeys() {
         return downvoteKeys;
     }
 
-    public void setDownvoteKeys(ArrayList<DocumentReference> downvoteKeys) {
+    public void setDownvoteKeys(ArrayList<String> downvoteKeys) {
         this.downvoteKeys = downvoteKeys;
     }
 
-    public void addDownvoteKey(DocumentReference downvoteKey) {
+    public void addDownvoteKey(String downvoteKey) {
         this.downvoteKeys.add(downvoteKey);
     }
 
 
-    public ArrayList<DocumentReference> getUpvoteKeys() {
+    public ArrayList<String> getUpvoteKeys() {
         return upvoteKeys;
     }
 
-    public void setUpvoteKeys(ArrayList<DocumentReference> upvoteKeys) {
+    public void setUpvoteKeys(ArrayList<String> upvoteKeys) {
         this.upvoteKeys = upvoteKeys;
     }
 
-    public void addUpvoteKey(DocumentReference upvoteKey) {
+    public void addUpvoteKey(String upvoteKey) {
         this.upvoteKeys.add(upvoteKey);
     }
 
 
-    public DocumentReference getDiscussionKey() {
+    public String getDiscussionKey() {
         return discussionKey;
     }
 
-    public void setDiscussionKey(DocumentReference discussionKey) {
+    public void setDiscussionKey(String discussionKey) {
         this.discussionKey = discussionKey;
     }
 
 
-    public DocumentReference getPostedByKey() {
+    public String getPostedByKey() {
         return postedByKey;
     }
 
-    public void setPostedByKey(DocumentReference postedByKey) {
+    public void setPostedByKey(String postedByKey) {
         this.postedByKey = postedByKey;
     }
 
