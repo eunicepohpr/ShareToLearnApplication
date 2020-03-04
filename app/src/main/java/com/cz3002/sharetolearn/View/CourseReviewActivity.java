@@ -97,8 +97,9 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         reviewToList.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 //Toast.makeText(getApplicationContext(),"Hello",Toast.LENGTH_LONG).show();
-                String msg = reviewList.get(0).getCourseKey().toString();
-                Toast.makeText(getApplicationContext(), msg,Toast.LENGTH_SHORT).show();
+                //String msg = reviewList.get(0).getCourseKey().toString();
+                //Toast.makeText(getApplicationContext(), msg,Toast.LENGTH_SHORT).show();
+                setContentView(R.layout.activity_course_reviewlist);
             }
         });
     }
