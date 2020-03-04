@@ -91,9 +91,12 @@ public class CourseReviewViewModel extends ViewModel {
                             String key = document.getId();
                             Double rating = document.getDouble("rating");
                             Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
-                            String ratedByKey = document.getString("ratedBy");
+                            DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
+                            String ratedByKeyString = ratedByKey.toString();
                             String description = document.getString("description");
-                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime, ratedByKey, description);
+                            DocumentReference course = document.getDocumentReference("course");
+                            String courseKey = ratedByKey.toString();
+                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime, ratedByKeyString, description, courseKey);
                             reviewList.add(courseReview);
                         }
                     }
