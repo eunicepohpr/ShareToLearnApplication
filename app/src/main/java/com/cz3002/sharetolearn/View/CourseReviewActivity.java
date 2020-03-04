@@ -1,6 +1,7 @@
 package com.cz3002.sharetolearn.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -8,10 +9,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.adapter.CourseAdapter;
 import com.cz3002.sharetolearn.adapter.ReviewQuestionAdapter;
+import com.cz3002.sharetolearn.models.Course;
+import com.cz3002.sharetolearn.models.CourseReview;
+import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;
 import com.cz3002.sharetolearn.viewModel.ReviewQuestionViewModel;
 
 import java.util.ArrayList;
@@ -21,6 +29,9 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     private ListView questionListView;
     private ReviewQuestionAdapter reviewQuestionAdapter;
     private Button postReview;
+    private LinearLayout reviewToList;
+    private CourseReviewViewModel courseReviewViewModel;
+    private int size = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +43,35 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         /*Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(this);*/
 
+
+        courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
+        courseReviewViewModel.getCourseReviewList().observe(this, new Observer<ArrayList<CourseReview>>() {
+            @Override
+            public void onChanged(ArrayList<CourseReview> courseReviews) {
+                size = courseReviews.size();
+            }
+        });
+/*        courseReviewViewModel.getCourseReviewList().observe(this, new Observer<ArrayList<CourseReview>>() {
+            @Override
+            public void onChanged(ArrayList<CourseReview> courseReviews) {
+                size = courseReviews.size();
+            }
+        });*/
+
         postReview = findViewById(R.id.writeReview_button);
         postReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.activity_course_review);
+            }
+        });
+
+        reviewToList = findViewById(R.id.review_layout);
+        reviewToList.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(),"Hello",Toast.LENGTH_LONG).show();
+                String msg = Integer.toString(size);
+                Toast.makeText(getApplicationContext(), msg,Toast.LENGTH_SHORT).show();
             }
         });
     }

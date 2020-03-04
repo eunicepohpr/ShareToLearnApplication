@@ -14,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
@@ -35,10 +38,10 @@ public class CourseReviewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
-        View courseReviewFragmentView = inflater.inflate(R.layout.courses_fragment, container, false);
         ((MainFeed) getActivity()).hideFloatingActionButton();
-        courseListView = courseReviewFragmentView.findViewById(R.id.course_list);
+        courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
+        View courseFragmentView = inflater.inflate(R.layout.courses_fragment, container, false);
+        courseListView = courseFragmentView.findViewById(R.id.course_list);
 
         courseReviewViewModel.getCourseList().observe(this, new Observer<ArrayList<String>>() {
             @Override
@@ -48,7 +51,7 @@ public class CourseReviewFragment extends Fragment {
                 courseAdapter.notifyDataSetChanged();
             }
         });;
-        return courseReviewFragmentView;
+        return courseFragmentView;
     }
 
     @Override

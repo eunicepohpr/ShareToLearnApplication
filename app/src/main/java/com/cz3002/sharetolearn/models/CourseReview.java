@@ -26,6 +26,14 @@ public class CourseReview implements Serializable {
         this.courseKey = courseKey;
     }
 
+    public CourseReview(String key, double rating, Timestamp ratedDateTime, DocumentReference ratedByKey, String description) {
+        this.key = key;
+        this.rating = rating;
+        this.ratedDateTime = ratedDateTime;
+        this.ratedByKey = ratedByKey;
+        this.description = description;
+    }
+
     public String getKey() {
         return key;
     }
@@ -44,14 +52,13 @@ public class CourseReview implements Serializable {
     }
 
 
-    public Timestamp getDate() {
+    public Timestamp getRatedDateTime() {
         return ratedDateTime;
     }
 
-    public void setDate(Timestamp ratedDateTime) {
+    public void setRatedDateTime(Timestamp ratedDateTime) {
         this.ratedDateTime = ratedDateTime;
     }
-
 
     public User getRatedBy() {
         return ratedBy;

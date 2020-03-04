@@ -1,16 +1,50 @@
 package com.cz3002.sharetolearn.viewModel;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cz3002.sharetolearn.models.CourseReview;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 public class CourseReviewViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<String>> mCourses;
-    private ArrayList<String> courseList;
+    private MutableLiveData<ArrayList<String>> mCourses = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<CourseReview>> mReviewList = new MutableLiveData<>();
+
+    private ArrayList<String> courseList = new ArrayList<>();
+    private ArrayList<CourseReview> reviewList = new ArrayList<>();
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    private DocumentReference usersDoc;
+    private FirebaseUser currentUser;
 
     public CourseReviewViewModel(){
+        // get current login user
+        /*mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            usersDoc = db.collection("users").document(currentUser.getUid());
+        }*/
+        //usersDoc = db.collection("CourseReview").document();
+
         courseList = new ArrayList<String>();
         courseList.add("CZ2005 Operating System");
         courseList.add("CZ1011 Engineering Mathematics I");
@@ -23,5 +57,49 @@ public class CourseReviewViewModel extends ViewModel {
         return mCourses;
     }
 
+    public LiveData<ArrayList<CourseReview>> getCourseReviewList() {
+        getFireStoreCourseReviewsData();
+        return mReviewList;
+    }
 
+    public void realtimeFireStoreData() {
+        usersDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("Listen", "Listen failed.", e);
+                    return;
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    getFireStoreCourseReviewsData();
+                } else {
+                    getFireStoreCourseReviewsData();
+                }
+            }
+        });
+    }
+
+    public void getFireStoreCourseReviewsData() {
+        db.collection("CourseReview").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    reviewList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document != null) {
+                            String key = document.getId();
+                            Double rating = document.getDouble("rating");
+                            Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
+                            DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
+                            String description = document.getString("description");
+                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime, ratedByKey, description);
+                            reviewList.add(courseReview);
+                        }
+                    }
+                    mReviewList.setValue(reviewList);
+                }
+            }
+        });
+    }
 }
