@@ -2,6 +2,7 @@ package com.cz3002.sharetolearn.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
+import com.cz3002.sharetolearn.models.Course;
+import com.cz3002.sharetolearn.viewModel.CourseViewModel;
 import com.cz3002.sharetolearn.viewModel.UnsubscribedCoursesViewModel;
 
 import java.util.ArrayList;
@@ -23,12 +26,23 @@ public class AddCourseActivity extends AppCompatActivity {
     private ListView courseListView;
     private CourseAdapter courseAdapter;
     private ImageView courseSelected;
+    private CourseViewModel courseViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        courseViewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
+        courseViewModel.getCourseList().observe(this, new Observer<ArrayList<Course>>() {
+            @Override
+            public void onChanged(ArrayList<Course> courses) {
+                courseAdapter = new CourseAdapter(getApplicationContext(), courses);
+                courseListView.setAdapter(courseAdapter);
+                courseAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -37,10 +51,10 @@ public class AddCourseActivity extends AppCompatActivity {
         courseListView = findViewById(R.id.course_list);
         courseSelected = findViewById(R.id.listitem_courseselected);
 
-        unsubscribedCoursesViewModel = ViewModelProviders.of(this).get(UnsubscribedCoursesViewModel.class);
-        ArrayList<String> courseList = unsubscribedCoursesViewModel.getCourseList().getValue();
-        courseAdapter = new CourseAdapter(getApplicationContext(), courseList);
-        courseListView.setAdapter(courseAdapter);
+        //unsubscribedCoursesViewModel = ViewModelProviders.of(this).get(UnsubscribedCoursesViewModel.class);
+        //ArrayList<String> courseList = unsubscribedCoursesViewModel.getCourseList().getValue();
+        //courseAdapter = new CourseAdapter(getApplicationContext(), courseList);
+        //courseListView.setAdapter(courseAdapter);
 
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

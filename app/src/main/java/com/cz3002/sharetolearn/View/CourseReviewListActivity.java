@@ -17,7 +17,6 @@ import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.ReviewAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
-import com.cz3002.sharetolearn.ui.discussion.DiscussionThreadAdapter;
 import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;
 
 import java.util.ArrayList;
@@ -25,7 +24,9 @@ import java.util.ArrayList;
 public class CourseReviewListActivity extends AppCompatActivity {
 
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
-    private TextView avgRating;
+    private Course selectedCourse = new Course();
+    private TextView avgRatingTV;
+    private TextView coursenameTV;
     private LinearLayout reviewToList;
     private RatingBar ratingbar;
     private ProgressBar progressBar5;
@@ -36,7 +37,6 @@ public class CourseReviewListActivity extends AppCompatActivity {
     private double count5, count4, count3, count2, count1;
     private ListView reviewListView;
     private CourseReviewViewModel courseReviewViewModel;
-
     private ReviewAdapter reviewAdapter;
 
     @Override
@@ -48,8 +48,11 @@ public class CourseReviewListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         reviewList = (ArrayList<CourseReview>) args.getSerializable("REVIEWLIST");
+        selectedCourse = (Course) args.getSerializable("SELECTEDCOURSE");
 
-        avgRating = findViewById(R.id.reviewlist_avgRating);
+        coursenameTV = findViewById(R.id.reviewlis_coursename);
+        coursenameTV.setText(selectedCourse.getCourseCode()+" "+selectedCourse.getTitle());
+        avgRatingTV = findViewById(R.id.reviewlist_avgRating);
         ratingbar = findViewById(R.id.list_ratingBar);
         progressBar5 = findViewById(R.id.list_progressBar5);
         progressBar4 = findViewById(R.id.list_progressBar4);
@@ -59,14 +62,14 @@ public class CourseReviewListActivity extends AppCompatActivity {
         reviewListView = findViewById(R.id.review_list);
 
         courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
-        courseReviewViewModel.getCourseReviewList().observe(this, new Observer<ArrayList<CourseReview>>() {
+        courseReviewViewModel.getCourseReviewList(selectedCourse).observe(this, new Observer<ArrayList<CourseReview>>() {
             @Override
             public void onChanged(ArrayList<CourseReview> courseReviews) {
                 reviewList = courseReviews;
                 progressCount(courseReviews);
                 //display avg
                 String avg = Double.toString(getAvgRating(reviewList));
-                avgRating.setText(avg);
+                avgRatingTV.setText(avg);
                 //display rating bar
                 ratingbar.setRating((float)getAvgRating(reviewList));
                 //display progressbar

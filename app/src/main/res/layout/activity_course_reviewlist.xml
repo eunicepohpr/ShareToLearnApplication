@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/review_overview_coursename"
+        android:id="@+id/reviewlis_coursename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
@@ -38,14 +38,6 @@
                 android:text="Rating and reviews"
                 android:layout_marginLeft="10dp"
                 android:layout_alignParentLeft="true"/>
-
-            <ImageView
-                android:id="@+id/review_toList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_forward_foreground" />
 
             <TextView
                 android:id="@+id/reviewlist_avgRating"

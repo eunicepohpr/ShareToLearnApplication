@@ -6,35 +6,32 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
-import com.cz3002.sharetolearn.adapter.CourseAdapter;
-import com.cz3002.sharetolearn.adapter.ReviewQuestionAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;
-import com.cz3002.sharetolearn.viewModel.ReviewQuestionViewModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CourseReviewActivity extends AppCompatActivity implements Button.OnClickListener{
-    private ReviewQuestionViewModel questionViewModel;
+/*    private ReviewQuestionViewModel questionViewModel;
     private ListView questionListView;
-    private ReviewQuestionAdapter reviewQuestionAdapter;
+    private ReviewQuestionAdapter reviewQuestionAdapter;*/
     private Button postReview;
-    private TextView avgRating;
+    private TextView avgRatingTV;
+    private TextView coursenameTV;
+    private TextView coursedescTV;
+    private TextView courseAssignmentTV;
     private LinearLayout reviewToList;
     private RatingBar ratingbar;
     private ProgressBar progressBar5;
@@ -46,6 +43,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
 
     private CourseReviewViewModel courseReviewViewModel;
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
+    private Course selectedCourse = new Course();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +52,21 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         setContentView(R.layout.course_review_fragment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        selectedCourse = (Course) args.getSerializable("SELECTEDCOURSE");
+
         /*Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(this);*/
 
-        avgRating = findViewById(R.id.review_avgRating);
+        coursenameTV = findViewById(R.id.review_overview_coursename);
+        coursenameTV.setText(selectedCourse.getCourseCode()+" "+selectedCourse.getTitle());
+        coursedescTV = findViewById(R.id.review_overview_coursedesc);
+        coursedescTV.setText(selectedCourse.getDescription());
+        courseAssignmentTV = findViewById(R.id.overview_assignmentDesc);
+        courseAssignmentTV.setText(selectedCourse.getCourseAssessment());
+
+        avgRatingTV = findViewById(R.id.review_avgRating);
         ratingbar = findViewById(R.id.ratingBar);
         progressBar5 = findViewById(R.id.progressBar5);
         progressBar4 = findViewById(R.id.progressBar4);
@@ -66,14 +75,14 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         progressBar1 = findViewById(R.id.progressBar1);
 
         courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
-        courseReviewViewModel.getCourseReviewList().observe(this, new Observer<ArrayList<CourseReview>>() {
+        courseReviewViewModel.getCourseReviewList(selectedCourse).observe(this, new Observer<ArrayList<CourseReview>>() {
             @Override
             public void onChanged(ArrayList<CourseReview> courseReviews) {
                 reviewList = courseReviews;
                 progressCount(courseReviews);
                 //display avg
                 String avg = Double.toString(getAvgRating(reviewList));
-                avgRating.setText(avg);
+                avgRatingTV.setText(avg);
                 //display rating bar
                 ratingbar.setRating((float)getAvgRating(reviewList));
                 //display progressbar
@@ -101,6 +110,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
                 Bundle args = new Bundle();
                 Intent reviewlistActivity = new Intent(getApplicationContext(), CourseReviewListActivity.class);
                 args.putSerializable("REVIEWLIST", reviewList);
+                args.putSerializable("SELECTEDCOURSE", selectedCourse);
                 reviewlistActivity.putExtra("BUNDLE", args);
                 startActivity(reviewlistActivity);
             }

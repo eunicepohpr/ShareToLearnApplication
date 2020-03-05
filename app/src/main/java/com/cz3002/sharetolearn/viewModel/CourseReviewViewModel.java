@@ -15,6 +15,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,10 +31,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class CourseReviewViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<String>> mCourses = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Course>> mCourses = new MutableLiveData<>();
     private MutableLiveData<ArrayList<CourseReview>> mReviewList = new MutableLiveData<>();
 
-    private ArrayList<String> courseList = new ArrayList<>();
+    private ArrayList<Course> courseList = new ArrayList<>();
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -50,21 +51,26 @@ public class CourseReviewViewModel extends ViewModel {
         }*/
         //usersDoc = db.collection("CourseReview").document();
 
-        courseList = new ArrayList<String>();
+/*        courseList = new ArrayList<String>();
         courseList.add("CZ2005 Operating System");
         courseList.add("CZ1011 Engineering Mathematics I");
         courseList.add("CZ3003 Software Design & Analysis");
         mCourses = new MutableLiveData<>();
-        mCourses.setValue(courseList);
+        mCourses.setValue(courseList);*/
     }
 
-    public LiveData<ArrayList<String>> getCourseList(){
+/*    public LiveData<ArrayList<String>> getCourseList(){
         return mCourses;
+    }*/
+
+    public LiveData<ArrayList<CourseReview>> getCourseReviewList(Course selectedCourse) {
+        getFireStoreCourseReviewsData(selectedCourse);
+        return mReviewList;
     }
 
-    public LiveData<ArrayList<CourseReview>> getCourseReviewList() {
-        getFireStoreCourseReviewsData();
-        return mReviewList;
+    public LiveData<ArrayList<Course>> getCourseList() {
+        getFireStoreCoursesData();
+        return mCourses;
     }
 
     public void realtimeFireStoreData() {
@@ -77,15 +83,53 @@ public class CourseReviewViewModel extends ViewModel {
                     return;
                 }
                 if (snapshot != null && snapshot.exists()) {
-                    getFireStoreCourseReviewsData();
+                    //getFireStoreCourseReviewsData();
                 } else {
-                    getFireStoreCourseReviewsData();
+                    //getFireStoreCourseReviewsData();
                 }
             }
         });
     }
 
-    public void getFireStoreCourseReviewsData() {
+    public void getFireStoreCoursesData() {
+        db.collection("CourseModule").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    courseList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document != null) {
+                            // get course details
+                            String key = document.getId();
+                            String courseCode = document.getString("courseCode");
+                            String title = document.getString("title");
+                            String description = document.getString("description");
+                            String courseAssessment = document.getString("courseAssessment");
+
+                            Course course = new Course(key, courseCode, title, description, courseAssessment);
+
+                            // get list of registered users
+                            String a = String.valueOf(document.get("reviews"));
+                            if (a != "null" || a != null || a != "[]"){
+                                for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("reviews"))
+                                    course.addRegisteredUserKeys(registeredUser.getPath());
+                            }
+                            // get list of registered users
+                            String b = String.valueOf(document.get("registered"));
+                            if (b != "null" || b != null || b != "[]"){
+                                for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("registered"))
+                                    course.addReviewKeys(registeredUser.getPath());
+                            }
+                            courseList.add(course);
+                        }
+                    }
+                    mCourses.setValue(courseList);
+                }
+            }
+        });
+    }
+
+    public void getFireStoreCourseReviewsData(final Course selectedCourse) {
         db.collection("CourseReview").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -93,17 +137,21 @@ public class CourseReviewViewModel extends ViewModel {
                     reviewList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if (document != null) {
-                            String key = document.getId();
-                            Double rating = document.getDouble("rating");
-                            Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
-                            Date dateTime = ratedDateTime.toDate();
-                            DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
-                            String ratedByKeyString = ratedByKey.toString();
-                            String description = document.getString("description");
-                            DocumentReference course = document.getDocumentReference("course");
-                            String courseKey = ratedByKey.toString();
-                            CourseReview courseReview = new CourseReview(key, rating, dateTime, ratedByKeyString, description, courseKey);
-                            reviewList.add(courseReview);
+                            DocumentReference coursedoc = document.getDocumentReference("course");
+                            String k = selectedCourse.getKey();
+                            String ck = coursedoc.getId();
+                            if(selectedCourse.getKey().equals(coursedoc.getId())){
+                                String key = document.getId();
+                                Double rating = document.getDouble("rating");
+                                Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
+                                Date dateTime = ratedDateTime.toDate();
+                                DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
+                                String ratedByKeyString = ratedByKey.toString();
+                                String description = document.getString("description");
+                                String courseKey = ratedByKey.toString();
+                                CourseReview courseReview = new CourseReview(key, rating, dateTime, ratedByKeyString, description, courseKey);
+                                reviewList.add(courseReview);
+                            }
                         }
                     }
                     mReviewList.setValue(reviewList);

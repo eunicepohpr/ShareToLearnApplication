@@ -8,42 +8,47 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.models.Course;
+import com.cz3002.sharetolearn.models.CourseReview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CourseAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<String> courseList;
+    private List<Course> courses;
     private static LayoutInflater inflater = null;
 
-    public CourseAdapter(Context context, ArrayList<String> courseList) {
+    public CourseAdapter(Context context, List<Course> courses) {
         this.context = context;
-        this.courseList = courseList;
+        this.courses = courses;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        String s = courseList.get(position);
-        if (convertView == null) convertView = inflater.inflate(R.layout.listitem_course, null);
-        TextView courseCodeTV = convertView.findViewById(R.id.listitem_coursecode);
-        courseCodeTV.setText(courseList.get(position));
-        return convertView;
-    }
-
-    @Override
     public int getCount() {
-        return courseList.size();
+        return courses.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return courseList.get(position);
+    public Object getItem(int i) {
+        return courses.get(i);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        Course course = courses.get(i);
+
+        if (view == null) view = inflater.inflate(R.layout.listitem_course, null);
+        TextView coursenameTV = view.findViewById(R.id.listitem_coursename);
+        String courseName = course.getCourseCode() + " " + course.getTitle();
+        coursenameTV.setText(courseName);
+        return view;
     }
 }

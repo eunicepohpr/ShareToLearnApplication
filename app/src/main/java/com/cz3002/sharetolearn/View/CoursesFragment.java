@@ -13,6 +13,8 @@ import android.widget.ListView;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
+import com.cz3002.sharetolearn.models.Course;
+import com.cz3002.sharetolearn.viewModel.CourseViewModel;
 import com.cz3002.sharetolearn.viewModel.SubscribedCoursesViewModel;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class CoursesFragment extends Fragment {
 
-    private SubscribedCoursesViewModel coursesViewModel;
+    private CourseViewModel coursesViewModel;
     private ListView courseListView;
     private CourseAdapter courseAdapter;
 
@@ -36,19 +38,28 @@ public class CoursesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        coursesViewModel = ViewModelProviders.of(this).get(SubscribedCoursesViewModel.class);
+        coursesViewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
         View coursesFragmentView = inflater.inflate(R.layout.courses_fragment, container, false);
         ((MainFeed) getActivity()).hideFloatingActionButton();
         courseListView = coursesFragmentView.findViewById(R.id.course_list);
 
-        coursesViewModel.getCourseList().observe(this, new Observer<ArrayList<String>>() {
+        coursesViewModel.getCourseList().observe(this, new Observer<ArrayList<Course>>() {
+            @Override
+            public void onChanged(ArrayList<Course> courses) {
+                courseAdapter = new CourseAdapter(getActivity(), courses);
+                courseListView.setAdapter(courseAdapter);
+                courseAdapter.notifyDataSetChanged();
+            }
+        });
+
+/*        coursesViewModel.getCourseList().observe(this, new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> courseList) {
                 courseAdapter = new CourseAdapter(getActivity(), courseList);
                 courseListView.setAdapter(courseAdapter);
                 courseAdapter.notifyDataSetChanged();
             }
-        });;
+        });*/
         return coursesFragmentView;
     }
 

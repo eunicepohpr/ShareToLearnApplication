@@ -21,13 +21,17 @@ import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
+import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;
+import com.cz3002.sharetolearn.viewModel.CourseViewModel;
 
 import java.util.ArrayList;
 
 public class CourseReviewFragment extends Fragment {
 
     private CourseReviewViewModel courseReviewViewModel;
+    private CourseViewModel courseViewModel;
+    private ArrayList<Course> coursesList = new ArrayList<> ();
     private ListView courseListView;
     private CourseAdapter courseAdapter;
 
@@ -40,13 +44,15 @@ public class CourseReviewFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         ((MainFeed) getActivity()).hideFloatingActionButton();
         courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
+        //courseViewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
         View courseFragmentView = inflater.inflate(R.layout.courses_fragment, container, false);
         courseListView = courseFragmentView.findViewById(R.id.course_list);
 
-        courseReviewViewModel.getCourseList().observe(this, new Observer<ArrayList<String>>() {
+        courseReviewViewModel.getCourseList().observe(this, new Observer<ArrayList<Course>>() {
             @Override
-            public void onChanged(ArrayList<String> courseList) {
-                courseAdapter = new CourseAdapter(getActivity(), courseList);
+            public void onChanged(ArrayList<Course> courses) {
+                coursesList = courses;
+                courseAdapter = new CourseAdapter(getActivity(), courses);
                 courseListView.setAdapter(courseAdapter);
                 courseAdapter.notifyDataSetChanged();
             }
@@ -59,8 +65,14 @@ public class CourseReviewFragment extends Fragment {
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String msg = adapterView.getItemAtPosition(position).toString();
-                startActivity(new Intent(getActivity(), CourseReviewActivity.class));
+                Course selectedCourse = coursesList.get(position);
+                //Toast.makeText(getActivity(), course.getCourseCode(),Toast.LENGTH_SHORT).show();
+                Bundle args = new Bundle();
+                Intent courseReviewActivity = new Intent(getActivity(), CourseReviewActivity.class);
+                args.putSerializable("SELECTEDCOURSE", selectedCourse);
+                courseReviewActivity.putExtra("BUNDLE", args);
+                startActivity(courseReviewActivity);
+                //startActivity(new Intent(getActivity(), CourseReviewActivity.class));
             }
         });
     }
