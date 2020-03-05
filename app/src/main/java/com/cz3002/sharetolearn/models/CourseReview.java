@@ -1,8 +1,5 @@
 package com.cz3002.sharetolearn.models;
 
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
-
 import java.io.Serializable;
 import java.util.Date;
 

@@ -2,6 +2,8 @@ package com.cz3002.sharetolearn.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User implements Serializable {
     private String key;
@@ -43,6 +45,27 @@ public class User implements Serializable {
 //        this.discussionRatings = new ArrayList<>();
 //        this.pypRatings = new ArrayList<>();
     }
+
+    public Map<String, Object> getFireStoreFormat() {
+        Map<String, Object> userDocData = new HashMap<>();
+        userDocData.put("biography", this.biography);
+        userDocData.put("courseOfStudy", this.courseOfStudy);
+        userDocData.put("email", this.email);
+        userDocData.put("expectedYearOfGrad", this.expectedYearOfGrad);
+        userDocData.put("registered", this.registeredCourseKeys);
+
+        HashMap<String, ArrayList> likes = new HashMap<>();
+        likes.put("discussion", this.discussionLikeKeys);
+        likes.put("pyp", this.pypLikeKeys);
+        userDocData.put("likes", likes);
+
+        HashMap<String, ArrayList> ratings = new HashMap<>();
+        ratings.put("discussion", this.discussionRatingKeys);
+        ratings.put("pyp", this.pypRatingKeys);
+        userDocData.put("ratings", ratings);
+        return userDocData;
+    }
+
 
     public String getKey() {
         return key;

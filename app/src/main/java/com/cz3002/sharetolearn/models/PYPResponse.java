@@ -4,6 +4,9 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PYPResponse implements Serializable {
     private String key;
@@ -11,7 +14,7 @@ public class PYPResponse implements Serializable {
     private PYP pyp;
     private String working;
     private String answer;
-    private Timestamp postedDateTime;
+    private Date postedDateTime;
     private String postedByKey;
     private String pypKey;
     private ArrayList<String> downvoteKeys;
@@ -22,18 +25,30 @@ public class PYPResponse implements Serializable {
     public PYPResponse() {
     }
 
-    public PYPResponse(String key, String postedByKey, String pypKey,
-                       String working, String answer, Timestamp postedDateTime) {
+    public PYPResponse(String key, String postedByKey, String pypKey, String working, String answer) {
         this.key = key;
         this.postedByKey = postedByKey;
         this.pypKey = pypKey;
         this.working = working;
         this.answer = answer;
-        this.postedDateTime = postedDateTime;
+        this.postedDateTime = new Date();
         this.downvoteKeys = new ArrayList<>();
         this.upvoteKeys = new ArrayList<>();
 //        this.downvotes = new ArrayList<>();
 //        this.upvotes = new ArrayList<>();
+    }
+
+
+    public Map<String, Object> getFireStoreFormat() {
+        Map<String, Object> pypResponseDocData = new HashMap<>();
+        pypResponseDocData.put("answer", this.answer);
+        pypResponseDocData.put("downvotes", this.downvoteKeys);
+        pypResponseDocData.put("postedBy", this.postedByKey);
+        pypResponseDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
+        pypResponseDocData.put("pyp", this.pypKey);
+        pypResponseDocData.put("upvotes", this.upvoteKeys);
+        pypResponseDocData.put("working", this.working);
+        return pypResponseDocData;
     }
 
 
@@ -82,11 +97,11 @@ public class PYPResponse implements Serializable {
     }
 
 
-    public Timestamp getPostedDateTime() {
+    public Date getPostedDateTime() {
         return postedDateTime;
     }
 
-    public void setPostedDateTime(Timestamp postedDateTime) {
+    public void setPostedDateTime(Date postedDateTime) {
         this.postedDateTime = postedDateTime;
     }
 
