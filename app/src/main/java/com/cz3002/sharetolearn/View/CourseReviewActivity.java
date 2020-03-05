@@ -96,7 +96,6 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         reviewToList = findViewById(R.id.review_layout);
         reviewToList.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                courseReviewViewModel.updateTime();
                 //String msg = reviewList.get(0).getCourseKey().toString();
                 //Toast.makeText(getApplicationContext(), msg,Toast.LENGTH_SHORT).show();
                 Bundle args = new Bundle();

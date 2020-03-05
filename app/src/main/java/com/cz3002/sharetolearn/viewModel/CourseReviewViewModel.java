@@ -112,18 +112,19 @@ public class CourseReviewViewModel extends ViewModel {
         });
     }
 
-    public void updateTime(){
+    public void updateTime(CourseReview review){
         Map<String, Object> docData = new HashMap<>();
-        docData.put("description", "My rating for this course is .... meh");
-        docData.put("ratedBy", db.collection("User").document("u0V6npiHU87egeDnAZzG"));
-        docData.put("rating", 2);
+        docData.put("description", review.getDescription());
+        docData.put("ratedBy", review.getRatedBy());
+        //docData.put("ratedBy", db.collection("User").document("u0V6npiHU87egeDnAZzG"));
+        docData.put("rating", review.getRating());
         docData.put("ratedDateTime", new Timestamp(new Date()));
-        docData.put("course", db.collection("CourseModule").document("YxLTpfzIKMQOk4QifP8u"));
+        //docData.put("course", db.collection("CourseModule").document("YxLTpfzIKMQOk4QifP8u"));
         Long tsLong = System.currentTimeMillis()/1000;
         String ts = tsLong.toString();
 
         db.collection("CourseReview")
-                .document("8AYkKXDxiWQ7pk933tsF")
+                .document(review.getKey())
                 .set(docData);
                 //.update("ratedDateTime", getTimestamp());
     }
