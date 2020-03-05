@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn;
+package com.cz3002.sharetolearn.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.CourseReview;
 import java.text.SimpleDateFormat;
 import java.util.Date;
