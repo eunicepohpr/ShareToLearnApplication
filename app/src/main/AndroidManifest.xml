@@ -12,8 +12,11 @@
         <activity android:name=".View.Discussion"
             android:label="@string/title_activity_discussion"></activity>
         <activity
-            android:name=".View.CourseReviewListActivity"
-            android:label="@string/title_activity_add_discussion"></activity>
+            android:name=".View.CourseReview.CourseReviewListActivity"
+            android:label="Reviews"></activity>
+        <activity
+            android:name=".View.CourseReview.CourseReviewPostActivity"
+            android:label="Write a review"></activity>
         <activity
             android:name=".View.AddDiscussion"
             android:label="@string/title_activity_add_discussion"></activity>
@@ -29,7 +32,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".View.CourseReviewActivity"
+            android:name=".View.CourseReview.CourseReviewActivity"
             android:label="@string/title_activity_course_review" />
         <activity
             android:name=".View.DiscussionPypChatActivity"

@@ -18,6 +18,13 @@ public class CourseReview implements Serializable {
     public CourseReview() {
     }
 
+    public CourseReview(double rating, String ratedByKey, String description, String courseKey) {
+        this.rating = rating;
+        this.ratedByKey = ratedByKey;
+        this.description = description;
+        this.courseKey = courseKey;
+    }
+
     public CourseReview(String key, double rating, Date ratedDateTime, String ratedByKey,
                         String description, String courseKey) {
         this.key = key;

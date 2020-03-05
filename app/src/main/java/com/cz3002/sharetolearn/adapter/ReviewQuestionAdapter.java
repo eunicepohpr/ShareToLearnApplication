@@ -1,3 +1,4 @@
+/*
 package com.cz3002.sharetolearn.adapter;
 
 import android.content.Context;
@@ -49,3 +50,4 @@ public class ReviewQuestionAdapter extends BaseAdapter {
         return position;
     }
 }
+*/

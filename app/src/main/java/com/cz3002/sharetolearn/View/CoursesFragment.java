@@ -10,15 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.viewModel.CourseViewModel;
-import com.cz3002.sharetolearn.viewModel.SubscribedCoursesViewModel;
-
 import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

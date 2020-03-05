@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn.View;
+package com.cz3002.sharetolearn.View.CourseReview;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,12 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.View.MainFeed;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;

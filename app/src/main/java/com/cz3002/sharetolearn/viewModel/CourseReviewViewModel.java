@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModel;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -160,6 +162,32 @@ public class CourseReviewViewModel extends ViewModel {
         });
     }
 
+    public void newReview(CourseReview courseReview){
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("description", courseReview.getDescription());
+        //docData.put("ratedBy", courseReview.getRatedBy());
+        docData.put("ratedBy", db.collection("User").document(courseReview.getRatedByKey()));
+        docData.put("rating", courseReview.getRating());
+        docData.put("ratedDateTime", new Timestamp(new Date()));
+        docData.put("course", db.collection("CourseModule").document(courseReview.getCourseKey()));
+
+        db.collection("CourseReview")
+                .add(docData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Failure", "Error adding document", e);
+                    }
+                });
+
+    }
+
     public void updateTime(CourseReview review){
         Map<String, Object> docData = new HashMap<>();
         docData.put("description", review.getDescription());
@@ -168,8 +196,8 @@ public class CourseReviewViewModel extends ViewModel {
         docData.put("rating", review.getRating());
         docData.put("ratedDateTime", new Timestamp(new Date()));
         //docData.put("course", db.collection("CourseModule").document("YxLTpfzIKMQOk4QifP8u"));
-        Long tsLong = System.currentTimeMillis()/1000;
-        String ts = tsLong.toString();
+/*        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();*/
 
         db.collection("CourseReview")
                 .document(review.getKey())

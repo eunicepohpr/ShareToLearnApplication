@@ -34,7 +34,7 @@
         />
 
     <EditText
-        android:id="@+id/textView"
+        android:id="@+id/postreview_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="30dp"
@@ -45,7 +45,7 @@
         android:hint="Describe your experience"/>
 
     <Button
-        android:id="@+id/save_button"
+        android:id="@+id/post_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"

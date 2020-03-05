@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_course_review"
-        android:name="com.cz3002.sharetolearn.View.CourseReviewFragment"
+        android:name="com.cz3002.sharetolearn.View.CourseReview.CourseReviewFragment"
         android:label="@string/menu_course_review"
         tools:layout="@layout/course_review_fragment" />
 

@@ -17,12 +17,12 @@ import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.viewModel.CourseViewModel;
-import com.cz3002.sharetolearn.viewModel.UnsubscribedCoursesViewModel;
+//import com.cz3002.sharetolearn.viewModel.UnsubscribedCoursesViewModel;
 
 import java.util.ArrayList;
 
 public class AddCourseActivity extends AppCompatActivity {
-    private UnsubscribedCoursesViewModel unsubscribedCoursesViewModel;
+    //private UnsubscribedCoursesViewModel unsubscribedCoursesViewModel;
     private ListView courseListView;
     private CourseAdapter courseAdapter;
     private ImageView courseSelected;

@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn.View;
+package com.cz3002.sharetolearn.View.CourseReview;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,9 +23,6 @@ import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;
 import java.util.ArrayList;
 
 public class CourseReviewActivity extends AppCompatActivity implements Button.OnClickListener{
-/*    private ReviewQuestionViewModel questionViewModel;
-    private ListView questionListView;
-    private ReviewQuestionAdapter reviewQuestionAdapter;*/
     private Button postReview;
     private TextView avgRatingTV;
     private TextView coursenameTV;
@@ -98,7 +94,12 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         postReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_course_review);
+                //setContentView(R.layout.activity_course_review);
+                Bundle args = new Bundle();
+                Intent reviewpostActivity = new Intent(getApplicationContext(), CourseReviewPostActivity.class);
+                args.putSerializable("SELECTEDCOURSE", selectedCourse);
+                reviewpostActivity.putExtra("BUNDLE", args);
+                startActivity(reviewpostActivity);
             }
         });
 
