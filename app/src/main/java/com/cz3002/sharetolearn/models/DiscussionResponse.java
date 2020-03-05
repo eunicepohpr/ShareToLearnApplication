@@ -24,12 +24,13 @@ public class DiscussionResponse implements Serializable {
     public DiscussionResponse() {
     }
 
-    public DiscussionResponse(String key, String discussionKey, String postedByKey, String answer) {
+    public DiscussionResponse(String key, String discussionKey, String postedByKey, String answer,
+                              Date postedDateTime) {
         this.key = key;
         this.discussionKey = discussionKey;
         this.postedByKey = postedByKey;
         this.answer = answer;
-        this.postedDateTime = new Date();
+        this.postedDateTime = postedDateTime;
         this.downvoteKeys = new ArrayList<>();
         this.upvoteKeys = new ArrayList<>();
 //        this.downvotes = new ArrayList<>();

@@ -25,13 +25,14 @@ public class PYPResponse implements Serializable {
     public PYPResponse() {
     }
 
-    public PYPResponse(String key, String postedByKey, String pypKey, String working, String answer) {
+    public PYPResponse(String key, String postedByKey, String pypKey, String working, String answer,
+                       Date postedDateTime) {
         this.key = key;
         this.postedByKey = postedByKey;
         this.pypKey = pypKey;
         this.working = working;
         this.answer = answer;
-        this.postedDateTime = new Date();
+        this.postedDateTime = postedDateTime;
         this.downvoteKeys = new ArrayList<>();
         this.upvoteKeys = new ArrayList<>();
 //        this.downvotes = new ArrayList<>();

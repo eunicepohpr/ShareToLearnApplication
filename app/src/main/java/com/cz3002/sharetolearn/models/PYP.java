@@ -25,13 +25,14 @@ public class PYP implements Serializable {
     public PYP() {
     }
 
-    public PYP(String key, String courseKey, String postedByKey, String question, String title) {
+    public PYP(String key, String courseKey, String postedByKey, String question, String title,
+               Date postedDateTime) {
         this.key = key;
         this.courseKey = courseKey;
         this.postedByKey = postedByKey;
         this.question = question;
         this.title = title;
-        this.postedDateTime = new Date();
+        this.postedDateTime = postedDateTime;
         this.responseKeys = new ArrayList<>();
         this.likeKeys = new ArrayList<>();
 //        this.responses = new ArrayList<>();

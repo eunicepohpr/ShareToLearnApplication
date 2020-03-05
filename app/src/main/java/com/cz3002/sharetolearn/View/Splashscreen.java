@@ -56,13 +56,13 @@ public class Splashscreen extends AppCompatActivity {
         setContentView(R.layout.activity_splashscreen);
         progressBar = findViewById(R.id.pBar);
 
-        getFireStoreCoursesData();
-        getFireStoreUsersData();
-        getFireStoreDiscussionsData();
-        getFireStorePYPsData();
-        getFireStoreCourseReviewsData();
-        getFireStoreDiscussionResponsesData();
-        getFireStorePYPResponsesData();
+//        getFireStoreCoursesData();
+//        getFireStoreUsersData();
+//        getFireStoreDiscussionsData();
+//        getFireStorePYPsData();
+//        getFireStoreCourseReviewsData();
+//        getFireStoreDiscussionResponsesData();
+//        getFireStorePYPResponsesData();
 
         Thread thread = new Thread() {
             @Override
@@ -188,11 +188,12 @@ public class Splashscreen extends AppCompatActivity {
                             String key = document.getId();
                             String title = document.getString("title");
                             String question = document.getString("question");
-                            Timestamp postedDateTime = document.getTimestamp("postedDateTime");
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference courseKey = document.getDocumentReference("course");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            Discussion discussion = new Discussion(key, courseKey.getPath(), question, postedByKey.getPath(), title);
+                            Discussion discussion = new Discussion(key, courseKey.getPath(), question,
+                                    postedByKey.getPath(), title, postedDateTime);
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
@@ -226,11 +227,12 @@ public class Splashscreen extends AppCompatActivity {
                             String key = document.getId();
                             String title = document.getString("title");
                             String question = document.getString("question");
-                            Timestamp postedDateTime = document.getTimestamp("postedDateTime");
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference courseKey = document.getDocumentReference("course");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            PYP pyp = new PYP(key, courseKey.getPath(), postedByKey.getPath(), question, title);
+                            PYP pyp = new PYP(key, courseKey.getPath(), postedByKey.getPath(),
+                                    question, title, postedDateTime);
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
@@ -263,13 +265,12 @@ public class Splashscreen extends AppCompatActivity {
                         if (document != null) {
                             String key = document.getId();
                             Double rating = document.getDouble("rating");
-                            Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
-                            Date dateTime = ratedDateTime.toDate();
+                            Date ratedDateTime = document.getTimestamp("ratedDateTime").toDate();
                             DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
                             String description = document.getString("description");
                             DocumentReference courseKey = document.getDocumentReference("course");
 
-                            CourseReview courseReview = new CourseReview(key, rating, dateTime,
+                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime,
                                     description, courseKey.getPath(), ratedByKey.getPath());
 
                             courseReviews.put(key, courseReview); // add to hashmap
@@ -291,11 +292,12 @@ public class Splashscreen extends AppCompatActivity {
                         if (document != null) {
                             String key = document.getId();
                             String answer = document.getString("answer");
-                            Timestamp postedDateTime = document.getTimestamp("postedDateTime");
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference discussionKey = document.getDocumentReference("discussion");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            DiscussionResponse discussionResponse = new DiscussionResponse(key, discussionKey.getPath(), postedByKey.getPath(), answer);
+                            DiscussionResponse discussionResponse = new DiscussionResponse(key,
+                                    discussionKey.getPath(), postedByKey.getPath(), answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
@@ -329,11 +331,12 @@ public class Splashscreen extends AppCompatActivity {
                             String key = document.getId();
                             String answer = document.getString("answer");
                             String working = document.getString("working");
-                            Timestamp postedDateTime = document.getTimestamp("postedDateTime");
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference pypKey = document.getDocumentReference("pyp");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            PYPResponse pypResponse = new PYPResponse(key, postedByKey.getPath(), pypKey.getPath(), working, answer);
+                            PYPResponse pypResponse = new PYPResponse(key, postedByKey.getPath(),
+                                    pypKey.getPath(), working, answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
