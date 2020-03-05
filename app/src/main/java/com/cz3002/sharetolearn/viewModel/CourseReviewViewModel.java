@@ -2,7 +2,12 @@ package com.cz3002.sharetolearn.viewModel;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -91,12 +96,13 @@ public class CourseReviewViewModel extends ViewModel {
                             String key = document.getId();
                             Double rating = document.getDouble("rating");
                             Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
+                            Date dateTime = ratedDateTime.toDate();
                             DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
                             String ratedByKeyString = ratedByKey.toString();
                             String description = document.getString("description");
                             DocumentReference course = document.getDocumentReference("course");
                             String courseKey = ratedByKey.toString();
-                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime, ratedByKeyString, description, courseKey);
+                            CourseReview courseReview = new CourseReview(key, rating, dateTime, ratedByKeyString, description, courseKey);
                             reviewList.add(courseReview);
                         }
                     }
@@ -104,5 +110,27 @@ public class CourseReviewViewModel extends ViewModel {
                 }
             }
         });
+    }
+
+    public void updateTime(){
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("description", "My rating for this course is .... meh");
+        docData.put("ratedBy", db.collection("User").document("u0V6npiHU87egeDnAZzG"));
+        docData.put("rating", 2);
+        docData.put("ratedDateTime", new Timestamp(new Date()));
+        docData.put("course", db.collection("CourseModule").document("YxLTpfzIKMQOk4QifP8u"));
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();
+
+        db.collection("CourseReview")
+                .document("8AYkKXDxiWQ7pk933tsF")
+                .set(docData);
+                //.update("ratedDateTime", getTimestamp());
+    }
+
+    public String getTimestamp() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss",
+                Locale.getDefault());
+        return sdf.format(new Date());
     }
 }

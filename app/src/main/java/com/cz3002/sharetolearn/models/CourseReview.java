@@ -4,11 +4,12 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class CourseReview implements Serializable {
     private String key;
     private double rating;
-    private Timestamp ratedDateTime;
+    private Date ratedDateTime;
     private User ratedBy;
     private String description;
     private String courseKey;
@@ -17,7 +18,7 @@ public class CourseReview implements Serializable {
     public CourseReview() {
     }
 
-    public CourseReview(String key, double rating, Timestamp ratedDateTime, String ratedByKey,
+    public CourseReview(String key, double rating, Date ratedDateTime, String ratedByKey,
                         String description, String courseKey) {
         this.key = key;
         this.rating = rating;
@@ -27,7 +28,7 @@ public class CourseReview implements Serializable {
         this.courseKey = courseKey;
     }
 
-    public CourseReview(String key, double rating, Timestamp ratedDateTime, String ratedByKey, String description) {
+    public CourseReview(String key, double rating, Date ratedDateTime, String ratedByKey, String description) {
         this.key = key;
         this.rating = rating;
         this.ratedDateTime = ratedDateTime;
@@ -53,11 +54,11 @@ public class CourseReview implements Serializable {
     }
 
 
-    public Timestamp getRatedDateTime() {
+    public Date getRatedDateTime() {
         return ratedDateTime;
     }
 
-    public void setRatedDateTime(Timestamp ratedDateTime) {
+    public void setRatedDateTime(Date ratedDateTime) {
         this.ratedDateTime = ratedDateTime;
     }
 

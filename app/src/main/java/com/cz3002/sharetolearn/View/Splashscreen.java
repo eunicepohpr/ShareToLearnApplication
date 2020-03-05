@@ -25,7 +25,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Splashscreen extends AppCompatActivity {
@@ -258,11 +260,12 @@ public class Splashscreen extends AppCompatActivity {
                             String key = document.getId();
                             Double rating = document.getDouble("rating");
                             Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
+                            Date dateTime = ratedDateTime.toDate();
                             DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
                             String description = document.getString("description");
                             DocumentReference courseKey = document.getDocumentReference("course");
 
-                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime,
+                            CourseReview courseReview = new CourseReview(key, rating, dateTime,
                                     description, courseKey.getPath(), ratedByKey.getPath());
 
                             courseReviews.put(key, courseReview); // add to hashmap

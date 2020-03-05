@@ -12,6 +12,9 @@
         <activity android:name=".View.Discussion"
             android:label="@string/title_activity_discussion"></activity>
         <activity
+            android:name=".View.CourseReviewListActivity"
+            android:label="@string/title_activity_add_discussion"></activity>
+        <activity
             android:name=".View.AddDiscussion"
             android:label="@string/title_activity_add_discussion"></activity>
         <activity

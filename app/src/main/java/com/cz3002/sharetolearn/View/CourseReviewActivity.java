@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +45,6 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     private double count5, count4, count3, count2, count1;
 
     private CourseReviewViewModel courseReviewViewModel;
-    private int size = 0;
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
 
     @Override
@@ -96,10 +96,14 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         reviewToList = findViewById(R.id.review_layout);
         reviewToList.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(),"Hello",Toast.LENGTH_LONG).show();
+                courseReviewViewModel.updateTime();
                 //String msg = reviewList.get(0).getCourseKey().toString();
                 //Toast.makeText(getApplicationContext(), msg,Toast.LENGTH_SHORT).show();
-                setContentView(R.layout.activity_course_reviewlist);
+                Bundle args = new Bundle();
+                Intent reviewlistActivity = new Intent(getApplicationContext(), CourseReviewListActivity.class);
+                args.putSerializable("REVIEWLIST", reviewList);
+                reviewlistActivity.putExtra("BUNDLE", args);
+                startActivity(reviewlistActivity);
             }
         });
     }
