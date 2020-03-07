@@ -64,8 +64,9 @@ public class CoursesFragment extends Fragment {
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String msg = adapterView.getItemAtPosition(position).toString();
-                startActivity(new Intent(getActivity(), DiscussionPypChatActivity.class));
+                Intent intent = new Intent(getActivity(), DiscussionPypChatActivity.class);
+                intent.putExtra("course", (Course) adapterView.getItemAtPosition(position));
+                startActivity(intent);
             }
         });
     }

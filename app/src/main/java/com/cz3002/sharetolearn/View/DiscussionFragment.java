@@ -1,5 +1,6 @@
 package com.cz3002.sharetolearn.View;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -16,25 +16,31 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cz3002.sharetolearn.R;
-import com.cz3002.sharetolearn.ui.discussion.DiscussionThread;
-import com.cz3002.sharetolearn.ui.discussion.DiscussionThreadAdapter;
+import com.cz3002.sharetolearn.adapter.DiscussionAdapter;
+import com.cz3002.sharetolearn.models.Course;
+import com.cz3002.sharetolearn.models.Discussion;
 import com.cz3002.sharetolearn.viewModel.DiscussionViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiscussionFragment extends Fragment {
 
     private DiscussionViewModel discussionViewModel;
+    private Course course;
     private ListView discussionThreadsListView;
-    private DiscussionThreadAdapter discussionThreadAdapter;
+    private DiscussionAdapter discussionAdapter;
     private FloatingActionButton fab;
+
+    public DiscussionFragment(Course course){
+        this.course = course;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        discussionViewModel =
-                ViewModelProviders.of(this).get(DiscussionViewModel.class);
+        discussionViewModel = ViewModelProviders.of(this).get(DiscussionViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_discussion, container, false);
         discussionThreadsListView = root.findViewById(R.id.discussion_thread_list);
 
@@ -49,12 +55,13 @@ public class DiscussionFragment extends Fragment {
             }
         });
 
-        discussionViewModel.getDiscussionThreads().observe(this, new Observer<List<DiscussionThread>>() {
+        discussionViewModel.getDiscussionThreads().observe(this, new Observer<List<Discussion>>() {
             @Override
-            public void onChanged(@Nullable List<DiscussionThread> discussionThreads) {
-                discussionThreadAdapter = new DiscussionThreadAdapter(getActivity(), discussionThreads);
-                discussionThreadsListView.setAdapter(discussionThreadAdapter);
-                discussionThreadAdapter.notifyDataSetChanged();
+            public void onChanged(@Nullable List<Discussion> discussionThreads) {
+                //TODO: filter discussion threads for a specific course
+                discussionAdapter = new DiscussionAdapter(getActivity(), discussionThreads);
+                discussionThreadsListView.setAdapter(discussionAdapter);
+                discussionAdapter.notifyDataSetChanged();
             }
         });
         return root;
@@ -65,8 +72,9 @@ public class DiscussionFragment extends Fragment {
         discussionThreadsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String msg = adapterView.getItemAtPosition(position).toString();
-                Intent launchactivity = new  Intent(getContext(), Discussion.class);
+                Discussion discussionThread = (Discussion) adapterView.getItemAtPosition(position);
+                Intent launchactivity = new  Intent(getContext(), DiscussionActivity.class);
+                DiscussionActivity.discussionThread = discussionThread;
                 startActivity(launchactivity);
                 /*Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);
                 toast.show();*/

@@ -15,11 +15,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.viewModel.ChatViewModel;
 
 public class ChatFragment extends Fragment {
 
     private ChatViewModel chatViewModel;
+    private Course course;
+
+    public ChatFragment(Course course) {
+        this.course = course;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,

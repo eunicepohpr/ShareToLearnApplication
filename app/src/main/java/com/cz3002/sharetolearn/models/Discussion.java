@@ -1,5 +1,8 @@
 package com.cz3002.sharetolearn.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
@@ -133,7 +136,6 @@ public class Discussion implements Serializable {
     public void setCourseKey(String courseKey) {
         this.courseKey = courseKey;
     }
-
 
 //    public ArrayList<User> getResponses() {
 //        return responses;

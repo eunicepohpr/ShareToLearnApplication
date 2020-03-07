@@ -92,6 +92,9 @@ public class DiscussionResponse implements Serializable {
         this.downvoteKeys.add(downvoteKey);
     }
 
+    public void removeDownvoteKey(String downvoteKey) {
+        this.downvoteKeys.remove(downvoteKey);
+    }
 
     public ArrayList<String> getUpvoteKeys() {
         return upvoteKeys;
@@ -105,6 +108,9 @@ public class DiscussionResponse implements Serializable {
         this.upvoteKeys.add(upvoteKey);
     }
 
+    public void removeUpvoteKey(String upvoteKey) {
+        this.upvoteKeys.remove(upvoteKey);
+    }
 
     public String getDiscussionKey() {
         return discussionKey;

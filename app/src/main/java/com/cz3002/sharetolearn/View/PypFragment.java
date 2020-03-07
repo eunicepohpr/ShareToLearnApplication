@@ -13,11 +13,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.viewModel.PypViewModel;
 
 public class PypFragment extends Fragment {
 
     private PypViewModel pypViewModel;
+    private Course course;
+
+    public PypFragment(Course course){
+        this.course = course;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
