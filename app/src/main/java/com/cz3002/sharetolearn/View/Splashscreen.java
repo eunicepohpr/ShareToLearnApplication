@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.cz3002.sharetolearn.R;
@@ -17,6 +18,8 @@ import com.cz3002.sharetolearn.models.PYPResponse;
 import com.cz3002.sharetolearn.models.ShareToLearnApplication;
 import com.cz3002.sharetolearn.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,6 +32,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Splashscreen extends AppCompatActivity {
     private ProgressBar progressBar;
@@ -52,13 +56,13 @@ public class Splashscreen extends AppCompatActivity {
         setContentView(R.layout.activity_splashscreen);
         progressBar = findViewById(R.id.pBar);
 
-        getFireStoreCoursesData();
-        getFireStoreUsersData();
-        getFireStoreDiscussionsData();
-        getFireStorePYPsData();
-        getFireStoreCourseReviewsData();
-        getFireStoreDiscussionResponsesData();
-        getFireStorePYPResponsesData();
+//        getFireStoreCoursesData();
+//        getFireStoreUsersData();
+//        getFireStoreDiscussionsData();
+//        getFireStorePYPsData();
+//        getFireStoreCourseReviewsData();
+//        getFireStoreDiscussionResponsesData();
+//        getFireStorePYPResponsesData();
 
         Thread thread = new Thread() {
             @Override
@@ -184,11 +188,12 @@ public class Splashscreen extends AppCompatActivity {
                             String key = document.getId();
                             String title = document.getString("title");
                             String question = document.getString("question");
-                            Timestamp postedDateTime = document.getTimestamp("postedDateTime");
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference courseKey = document.getDocumentReference("course");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            Discussion discussion = new Discussion(key, courseKey.getPath(), question, postedByKey.getPath(), title, postedDateTime);
+                            Discussion discussion = new Discussion(key, courseKey.getPath(), question,
+                                    postedByKey.getPath(), title, postedDateTime);
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
@@ -222,11 +227,12 @@ public class Splashscreen extends AppCompatActivity {
                             String key = document.getId();
                             String title = document.getString("title");
                             String question = document.getString("question");
-                            Timestamp postedDateTime = document.getTimestamp("postedDateTime");
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference courseKey = document.getDocumentReference("course");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            PYP pyp = new PYP(key, courseKey.getPath(), postedByKey.getPath(), question, title, postedDateTime);
+                            PYP pyp = new PYP(key, courseKey.getPath(), postedByKey.getPath(),
+                                    question, title, postedDateTime);
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
@@ -259,13 +265,12 @@ public class Splashscreen extends AppCompatActivity {
                         if (document != null) {
                             String key = document.getId();
                             Double rating = document.getDouble("rating");
-                            Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
-                            Date dateTime = ratedDateTime.toDate();
+                            Date ratedDateTime = document.getTimestamp("ratedDateTime").toDate();
                             DocumentReference ratedByKey = document.getDocumentReference("ratedBy");
                             String description = document.getString("description");
                             DocumentReference courseKey = document.getDocumentReference("course");
 
-                            CourseReview courseReview = new CourseReview(key, rating, dateTime,
+                            CourseReview courseReview = new CourseReview(key, rating, ratedDateTime,
                                     description, courseKey.getPath(), ratedByKey.getPath());
 
                             courseReviews.put(key, courseReview); // add to hashmap
@@ -287,11 +292,12 @@ public class Splashscreen extends AppCompatActivity {
                         if (document != null) {
                             String key = document.getId();
                             String answer = document.getString("answer");
-                            Timestamp postedDateTime = document.getTimestamp("postedDateTime");
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference discussionKey = document.getDocumentReference("discussion");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            DiscussionResponse discussionResponse = new DiscussionResponse(key, discussionKey.getPath(), postedByKey.getPath(), answer, postedDateTime);
+                            DiscussionResponse discussionResponse = new DiscussionResponse(key,
+                                    discussionKey.getPath(), postedByKey.getPath(), answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
@@ -325,11 +331,12 @@ public class Splashscreen extends AppCompatActivity {
                             String key = document.getId();
                             String answer = document.getString("answer");
                             String working = document.getString("working");
-                            Timestamp postedDateTime = document.getTimestamp("postedDateTime");
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference pypKey = document.getDocumentReference("pyp");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            PYPResponse pypResponse = new PYPResponse(key, postedByKey.getPath(), pypKey.getPath(), working, answer, postedDateTime);
+                            PYPResponse pypResponse = new PYPResponse(key, postedByKey.getPath(),
+                                    pypKey.getPath(), working, answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
@@ -350,6 +357,130 @@ public class Splashscreen extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void addDiscussionFireStore(Discussion discussion) {
+        Map<String, Object> disDocData = discussion.getFireStoreFormat();
+
+        db.collection("Discussion")
+                .add(disDocData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Failure", "Error adding document", e);
+                    }
+                });
+    }
+
+    public void addDiscussionResponseFireStore(DiscussionResponse discussionResponse) {
+        Map<String, Object> docData = discussionResponse.getFireStoreFormat();
+
+        db.collection("DiscussionResponse")
+                .add(docData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Failure", "Error adding document", e);
+                    }
+                });
+    }
+
+    public void addPYPFireStore(PYP pyp) {
+        Map<String, Object> pypDocData = pyp.getFireStoreFormat();
+        db.collection("PYP")
+                .add(pypDocData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Failure", "Error adding document", e);
+                    }
+                });
+    }
+
+    public void addPYPResponseFireStore(PYPResponse pypResponse) {
+        Map<String, Object> docData = pypResponse.getFireStoreFormat();
+        db.collection("PYPResponse")
+                .add(docData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Failure", "Error adding document", e);
+                    }
+                });
+    }
+
+    public void addUserFireStore(User user) {
+        Map<String, Object> userDocData = user.getFireStoreFormat();
+        db.collection("User")
+                .add(userDocData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Failure", "Error adding document", e);
+                    }
+                });
+    }
+
+    public void registerCourseFireStore(Course course, User user) {
+        Map<String, Object> userDocData = user.getFireStoreFormat();
+        db.collection("User").document(user.getKey()).update(userDocData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Success", "User updated");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Failure", "Error updating user document", e);
+                    }
+                });
+
+        Map<String, Object> courseDocData = course.getFireStoreFormat();
+        db.collection("Course").document(course.getKey()).update(courseDocData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Success", "Course updated");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Failure", "Error updating course document", e);
+                    }
+                });
     }
 
 //    public void addToSQLite(String TABLE_NAME, String COLUMN_NAME, HashMap<String, Course> obj) {

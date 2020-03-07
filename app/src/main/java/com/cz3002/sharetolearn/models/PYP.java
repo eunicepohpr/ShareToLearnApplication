@@ -4,6 +4,9 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PYP implements Serializable {
     private String key;
@@ -11,7 +14,7 @@ public class PYP implements Serializable {
     private User postedBy;
     private String question;
     private String title;
-    private Timestamp postedDateTime;
+    private Date postedDateTime;
     private String courseKey;
     private String postedByKey;
     private ArrayList<String> responseKeys;
@@ -22,8 +25,8 @@ public class PYP implements Serializable {
     public PYP() {
     }
 
-    public PYP(String key, String courseKey, String postedByKey,
-               String question, String title, Timestamp postedDateTime) {
+    public PYP(String key, String courseKey, String postedByKey, String question, String title,
+               Date postedDateTime) {
         this.key = key;
         this.courseKey = courseKey;
         this.postedByKey = postedByKey;
@@ -34,6 +37,19 @@ public class PYP implements Serializable {
         this.likeKeys = new ArrayList<>();
 //        this.responses = new ArrayList<>();
 //        this.likes = new ArrayList<>();
+    }
+
+
+    public Map<String, Object> getFireStoreFormat() {
+        Map<String, Object> pypDocData = new HashMap<>();
+        pypDocData.put("course", this.courseKey);
+        pypDocData.put("likes", this.likeKeys);
+        pypDocData.put("postedBy", this.postedByKey);
+        pypDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
+        pypDocData.put("question", this.question);
+        pypDocData.put("responses", this.responseKeys);
+        pypDocData.put("title", this.title);
+        return pypDocData;
     }
 
 
@@ -82,11 +98,11 @@ public class PYP implements Serializable {
     }
 
 
-    public Timestamp getPostedDateTime() {
+    public Date getPostedDateTime() {
         return postedDateTime;
     }
 
-    public void setPostedDate(Timestamp postedDateTime) {
+    public void setPostedDate(Date postedDateTime) {
         this.postedDateTime = postedDateTime;
     }
 
