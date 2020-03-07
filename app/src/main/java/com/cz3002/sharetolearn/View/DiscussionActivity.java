@@ -34,7 +34,7 @@ public class DiscussionActivity extends AppCompatActivity {
         TextView topicView = findViewById(R.id.topic_title);
         topicView.setText(discussionThread.getTitle());
         TextView postDetailsView = findViewById(R.id.postDetails);
-        postDetailsView.setText("Posted by "+discussionThread.getPostedBy().getName()+" on "+dateFormat.format(discussionThread.getPostedDateTime().toDate()));
+        postDetailsView.setText("Posted by "+discussionThread.getPostedBy().getName()+" on "+dateFormat.format(discussionThread.getPostedDateTime()));
         TextView questionView = findViewById(R.id.question);
         questionView.setText(discussionThread.getQuestion());
         TextView commentNumberView = findViewById(R.id.comment_number);

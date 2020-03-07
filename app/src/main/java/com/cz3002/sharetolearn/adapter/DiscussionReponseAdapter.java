@@ -51,7 +51,7 @@ public class DiscussionReponseAdapter extends BaseAdapter {
         TextView commentTextView = view.findViewById(R.id.discussion_comment);
         commentTextView.setText((discussionResponse.getAnswer()));
         TextView postDetailsView = view.findViewById(R.id.postDetails);
-        postDetailsView.setText("Posted by "+discussionResponse.getPostedBy().getName()+" on "+dateFormat.format(discussionResponse.getPostedDateTime().toDate()));
+        postDetailsView.setText("Posted by "+discussionResponse.getPostedBy().getName()+" on "+dateFormat.format(discussionResponse.getPostedDateTime()));
         TextView voteTextView = view.findViewById(R.id.comment_vote);
         voteTextView.setText(Integer.toString(discussionResponse.getUpvoteKeys().size()));
         ImageView upVoteImageView = view.findViewById(R.id.up_vote);

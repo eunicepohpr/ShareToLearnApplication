@@ -55,7 +55,7 @@ public class DiscussionAdapter extends BaseAdapter {
         likedTextView.setText(Integer.toString(discussionThread.getLikeKeys().size()));
         String name = discussionThread.getPostedBy().getName();
         TextView postDetail = view.findViewById(R.id.postDetails);
-        postDetail.setText("Posted by " +name+" on "+dateFormat.format(discussionThread.getPostedDateTime().toDate()));
+        postDetail.setText("Posted by " +name+" on "+dateFormat.format(discussionThread.getPostedDateTime()));
         return view;
     }
 }
