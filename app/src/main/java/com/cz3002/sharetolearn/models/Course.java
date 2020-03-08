@@ -117,7 +117,17 @@ public class Course implements Serializable {
         this.reviewKeys.add(reviewKey);
     }
 
+    @Override
+    public boolean equals(Object o){
+        return this.courseCode.equals(((Course) o).getCourseCode());
+    }
 
+    @Override
+    public int hashCode(){
+        if (courseCode != null)
+            return courseCode.hashCode();
+        return super.hashCode();
+    }
 //    public ArrayList<User> getRegisteredUsers() {
 //        return registeredUsers;
 //    }

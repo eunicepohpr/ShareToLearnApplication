@@ -20,13 +20,16 @@ import com.cz3002.sharetolearn.adapter.DiscussionAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.Discussion;
 import com.cz3002.sharetolearn.viewModel.DiscussionViewModel;
+import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DiscussionFragment extends Fragment {
-
+    private MainUserViewModel mainUserViewModel;
     private DiscussionViewModel discussionViewModel;
     private Course course;
     private ListView discussionThreadsListView;
@@ -40,7 +43,7 @@ public class DiscussionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         discussionViewModel = ViewModelProviders.of(this).get(DiscussionViewModel.class);
-
+        mainUserViewModel = ViewModelProviders.of(this).get(MainUserViewModel.class);
         View root = inflater.inflate(R.layout.fragment_discussion, container, false);
         discussionThreadsListView = root.findViewById(R.id.discussion_thread_list);
 
@@ -49,6 +52,7 @@ public class DiscussionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent launchactivity = new  Intent(getContext(), AddDiscussion.class);
+                launchactivity.putExtra("course", course);
                 startActivity(launchactivity);
                 /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
@@ -58,8 +62,18 @@ public class DiscussionFragment extends Fragment {
         discussionViewModel.getDiscussionThreads().observe(this, new Observer<List<Discussion>>() {
             @Override
             public void onChanged(@Nullable List<Discussion> discussionThreads) {
-                //TODO: filter discussion threads for a specific course
-                discussionAdapter = new DiscussionAdapter(getActivity(), discussionThreads);
+                List<Discussion> discussionList = new ArrayList<>();
+                for (Discussion dis: discussionThreads){
+                    if (dis.getCourseKey().equals(course.getKey()))
+                        discussionList.add(dis);
+                }
+                Collections.sort(discussionList, new Comparator<Discussion>() {
+                    @Override
+                    public int compare(Discussion t0, Discussion t1) {
+                        return t0.getPostedDateTime().compareTo(t1.getPostedDateTime());
+                    }
+                });
+                discussionAdapter = new DiscussionAdapter(getActivity(), discussionList, mainUserViewModel.getMainUser().getValue());
                 discussionThreadsListView.setAdapter(discussionAdapter);
                 discussionAdapter.notifyDataSetChanged();
             }

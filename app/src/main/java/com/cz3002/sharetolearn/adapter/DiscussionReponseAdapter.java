@@ -66,7 +66,8 @@ public class DiscussionReponseAdapter extends BaseAdapter {
 //                                    discussionResponse.removeDownvoteKey(mainUser.key);
 //                                }
 //                                discussionResponse.addUpvoteKey(mainUser.key);
-//                            }
+//                            Toast.makeText(context, "You have upvoted this answer", Toast.LENGTH_SHORT).show()
+//                            } else Toast.makeText(context, "You already upvote this answer before", Toast.LENGTH_SHORT).show();
                             Toast.makeText(context, "up_vote "+discussionResponse.getAnswer(), Toast.LENGTH_SHORT).show();
                             break;
                         case R.id.down_vote:
@@ -75,7 +76,8 @@ public class DiscussionReponseAdapter extends BaseAdapter {
 //                                    discussionResponse.removeUpvoteKey(mainUser.key);
 //                                }
 //                                discussionResponse.addDownvoteKey(mainUser.key);
-//                            }
+//                            Toast.makeText(context, "You have downvoted this answer", Toast.LENGTH_SHORT).show()
+//                            } else Toast.makeText(context, "You already downvoted this answer before", Toast.LENGTH_SHORT).show();
                             Toast.makeText(context, "down_vote "+discussionResponse.getAnswer(), Toast.LENGTH_SHORT).show();
                             break;
                     }

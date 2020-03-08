@@ -1,7 +1,5 @@
 package com.cz3002.sharetolearn.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.firebase.Timestamp;
 
@@ -122,7 +120,6 @@ public class Discussion implements Serializable {
         this.responseKeys.add(responseKey);
     }
 
-
     public ArrayList<String> getLikeKeys() {
         return likeKeys;
     }
@@ -135,6 +132,9 @@ public class Discussion implements Serializable {
         this.likeKeys.add(likeKey);
     }
 
+    public void removeLikeKey(String likeKey) {
+        this.likeKeys.remove(likeKey);
+    }
 
     public String getPostedByKey() {
         return postedByKey;
