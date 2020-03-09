@@ -29,7 +29,7 @@ public class DiscussionViewModel extends ViewModel {
         user1.setName("Lam");
         item1.addResponseKey("response1");
         item1.setPostedBy(user1);
-
+        LikeNumbersViewModel.setLikeNumber(item1.getKey(), item1.getLikeKeys().size());
         discussionThreads.add(item1);
 
         Discussion item2 = new Discussion("discussionKey2", "YxLTpfzIKMQOk4QifP8u", "How to solve TUT 3 question 1?",
@@ -40,6 +40,7 @@ public class DiscussionViewModel extends ViewModel {
         item2.addResponseKey("response2");
         item2.setPostedBy(user2);
         item2.addLikeKey("user1");
+        LikeNumbersViewModel.setLikeNumber(item2.getKey(), item2.getLikeKeys().size());
         discussionThreads.add(item2);
         mDiscussionThreads.setValue(discussionThreads);
     }

@@ -73,7 +73,7 @@ public class DiscussionFragment extends Fragment {
                         return t0.getPostedDateTime().compareTo(t1.getPostedDateTime());
                     }
                 });
-                discussionAdapter = new DiscussionAdapter(getActivity(), discussionList, mainUserViewModel.getMainUser().getValue());
+                discussionAdapter = new DiscussionAdapter(getActivity(), getActivity(),discussionList, mainUserViewModel.getMainUser().getValue());
                 discussionThreadsListView.setAdapter(discussionAdapter);
                 discussionAdapter.notifyDataSetChanged();
             }

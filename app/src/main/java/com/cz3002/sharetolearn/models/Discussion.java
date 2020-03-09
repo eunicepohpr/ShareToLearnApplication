@@ -1,6 +1,8 @@
 package com.cz3002.sharetolearn.models;
 
 
+import android.database.Observable;
+
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
@@ -9,7 +11,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Discussion implements Serializable {
+import androidx.databinding.ObservableInt;
+
+public class Discussion implements Serializable  {
     private String key;
     private Course course;
     private String question;
@@ -152,6 +156,7 @@ public class Discussion implements Serializable {
     public void setCourseKey(String courseKey) {
         this.courseKey = courseKey;
     }
+
 
 //    public ArrayList<User> getResponses() {
 //        return responses;
