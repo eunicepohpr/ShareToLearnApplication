@@ -29,6 +29,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     private TextView coursenameTV;
     private TextView coursedescTV;
     private TextView courseAssignmentTV;
+    private TextView noreviewsTV;
     private LinearLayout reviewToList;
     private RatingBar ratingbar;
     private ProgressBar progressBar5;
@@ -45,7 +46,6 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_course_review);
         setContentView(R.layout.course_review_fragment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -53,15 +53,13 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         Bundle args = intent.getBundleExtra("BUNDLE");
         selectedCourse = (Course) args.getSerializable("SELECTEDCOURSE");
 
-        /*Button saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(this);*/
-
         coursenameTV = findViewById(R.id.review_overview_coursename);
         coursenameTV.setText(selectedCourse.getCourseCode() + " " + selectedCourse.getTitle());
         coursedescTV = findViewById(R.id.review_overview_coursedesc);
         coursedescTV.setText(selectedCourse.getDescription());
         courseAssignmentTV = findViewById(R.id.overview_assignmentDesc);
         courseAssignmentTV.setText(selectedCourse.getCourseAssessment());
+        noreviewsTV = findViewById(R.id.noreviews_overview);
 
         avgRatingTV = findViewById(R.id.review_avgRating);
         ratingbar = findViewById(R.id.ratingBar);
@@ -76,12 +74,17 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
             @Override
             public void onChanged(ArrayList<CourseReview> courseReviews) {
                 reviewList = courseReviews;
-                progressCount(courseReviews);
-                //display avg
-                String avg = getAvgRating(reviewList);
-                avgRatingTV.setText(avg);
-                //display rating bar
-                ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
+                count5 = 0; count4 = 0; count3 = 0; count2 = 0; count1 = 0;
+                if(!courseReviews.isEmpty()){
+                    progressCount(courseReviews);
+                    //display avg
+                    String avg = getAvgRating(reviewList);
+                    avgRatingTV.setText(avg);
+                    //display rating bar
+                    ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
+                }else{
+                    noreviewsTV.setVisibility(View.VISIBLE);
+                }
                 //display progressbar
                 progressBar5.setProgress((int) count5);
                 progressBar4.setProgress((int) count4);
@@ -120,17 +123,21 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     }
 
     private String getAvgRating(ArrayList<CourseReview> reviewList) {
-        DecimalFormat df = new DecimalFormat("0.00");
-        double sum = 0;
-        double avg = 0;
-        int count = 0;
+        if(reviewList.isEmpty()){
+            return "0";
+        }else{
+            DecimalFormat df = new DecimalFormat("0.00");
+            double sum = 0;
+            double avg = 0;
+            int count = 0;
 
-        for (CourseReview c : reviewList) {
-            sum = sum + c.getRating();
-            count++;
+            for (CourseReview c : reviewList) {
+                sum = sum + c.getRating();
+                count++;
+            }
+            avg = sum / count;
+            return df.format(avg);
         }
-        avg = sum / count;
-        return df.format(avg);
     }
 
     private void progressCount(ArrayList<CourseReview> reviewList) {

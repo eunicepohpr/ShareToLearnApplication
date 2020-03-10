@@ -54,13 +54,15 @@ public class CourseReviewPostActivity extends AppCompatActivity {
                 String ratedByKey = "u0V6npiHU87egeDnAZzG";
                 courseReview = new CourseReview(rating, ratedByKey, description, courseKey, new Date());
 
-                courseReviewViewModel.newReview(courseReview);
+                courseReviewViewModel.newReview(courseReview, selectedCourse);
 
-                Bundle args = new Bundle();
+                onBackPressed();
+                /*Bundle args = new Bundle();
                 Intent reviewActivity = new Intent(getApplicationContext(), CourseReviewActivity.class);
                 args.putSerializable("SELECTEDCOURSE", selectedCourse);
                 reviewActivity.putExtra("BUNDLE", args);
-                startActivity(reviewActivity);
+                startActivity(reviewActivity);*/
+
                 //Toast.makeText(getApplicationContext(), Float.toString(ratingBar.getRating()),Toast.LENGTH_SHORT).show();
             }
         });

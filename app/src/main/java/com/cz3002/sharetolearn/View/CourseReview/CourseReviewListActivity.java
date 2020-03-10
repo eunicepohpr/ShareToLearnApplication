@@ -3,6 +3,7 @@ package com.cz3002.sharetolearn.View.CourseReview;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -28,7 +29,7 @@ public class CourseReviewListActivity extends AppCompatActivity {
     private Course selectedCourse = new Course();
     private TextView avgRatingTV;
     private TextView coursenameTV;
-    private LinearLayout reviewToList;
+    private TextView noreviewsTV;
     private RatingBar ratingbar;
     private ProgressBar progressBar5;
     private ProgressBar progressBar4;
@@ -50,7 +51,7 @@ public class CourseReviewListActivity extends AppCompatActivity {
         Bundle args = intent.getBundleExtra("BUNDLE");
         reviewList = (ArrayList<CourseReview>) args.getSerializable("REVIEWLIST");
         selectedCourse = (Course) args.getSerializable("SELECTEDCOURSE");
-
+        noreviewsTV = findViewById(R.id.noreviews_list);
         coursenameTV = findViewById(R.id.reviewlis_coursename);
         coursenameTV.setText(selectedCourse.getCourseCode() + " " + selectedCourse.getTitle());
         avgRatingTV = findViewById(R.id.reviewlist_avgRating);
@@ -67,12 +68,17 @@ public class CourseReviewListActivity extends AppCompatActivity {
             @Override
             public void onChanged(ArrayList<CourseReview> courseReviews) {
                 reviewList = courseReviews;
-                progressCount(courseReviews);
-                //display avg
-                String avg = getAvgRating(reviewList);
-                avgRatingTV.setText(avg);
-                //display rating bar
-                ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
+                count5 = 0; count4 = 0; count3 = 0; count2 = 0; count1 = 0;
+                if(!courseReviews.isEmpty()){
+                    progressCount(courseReviews);
+                    //display avg
+                    String avg = getAvgRating(reviewList);
+                    avgRatingTV.setText(avg);
+                    //display rating bar
+                    ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
+                }else{
+                    noreviewsTV.setVisibility(View.VISIBLE);
+                }
                 //display progressbar
                 progressBar5.setProgress((int) count5);
                 progressBar4.setProgress((int) count4);
@@ -99,17 +105,21 @@ public class CourseReviewListActivity extends AppCompatActivity {
     }
 
     private String getAvgRating(ArrayList<CourseReview> reviewList) {
-        DecimalFormat df = new DecimalFormat("0.00");
-        double sum = 0;
-        double avg = 0;
-        int count = 0;
+        if(reviewList.isEmpty()){
+            return "0";
+        }else{
+            DecimalFormat df = new DecimalFormat("0.00");
+            double sum = 0;
+            double avg = 0;
+            int count = 0;
 
-        for (CourseReview c : reviewList) {
-            sum = sum + c.getRating();
-            count++;
+            for (CourseReview c : reviewList) {
+                sum = sum + c.getRating();
+                count++;
+            }
+            avg = sum / count;
+            return df.format(avg);
         }
-        avg = sum / count;
-        return df.format(avg);
     }
 
     private void progressCount(ArrayList<CourseReview> reviewList) {

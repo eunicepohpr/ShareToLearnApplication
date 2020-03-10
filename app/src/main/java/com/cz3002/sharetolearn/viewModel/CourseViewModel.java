@@ -48,16 +48,17 @@ public class CourseViewModel extends ViewModel {
                             Course course = new Course(key, courseCode, title, description, courseAssessment);
 
                             // get list of registered users
-                            String a = String.valueOf(document.get("reviews"));
-                            if (a != "null" || a != null || a != "[]"){
-                                for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("reviews"))
+                            String b = String.valueOf(document.get("registered"));
+                            if (b != "null" && b != null && b != "[]") {
+                                for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("registered"))
                                     course.addRegisteredUserKeys(registeredUser.getPath());
                             }
-                            // get list of registered users
-                            String b = String.valueOf(document.get("registered"));
-                            if (b != "null" || b != null || b != "[]"){
-                                for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("registered"))
-                                    course.addReviewKeys(registeredUser.getPath());
+
+                            // get list of reviews
+                            String a = String.valueOf(document.get("reviews"));
+                            if (a != "null" && a != null && a != "[]") {
+                                for (DocumentReference reviews : (ArrayList<DocumentReference>) document.get("reviews"))
+                                    course.addReviewKeys(reviews.getPath());
                             }
                             courseList.add(course);
                         }

@@ -47,7 +47,7 @@ public class CourseReview implements Serializable {
     }
 
 
-    public Map<String, Object> getFireStoreFormat() {
+    public Map<String, Object> getFireStoreReviewFormat() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> courseReviewDocData = new HashMap<>();
         courseReviewDocData.put("description", this.description);

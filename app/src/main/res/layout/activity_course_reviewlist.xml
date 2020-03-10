@@ -47,7 +47,8 @@
                 android:textSize="55dp"
                 android:textAlignment="center"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/review_title"/>
+                android:layout_below="@+id/review_title"
+                android:gravity="center_horizontal" />
 
             <RatingBar
                 android:id="@+id/list_ratingBar"
@@ -183,6 +184,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/noreviews_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="No review yet, write one now!"
+            android:visibility="visible"
+            android:gravity="center_horizontal" />
         <ListView
             android:id="@+id/review_list"
             android:layout_width="fill_parent"
