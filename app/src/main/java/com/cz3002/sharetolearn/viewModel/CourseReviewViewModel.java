@@ -37,6 +37,8 @@ public class CourseReviewViewModel extends ViewModel {
     private MutableLiveData<ArrayList<CourseReview>> mReviewList = new MutableLiveData<>();
     private ArrayList<Course> courseList = new ArrayList<>();
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
+    private ArrayList<CourseReview> selectedReview = new ArrayList<>();
+    private ArrayList<CourseReview> allreviewList = new ArrayList<>();
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
@@ -66,7 +68,8 @@ public class CourseReviewViewModel extends ViewModel {
     }*/
 
     public LiveData<ArrayList<CourseReview>> getCourseReviewList(Course selectedCourse) {
-        getFireStoreCourseReviewsData(selectedCourse);
+        //getFireStoreCourseAllReviewsData();
+        realtimeFireStoreData(selectedCourse);
         return mReviewList;
     }
 
@@ -76,6 +79,7 @@ public class CourseReviewViewModel extends ViewModel {
     }
 
     public void realtimeFireStoreData(final Course selectedCourse) {
+        reviewDoc = db.collection("CourseModule").document(selectedCourse.getKey());
         reviewDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -86,9 +90,9 @@ public class CourseReviewViewModel extends ViewModel {
                 }
                 if (snapshot != null && snapshot.exists()) {
                     //getFireStoreCoursesData();
-                    //getFireStoreCourseReviewsData(selectedCourse);
+                    getFireStoreCourseReviewsData(selectedCourse);
                 } else {
-                    //getFireStoreCourseReviewsData(selectedCourse);
+                    getFireStoreCourseReviewsData(selectedCourse);
                 }
             }
         });
@@ -146,8 +150,6 @@ public class CourseReviewViewModel extends ViewModel {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         if (document != null) {
                             DocumentReference coursedoc = document.getDocumentReference("course");
-                            String k = selectedCourse.getKey();
-                            String ck = coursedoc.getId();
                             if (selectedCourse.getKey().equals(coursedoc.getId())) {
                                 String key = document.getId();
                                 Double rating = document.getDouble("rating");
@@ -176,7 +178,6 @@ public class CourseReviewViewModel extends ViewModel {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
-
                         //add reference to CourseModule
                         selectedCourse.addReviewKeys(documentReference.getId());
                         Map<String, Object> docData = selectedCourse.getFireStoreFormat();

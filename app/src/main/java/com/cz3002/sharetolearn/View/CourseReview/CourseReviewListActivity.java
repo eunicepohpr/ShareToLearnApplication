@@ -70,7 +70,7 @@ public class CourseReviewListActivity extends AppCompatActivity {
                 reviewList = courseReviews;
                 count5 = 0; count4 = 0; count3 = 0; count2 = 0; count1 = 0;
                 if(!courseReviews.isEmpty()){
-                    progressCount(courseReviews);
+                    progressCount(reviewList);
                     //display avg
                     String avg = getAvgRating(reviewList);
                     avgRatingTV.setText(avg);
