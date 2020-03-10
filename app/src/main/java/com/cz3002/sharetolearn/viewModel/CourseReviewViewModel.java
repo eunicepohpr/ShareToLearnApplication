@@ -44,7 +44,7 @@ public class CourseReviewViewModel extends ViewModel {
     private DocumentReference usersDoc;
     private FirebaseUser currentUser;
 
-    public CourseReviewViewModel(){
+    public CourseReviewViewModel() {
         // get current login user
         /*mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -112,13 +112,13 @@ public class CourseReviewViewModel extends ViewModel {
 
                             // get list of registered users
                             String a = String.valueOf(document.get("reviews"));
-                            if (a != "null" || a != null || a != "[]"){
+                            if (a != "null" || a != null || a != "[]") {
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("reviews"))
                                     course.addRegisteredUserKeys(registeredUser.getPath());
                             }
                             // get list of registered users
                             String b = String.valueOf(document.get("registered"));
-                            if (b != "null" || b != null || b != "[]"){
+                            if (b != "null" || b != null || b != "[]") {
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("registered"))
                                     course.addReviewKeys(registeredUser.getPath());
                             }
@@ -142,7 +142,7 @@ public class CourseReviewViewModel extends ViewModel {
                             DocumentReference coursedoc = document.getDocumentReference("course");
                             String k = selectedCourse.getKey();
                             String ck = coursedoc.getId();
-                            if(selectedCourse.getKey().equals(coursedoc.getId())){
+                            if (selectedCourse.getKey().equals(coursedoc.getId())) {
                                 String key = document.getId();
                                 Double rating = document.getDouble("rating");
                                 Timestamp ratedDateTime = document.getTimestamp("ratedDateTime");
@@ -162,14 +162,8 @@ public class CourseReviewViewModel extends ViewModel {
         });
     }
 
-    public void newReview(CourseReview courseReview){
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("description", courseReview.getDescription());
-        //docData.put("ratedBy", courseReview.getRatedBy());
-        docData.put("ratedBy", db.collection("User").document(courseReview.getRatedByKey()));
-        docData.put("rating", courseReview.getRating());
-        docData.put("ratedDateTime", new Timestamp(new Date()));
-        docData.put("course", db.collection("CourseModule").document(courseReview.getCourseKey()));
+    public void newReview(CourseReview courseReview) {
+        Map<String, Object> docData = courseReview.getFireStoreFormat();
 
         db.collection("CourseReview")
                 .add(docData)
@@ -185,10 +179,9 @@ public class CourseReviewViewModel extends ViewModel {
                         Log.w("Failure", "Error adding document", e);
                     }
                 });
-
     }
 
-    public void updateTime(CourseReview review){
+    public void updateTime(CourseReview review) {
         Map<String, Object> docData = new HashMap<>();
         docData.put("description", review.getDescription());
         docData.put("ratedBy", review.getRatedBy());
@@ -199,10 +192,8 @@ public class CourseReviewViewModel extends ViewModel {
 /*        Long tsLong = System.currentTimeMillis()/1000;
         String ts = tsLong.toString();*/
 
-        db.collection("CourseReview")
-                .document(review.getKey())
-                .set(docData);
-                //.update("ratedDateTime", getTimestamp());
+        db.collection("CourseReview").document(review.getKey()).set(docData);
+        //.update("ratedDateTime", getTimestamp());
     }
 
     public String getTimestamp() {

@@ -29,7 +29,7 @@ public class CourseReviewFragment extends Fragment {
 
     private CourseReviewViewModel courseReviewViewModel;
     private CourseViewModel courseViewModel;
-    private ArrayList<Course> coursesList = new ArrayList<> ();
+    private ArrayList<Course> coursesList = new ArrayList<>();
     private ListView courseListView;
     private CourseAdapter courseAdapter;
 
@@ -54,7 +54,7 @@ public class CourseReviewFragment extends Fragment {
                 courseListView.setAdapter(courseAdapter);
                 courseAdapter.notifyDataSetChanged();
             }
-        });;
+        });
         return courseFragmentView;
     }
 

@@ -1,9 +1,8 @@
 package com.cz3002.sharetolearn.models;
 
-
-import android.database.Observable;
-
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,9 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.databinding.ObservableInt;
-
-public class Discussion implements Serializable  {
+public class Discussion implements Serializable {
     private String key;
     private Course course;
     private String question;
@@ -44,17 +41,27 @@ public class Discussion implements Serializable  {
 //        this.likes = new ArrayList<>();
     }
 
-
+    // get firestore format to add
     public Map<String, Object> getFireStoreFormat() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> discussionDocData = new HashMap<>();
-        discussionDocData.put("course", this.courseKey);
-        discussionDocData.put("likes", this.likeKeys);
-        discussionDocData.put("postedBy", this.postedByKey);
+        discussionDocData.put("course", db.collection("CourseModule").document(this.courseKey));
+        discussionDocData.put("likes", this.getReferenceListFireStoreFormat(this.likeKeys, "User"));
+        discussionDocData.put("postedBy", db.collection("User").document(this.postedByKey));
         discussionDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
         discussionDocData.put("question", this.question);
-        discussionDocData.put("responses", this.responseKeys);
+        discussionDocData.put("responses", this.getReferenceListFireStoreFormat(this.responseKeys, "DiscussionResponse"));
         discussionDocData.put("title", this.title);
         return discussionDocData;
+    }
+
+    // format string into firestore document reference format
+    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(ArrayList<String> list, String collection) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ArrayList<DocumentReference> docList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++)
+            docList.add(db.collection(collection).document(list.get(i)));
+        return docList;
     }
 
 

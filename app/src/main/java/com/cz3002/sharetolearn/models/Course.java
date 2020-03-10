@@ -1,5 +1,8 @@
 package com.cz3002.sharetolearn.models;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +23,7 @@ public class Course implements Serializable {
     public Course() {
     }
 
-    public Course(String key, String courseCode, String title,
-                  String description, String courseAssessment) {
+    public Course(String key, String courseCode, String title, String description, String courseAssessment) {
         this.key = key;
         this.courseCode = courseCode;
         this.registeredUserKeys = new ArrayList<>();
@@ -35,15 +37,25 @@ public class Course implements Serializable {
     }
 
 
+    // get firestore format to add
     public Map<String, Object> getFireStoreFormat() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> courseDocData = new HashMap<>();
         courseDocData.put("courseAssessment", this.courseAssessment);
         courseDocData.put("courseCode", this.courseCode);
         courseDocData.put("description", this.description);
-        courseDocData.put("registered", this.registeredUserKeys);
-        courseDocData.put("reviews", this.getReviewKeys());
+        courseDocData.put("registered", this.getReferenceListFireStoreFormat(this.registeredUserKeys, "User"));
+        courseDocData.put("reviews", this.getReferenceListFireStoreFormat(this.getReviewKeys(), "CourseReview"));
         courseDocData.put("title", this.title);
         return courseDocData;
+    }
+
+    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(ArrayList<String> list, String collection) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ArrayList<DocumentReference> docList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++)
+            docList.add(db.collection(collection).document(list.get(i)));
+        return docList;
     }
 
 
@@ -118,14 +130,13 @@ public class Course implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return this.courseCode.equals(((Course) o).getCourseCode());
     }
 
     @Override
-    public int hashCode(){
-        if (courseCode != null)
-            return courseCode.hashCode();
+    public int hashCode() {
+        if (courseCode != null) return courseCode.hashCode();
         return super.hashCode();
     }
 //    public ArrayList<User> getRegisteredUsers() {

@@ -52,7 +52,7 @@ public class CourseReviewPostActivity extends AppCompatActivity {
                 String description = reviewDescET.getText().toString();
                 String courseKey = selectedCourse.getKey();
                 String ratedByKey = "u0V6npiHU87egeDnAZzG";
-                courseReview = new CourseReview(rating, ratedByKey, description, courseKey);
+                courseReview = new CourseReview(rating, ratedByKey, description, courseKey, new Date());
 
                 courseReviewViewModel.newReview(courseReview);
 

@@ -1,6 +1,7 @@
 package com.cz3002.sharetolearn.models;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 
@@ -10,7 +11,8 @@ public class Chat implements Serializable {
     private String message;
     private User postedBy;
 
-    public Chat(){}
+    public Chat() {
+    }
 
     public Chat(Timestamp postedDateTime, String message, User postedBy) {
         this.postedDateTime = postedDateTime;

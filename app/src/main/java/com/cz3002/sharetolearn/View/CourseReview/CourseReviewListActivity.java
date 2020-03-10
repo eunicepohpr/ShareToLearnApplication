@@ -19,6 +19,7 @@ import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CourseReviewListActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class CourseReviewListActivity extends AppCompatActivity {
         selectedCourse = (Course) args.getSerializable("SELECTEDCOURSE");
 
         coursenameTV = findViewById(R.id.reviewlis_coursename);
-        coursenameTV.setText(selectedCourse.getCourseCode()+" "+selectedCourse.getTitle());
+        coursenameTV.setText(selectedCourse.getCourseCode() + " " + selectedCourse.getTitle());
         avgRatingTV = findViewById(R.id.reviewlist_avgRating);
         ratingbar = findViewById(R.id.list_ratingBar);
         progressBar5 = findViewById(R.id.list_progressBar5);
@@ -68,16 +69,16 @@ public class CourseReviewListActivity extends AppCompatActivity {
                 reviewList = courseReviews;
                 progressCount(courseReviews);
                 //display avg
-                String avg = Double.toString(getAvgRating(reviewList));
+                String avg = getAvgRating(reviewList);
                 avgRatingTV.setText(avg);
                 //display rating bar
-                ratingbar.setRating((float)getAvgRating(reviewList));
+                ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
                 //display progressbar
-                progressBar5.setProgress((int)count5);
-                progressBar4.setProgress((int)count4);
-                progressBar3.setProgress((int)count3);
-                progressBar2.setProgress((int)count2);
-                progressBar1.setProgress((int)count1);
+                progressBar5.setProgress((int) count5);
+                progressBar4.setProgress((int) count4);
+                progressBar3.setProgress((int) count3);
+                progressBar2.setProgress((int) count2);
+                progressBar1.setProgress((int) count1);
 
                 //display list of reviews
                 reviewAdapter = new ReviewAdapter(getApplicationContext(), courseReviews);
@@ -89,7 +90,7 @@ public class CourseReviewListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
@@ -97,40 +98,45 @@ public class CourseReviewListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private double getAvgRating(ArrayList<CourseReview> reviewList){
+    private String getAvgRating(ArrayList<CourseReview> reviewList) {
+        DecimalFormat df = new DecimalFormat("0.00");
         double sum = 0;
         double avg = 0;
         int count = 0;
 
-        for(CourseReview c : reviewList){
+        for (CourseReview c : reviewList) {
             sum = sum + c.getRating();
             count++;
         }
-        avg = sum/count;
-        return avg;
+        avg = sum / count;
+        return df.format(avg);
     }
 
-    private void progressCount(ArrayList<CourseReview> reviewList){
-        count5 = 0; count4 = 0; count3 = 0; count2 = 0; count1 = 0;
+    private void progressCount(ArrayList<CourseReview> reviewList) {
+        count5 = 0;
+        count4 = 0;
+        count3 = 0;
+        count2 = 0;
+        count1 = 0;
         int sum = 0;
-        for(CourseReview c : reviewList){
-            if(c.getRating() == 5){
+        for (CourseReview c : reviewList) {
+            if (c.getRating() == 5) {
                 count5++;
-            }else if(c.getRating() == 4){
+            } else if (c.getRating() == 4) {
                 count4++;
-            }else if(c.getRating() == 3){
+            } else if (c.getRating() == 3) {
                 count3++;
-            }else if(c.getRating() == 2){
+            } else if (c.getRating() == 2) {
                 count2++;
-            }else if(c.getRating() == 1){
+            } else if (c.getRating() == 1) {
                 count1++;
             }
             sum++;
         }
-        count5 = (count5/sum) *100;
-        count4 = (count4/sum) *100;
-        count3 = (count3/sum) *100;
-        count2 = (count2/sum) *100;
-        count1 = (count1/sum) *100;
+        count5 = (count5 / sum) * 100;
+        count4 = (count4 / sum) * 100;
+        count3 = (count3 / sum) * 100;
+        count2 = (count2 / sum) * 100;
+        count1 = (count1 / sum) * 100;
     }
 }

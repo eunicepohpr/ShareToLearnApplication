@@ -1,6 +1,8 @@
 package com.cz3002.sharetolearn.models;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,16 +42,27 @@ public class PYP implements Serializable {
     }
 
 
+    // get firestore format to add
     public Map<String, Object> getFireStoreFormat() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> pypDocData = new HashMap<>();
-        pypDocData.put("course", this.courseKey);
-        pypDocData.put("likes", this.likeKeys);
-        pypDocData.put("postedBy", this.postedByKey);
+        pypDocData.put("course", db.collection("CourseModule").document(this.courseKey));
+        pypDocData.put("likes", this.getReferenceListFireStoreFormat(this.likeKeys, "User"));
+        pypDocData.put("postedBy", db.collection("CourseModule").document(this.postedByKey));
         pypDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
         pypDocData.put("question", this.question);
-        pypDocData.put("responses", this.responseKeys);
+        pypDocData.put("responses", this.getReferenceListFireStoreFormat(this.responseKeys, "PYPResponse"));
         pypDocData.put("title", this.title);
         return pypDocData;
+    }
+
+    // format string into firestore document reference format
+    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(ArrayList<String> list, String collection) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ArrayList<DocumentReference> docList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++)
+            docList.add(db.collection(collection).document(list.get(i)));
+        return docList;
     }
 
 
