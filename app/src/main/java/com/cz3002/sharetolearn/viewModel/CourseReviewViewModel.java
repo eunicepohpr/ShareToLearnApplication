@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,8 +36,6 @@ public class CourseReviewViewModel extends ViewModel {
     private MutableLiveData<ArrayList<CourseReview>> mReviewList = new MutableLiveData<>();
     private ArrayList<Course> courseList = new ArrayList<>();
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
-    private ArrayList<CourseReview> selectedReview = new ArrayList<>();
-    private ArrayList<CourseReview> allreviewList = new ArrayList<>();
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;

@@ -45,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="your name"
             android:textStyle="bold" />
 
         <TextView
@@ -61,7 +60,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="your email"
             android:textStyle="bold" />
 
         <TextView
@@ -77,7 +75,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="your course"
             android:textStyle="bold" />
 
         <TextView
@@ -93,7 +90,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="your graduation"
             android:textStyle="bold" />
 
         <TextView
@@ -109,7 +105,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="your biography"
             android:textStyle="bold"/>
 
     </LinearLayout>
@@ -122,6 +117,5 @@
         android:layout_gravity="center"
         android:textColor="@color/colorWhite"
         android:layout_margin="20dp"
-        android:text="Update profile"
-        android:enabled="false"/>
+        android:text="Update profile"/>
 </LinearLayout>

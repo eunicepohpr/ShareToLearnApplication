@@ -159,7 +159,7 @@ public class Splashscreen extends AppCompatActivity {
                                 for (DocumentReference discussionLike : (ArrayList<DocumentReference>) userLikes.get("discussion"))
                                     user.addDiscussionLikeKey(discussionLike.getPath());
 
-                            // get list of user likes
+                            // get list of user ratings
                             HashMap<String, Object> userRatings = (HashMap<String, Object>) document.get("ratings");
                             if (userRatings.containsKey("pyp"))
                                 for (DocumentReference pypRating : (ArrayList<DocumentReference>) userRatings.get("pyp"))
