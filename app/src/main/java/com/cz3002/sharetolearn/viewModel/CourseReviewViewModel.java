@@ -112,13 +112,13 @@ public class CourseReviewViewModel extends ViewModel {
 
                             // get list of registered users
                             String a = String.valueOf(document.get("reviews"));
-                            if (a != "null" || a != null || a != "[]") {
+                            if (a != "null" && a != null && a != "[]") {
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("reviews"))
                                     course.addRegisteredUserKeys(registeredUser.getPath());
                             }
                             // get list of registered users
                             String b = String.valueOf(document.get("registered"));
-                            if (b != "null" || b != null || b != "[]") {
+                            if (b != "null" && b != null && b != "[]") {
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("registered"))
                                     course.addReviewKeys(registeredUser.getPath());
                             }

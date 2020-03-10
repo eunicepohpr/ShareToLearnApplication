@@ -45,7 +45,7 @@ public class Course implements Serializable {
         courseDocData.put("courseCode", this.courseCode);
         courseDocData.put("description", this.description);
         courseDocData.put("registered", this.getReferenceListFireStoreFormat(this.registeredUserKeys, "User"));
-        courseDocData.put("reviews", this.getReferenceListFireStoreFormat(this.getReviewKeys(), "CourseReview"));
+        courseDocData.put("reviews", this.getReferenceListFireStoreFormat(this.reviewKeys, "CourseReview"));
         courseDocData.put("title", this.title);
         return courseDocData;
     }

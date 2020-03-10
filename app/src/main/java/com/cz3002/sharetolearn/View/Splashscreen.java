@@ -107,13 +107,13 @@ public class Splashscreen extends AppCompatActivity {
 
                             // get list of registered users
                             String a = String.valueOf(document.get("reviews"));
-                            if (a != "null" || a != null || a != "[]")
+                            if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("reviews"))
                                     course.addRegisteredUserKeys(registeredUser.getPath());
 
                             // get list of registered users
                             String b = String.valueOf(document.get("registered"));
-                            if (b != "null" || b != null || b != "[]")
+                            if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("registered"))
                                     course.addReviewKeys(registeredUser.getPath());
 
@@ -146,7 +146,7 @@ public class Splashscreen extends AppCompatActivity {
 
                             // get list of user registered courses
                             String b = String.valueOf(document.get("registered"));
-                            if (b != "null" || b != null || b != "[]")
+                            if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference registeredCourse : (ArrayList<DocumentReference>) document.get("registered"))
                                     user.addRegisteredCourseKey(registeredCourse.getPath());
 
@@ -197,13 +197,13 @@ public class Splashscreen extends AppCompatActivity {
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
-                            if (a != "null" || a != null || a != "[]")
+                            if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
                                     discussion.addResponseKey(response.getPath());
 
                             // get list of user likes
                             String b = String.valueOf(document.get("likes"));
-                            if (b != "null" || b != null || b != "[]")
+                            if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference userLike : (ArrayList<DocumentReference>) document.get("likes"))
                                     discussion.addLikeKey(userLike.getPath());
 
@@ -236,13 +236,13 @@ public class Splashscreen extends AppCompatActivity {
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
-                            if (a != "null" || a != null || a != "[]")
+                            if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
                                     pyp.addResponseKey(response.getPath());
 
                             // get list of user likes
                             String b = String.valueOf(document.get("likes"));
-                            if (b != "null" || b != null || b != "[]")
+                            if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference userLike : (ArrayList<DocumentReference>) document.get("likes"))
                                     pyp.addLikeKey(userLike.getPath());
 
@@ -301,13 +301,13 @@ public class Splashscreen extends AppCompatActivity {
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
-                            if (a != "null" || a != null || a != "[]")
+                            if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference upvote : (ArrayList<DocumentReference>) document.get("upvotes"))
                                     discussionResponse.addUpvoteKey(upvote.getPath());
 
                             // get list of downvotes
                             String b = String.valueOf(document.get("downvotes"));
-                            if (b != "null" || b != null || b != "[]")
+                            if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference downvote : (ArrayList<DocumentReference>) document.get("downvotes"))
                                     discussionResponse.addDownvoteKey(downvote.getPath());
 
@@ -340,13 +340,13 @@ public class Splashscreen extends AppCompatActivity {
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
-                            if (a != "null" || a != null || a != "[]")
+                            if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference upvote : (ArrayList<DocumentReference>) document.get("upvotes"))
                                     pypResponse.addUpvoteKey(upvote.getPath());
 
                             // get list of downvotes
                             String b = String.valueOf(document.get("downvotes"));
-                            if (b != "null" || b != null || b != "[]")
+                            if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference downvote : (ArrayList<DocumentReference>) document.get("downvotes"))
                                     pypResponse.addDownvoteKey(downvote.getPath());
 
