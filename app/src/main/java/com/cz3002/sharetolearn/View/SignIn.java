@@ -2,20 +2,27 @@ package com.cz3002.sharetolearn.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.ShareToLearnApplication;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SignIn extends AppCompatActivity {
     private Button login, create;
     private EditText emailTV, pwdTV;
-    private ShareToLearnApplication shareToLearnApp;
-//    private FirebaseAuth mAuth;
+//    private ShareToLearnApplication shareToLearnApp;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +31,9 @@ public class SignIn extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
-        shareToLearnApp = (ShareToLearnApplication) args.getSerializable("ShareToLearnApp");
+//        shareToLearnApp = (ShareToLearnApplication) args.getSerializable("ShareToLearnApp");
 
-//        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         emailTV = findViewById(R.id.si_emailInput);
         pwdTV = findViewById(R.id.si_pwdInput);
@@ -36,9 +43,7 @@ public class SignIn extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignIn.this, MainFeed.class);
-                startActivity(intent);
-//                loginUserAccount();
+                loginUserAccount();
             }
         });
 
@@ -51,7 +56,7 @@ public class SignIn extends AppCompatActivity {
         });
     }
 
-    /*private void loginUserAccount() {
+    private void loginUserAccount() {
         String email, password;
         email = emailTV.getText().toString();
         password = pwdTV.getText().toString();
@@ -72,7 +77,7 @@ public class SignIn extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(SignIn.this, NavDrawer.class);
+                            Intent intent = new Intent(SignIn.this, MainFeed.class);
                             startActivity(intent);
                             finish(); //to stop it from rerunning
                         } else {
@@ -80,6 +85,6 @@ public class SignIn extends AppCompatActivity {
                         }
                     }
                 });
-    }*/
+    }
 }
 

@@ -109,13 +109,13 @@ public class Splashscreen extends AppCompatActivity {
                             String a = String.valueOf(document.get("reviews"));
                             if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("reviews"))
-                                    course.addRegisteredUserKeys(registeredUser.getPath());
+                                    course.addRegisteredUserKeys(registeredUser.getId());
 
                             // get list of registered users
                             String b = String.valueOf(document.get("registered"));
                             if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference registeredUser : (ArrayList<DocumentReference>) document.get("registered"))
-                                    course.addReviewKeys(registeredUser.getPath());
+                                    course.addReviewKeys(registeredUser.getId());
 
                             courses.put(key, course); // add to hashmap
                         }
@@ -148,25 +148,25 @@ public class Splashscreen extends AppCompatActivity {
                             String b = String.valueOf(document.get("registered"));
                             if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference registeredCourse : (ArrayList<DocumentReference>) document.get("registered"))
-                                    user.addRegisteredCourseKey(registeredCourse.getPath());
+                                    user.addRegisteredCourseKey(registeredCourse.getId());
 
                             // get list of user likes
                             HashMap<String, Object> userLikes = (HashMap<String, Object>) document.get("likes");
                             if (userLikes.containsKey("pyp"))
                                 for (DocumentReference pypLike : (ArrayList<DocumentReference>) userLikes.get("pyp"))
-                                    user.addPypLikeKey(pypLike.getPath());
+                                    user.addPypLikeKey(pypLike.getId());
                             if (userLikes.containsKey("discussion"))
                                 for (DocumentReference discussionLike : (ArrayList<DocumentReference>) userLikes.get("discussion"))
-                                    user.addDiscussionLikeKey(discussionLike.getPath());
+                                    user.addDiscussionLikeKey(discussionLike.getId());
 
                             // get list of user ratings
                             HashMap<String, Object> userRatings = (HashMap<String, Object>) document.get("ratings");
                             if (userRatings.containsKey("pyp"))
                                 for (DocumentReference pypRating : (ArrayList<DocumentReference>) userRatings.get("pyp"))
-                                    user.addPypRatingKey(pypRating.getPath());
+                                    user.addPypRatingKey(pypRating.getId());
                             if (userRatings.containsKey("discussion"))
                                 for (DocumentReference discussionRating : (ArrayList<DocumentReference>) userRatings.get("discussion"))
-                                    user.addDiscussionRatingKey(discussionRating.getPath());
+                                    user.addDiscussionRatingKey(discussionRating.getId());
 
                             users.put(key, user); // add to hashmap
                         }
@@ -192,20 +192,20 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference courseKey = document.getDocumentReference("course");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            Discussion discussion = new Discussion(key, courseKey.getPath(), question,
-                                    postedByKey.getPath(), title, postedDateTime);
+                            Discussion discussion = new Discussion(key, courseKey.getId(), question,
+                                    postedByKey.getId(), title, postedDateTime);
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
                             if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
-                                    discussion.addResponseKey(response.getPath());
+                                    discussion.addResponseKey(response.getId());
 
                             // get list of user likes
                             String b = String.valueOf(document.get("likes"));
                             if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference userLike : (ArrayList<DocumentReference>) document.get("likes"))
-                                    discussion.addLikeKey(userLike.getPath());
+                                    discussion.addLikeKey(userLike.getId());
 
                             discussions.put(key, discussion); //add to hashmap
                         }
@@ -231,20 +231,20 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference courseKey = document.getDocumentReference("course");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            PYP pyp = new PYP(key, courseKey.getPath(), postedByKey.getPath(),
+                            PYP pyp = new PYP(key, courseKey.getId(), postedByKey.getId(),
                                     question, title, postedDateTime);
 
                             // get list of responses
                             String a = String.valueOf(document.get("responses"));
                             if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
-                                    pyp.addResponseKey(response.getPath());
+                                    pyp.addResponseKey(response.getId());
 
                             // get list of user likes
                             String b = String.valueOf(document.get("likes"));
                             if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference userLike : (ArrayList<DocumentReference>) document.get("likes"))
-                                    pyp.addLikeKey(userLike.getPath());
+                                    pyp.addLikeKey(userLike.getId());
 
                             pyps.put(key, pyp); // add to hashmap
                         }
@@ -271,7 +271,7 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference courseKey = document.getDocumentReference("course");
 
                             CourseReview courseReview = new CourseReview(key, rating, ratedDateTime,
-                                    description, courseKey.getPath(), ratedByKey.getPath());
+                                    description, courseKey.getId(), ratedByKey.getId());
 
                             courseReviews.put(key, courseReview); // add to hashmap
                         }
@@ -297,19 +297,19 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
                             DiscussionResponse discussionResponse = new DiscussionResponse(key,
-                                    discussionKey.getPath(), postedByKey.getPath(), answer, postedDateTime);
+                                    discussionKey.getId(), postedByKey.getId(), answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
                             if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference upvote : (ArrayList<DocumentReference>) document.get("upvotes"))
-                                    discussionResponse.addUpvoteKey(upvote.getPath());
+                                    discussionResponse.addUpvoteKey(upvote.getId());
 
                             // get list of downvotes
                             String b = String.valueOf(document.get("downvotes"));
                             if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference downvote : (ArrayList<DocumentReference>) document.get("downvotes"))
-                                    discussionResponse.addDownvoteKey(downvote.getPath());
+                                    discussionResponse.addDownvoteKey(downvote.getId());
 
                             discussionResponses.put(key, discussionResponse);
                         }
@@ -335,20 +335,20 @@ public class Splashscreen extends AppCompatActivity {
                             DocumentReference pypKey = document.getDocumentReference("pyp");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
-                            PYPResponse pypResponse = new PYPResponse(key, postedByKey.getPath(),
-                                    pypKey.getPath(), working, answer, postedDateTime);
+                            PYPResponse pypResponse = new PYPResponse(key, postedByKey.getId(),
+                                    pypKey.getId(), working, answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
                             if (a != "null" && a != null && a != "[]")
                                 for (DocumentReference upvote : (ArrayList<DocumentReference>) document.get("upvotes"))
-                                    pypResponse.addUpvoteKey(upvote.getPath());
+                                    pypResponse.addUpvoteKey(upvote.getId());
 
                             // get list of downvotes
                             String b = String.valueOf(document.get("downvotes"));
                             if (b != "null" && b != null && b != "[]")
                                 for (DocumentReference downvote : (ArrayList<DocumentReference>) document.get("downvotes"))
-                                    pypResponse.addDownvoteKey(downvote.getPath());
+                                    pypResponse.addDownvoteKey(downvote.getId());
 
                             pypResponses.put(key, pypResponse);
                         }
