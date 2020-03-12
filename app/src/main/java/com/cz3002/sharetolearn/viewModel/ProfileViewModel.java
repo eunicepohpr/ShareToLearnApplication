@@ -42,7 +42,7 @@ public class ProfileViewModel extends ViewModel {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbCurrentUser = mAuth.getCurrentUser();
         if (fbCurrentUser != null) {
-            db.collection("User").document("u0V6npiHU87egeDnAZzG").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            db.collection("User").document(fbCurrentUser.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     if (documentSnapshot != null) {
@@ -75,12 +75,10 @@ public class ProfileViewModel extends ViewModel {
 
                         // get list of registered courses
                         String b = String.valueOf(documentSnapshot.get("registered"));
-                        if (b != "null" && b != null && b != "[]") {
-                            for (DocumentReference registeredCourse : (ArrayList<DocumentReference>) documentSnapshot.get("registered")) {
-                                String courseRef = registeredCourse.getId();
-                                user.addRegisteredCourseKey(courseRef);
-                            }
-                        }
+                        if (b != "null" && b != null && b != "[]")
+                            for (DocumentReference registeredCourse : (ArrayList<DocumentReference>) documentSnapshot.get("registered"))
+                                user.addRegisteredCourseKey(registeredCourse.getId());
+
                         currentUser = user;
                         mUser.setValue(user);
                     }
