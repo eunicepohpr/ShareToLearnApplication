@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.CourseReview;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,9 @@ public class ReviewAdapter extends BaseAdapter {
     private Context context;
     private List<CourseReview> courseReviews;
     private static LayoutInflater inflater = null;
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
     public ReviewAdapter(Context context, List<CourseReview> courseReviews) {
         this.context = context;
@@ -42,8 +46,11 @@ public class ReviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
         CourseReview courseReview = courseReviews.get(i);
-        //String username = courseReview.getRatedBy().getName().toString();
+        String username = courseReview.getRatedBy().getName();
         Date date = courseReview.getRatedDateTime();
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
         String formatedDate = simpleDate.format(date);
@@ -51,8 +58,8 @@ public class ReviewAdapter extends BaseAdapter {
         double rating = courseReview.getRating();
 
         if (view == null) view = inflater.inflate(R.layout.listitem_review, null);
-        /*TextView usernameTV = view.findViewById(R.id.review_username);
-        usernameTV.setText(username);*/
+        TextView usernameTV = view.findViewById(R.id.review_username);
+        usernameTV.setText(username);
         TextView dateTV = view.findViewById(R.id.review_date);
         dateTV.setText(formatedDate);
         TextView descriptionTV = view.findViewById(R.id.review_desc);

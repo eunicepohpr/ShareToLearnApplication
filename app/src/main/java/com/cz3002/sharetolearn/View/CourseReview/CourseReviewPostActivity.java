@@ -15,10 +15,10 @@ import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class CourseReviewPostActivity extends AppCompatActivity {
 
@@ -29,6 +29,9 @@ public class CourseReviewPostActivity extends AppCompatActivity {
     private Button postReviewBtn;
     private CourseReviewViewModel courseReviewViewModel;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentFbUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,9 @@ public class CourseReviewPostActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         selectedCourse = (Course) args.getSerializable("SELECTEDCOURSE");
+
+        mAuth = FirebaseAuth.getInstance();
+        currentFbUser = mAuth.getCurrentUser();
 
         courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
 
@@ -51,7 +57,7 @@ public class CourseReviewPostActivity extends AppCompatActivity {
                 double rating = ratingBar.getRating();
                 String description = reviewDescET.getText().toString();
                 String courseKey = selectedCourse.getKey();
-                String ratedByKey = "u0V6npiHU87egeDnAZzG";
+                String ratedByKey = currentFbUser.getUid();
                 courseReview = new CourseReview(rating, ratedByKey, description, courseKey, new Date());
 
                 courseReviewViewModel.newReview(courseReview, selectedCourse);

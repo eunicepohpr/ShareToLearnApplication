@@ -30,6 +30,7 @@ public class CourseReviewListActivity extends AppCompatActivity {
     private TextView avgRatingTV;
     private TextView coursenameTV;
     private TextView noreviewsTV;
+    //summary
     private RatingBar ratingbar;
     private ProgressBar progressBar5;
     private ProgressBar progressBar4;

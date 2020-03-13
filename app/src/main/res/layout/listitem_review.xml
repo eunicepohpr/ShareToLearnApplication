@@ -35,14 +35,14 @@
                     android:layout_alignParentLeft="true"/>
 
                 <LinearLayout
-                    android:id="@+id/review_username"
+                    android:id="@+id/review_username_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/pyp_userImage">
                     <TextView
-                        android:id="@+id/pyptopic_title"
+                        android:id="@+id/review_username"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:layout_below="@+id/review_username"
+                    android:layout_below="@+id/review_username_title"
                     android:layout_toRightOf="@+id/pyp_userImage">
                     <RatingBar
                         android:id="@+id/review_ratingBar"

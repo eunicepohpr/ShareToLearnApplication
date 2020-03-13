@@ -1,7 +1,6 @@
 package com.cz3002.sharetolearn.viewModel;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -9,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
+import com.cz3002.sharetolearn.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,12 +23,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class CourseReviewViewModel extends ViewModel {
@@ -36,46 +33,52 @@ public class CourseReviewViewModel extends ViewModel {
     private MutableLiveData<ArrayList<CourseReview>> mReviewList = new MutableLiveData<>();
     private ArrayList<Course> courseList = new ArrayList<>();
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
+    private ArrayList<User> userList = new ArrayList<>();
+    private User currentUser;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
-    private DocumentReference usersDoc;
+    private DocumentReference courseDoc;
     private DocumentReference reviewDoc;
-    private FirebaseUser currentUser;
+    private FirebaseUser currentFbUser;
 
     public CourseReviewViewModel() {
         // get current login user
-        /*mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            usersDoc = db.collection("users").document(currentUser.getUid());
-        }*/
-        //usersDoc = db.collection("CourseReview").document();
-
-/*        courseList = new ArrayList<String>();
-        courseList.add("CZ2005 Operating System");
-        courseList.add("CZ1011 Engineering Mathematics I");
-        courseList.add("CZ3003 Software Design & Analysis");
-        mCourses = new MutableLiveData<>();
-        mCourses.setValue(courseList);*/
+        mAuth = FirebaseAuth.getInstance();
+        currentFbUser = mAuth.getCurrentUser();
     }
 
-/*    public LiveData<ArrayList<String>> getCourseList(){
-        return mCourses;
-    }*/
-
     public LiveData<ArrayList<CourseReview>> getCourseReviewList(Course selectedCourse) {
-        //getFireStoreCourseAllReviewsData();
-        realtimeFireStoreData(selectedCourse);
+        getAllUserData();
+        realtimeReviewData(selectedCourse);
         return mReviewList;
     }
 
     public LiveData<ArrayList<Course>> getCourseList() {
-        getFireStoreCoursesData();
+        realtimeCourseData();
         return mCourses;
     }
 
-    public void realtimeFireStoreData(final Course selectedCourse) {
+    public void realtimeCourseData() {
+        courseDoc = db.collection("CourseModule").document();
+        courseDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("Listen", "Listen failed.", e);
+                    return;
+                }
+                if (snapshot != null && snapshot.exists()) {
+                    getFireStoreCoursesData();
+                } else {
+                    getFireStoreCoursesData();
+                }
+            }
+        });
+    }
+
+    public void realtimeReviewData(final Course selectedCourse) {
         reviewDoc = db.collection("CourseModule").document(selectedCourse.getKey());
         reviewDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -86,10 +89,62 @@ public class CourseReviewViewModel extends ViewModel {
                     return;
                 }
                 if (snapshot != null && snapshot.exists()) {
-                    //getFireStoreCoursesData();
                     getFireStoreCourseReviewsData(selectedCourse);
                 } else {
                     getFireStoreCourseReviewsData(selectedCourse);
+                }
+            }
+        });
+    }
+
+    public void getAllUserData(){
+        db.collection("User").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    courseList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document != null) {
+                            String key = document.getId();
+                            String name = document.getString("name");
+                            String grad = document.getString("expectedYearOfGrad");
+                            String course = document.getString("courseOfStudy");
+                            String bio = document.getString("biography");
+                            String email = document.getString("email");
+
+                            User user = new User(key, bio, email, course, grad, name);
+
+                            // get list of user likes
+                            HashMap<String, Object> userLikes = (HashMap<String, Object>) document.get("likes");
+                            if (userLikes.containsKey("pyp"))
+                                for (DocumentReference pypLike : (ArrayList<DocumentReference>) userLikes.get("pyp"))
+                                    user.addPypLikeKey(pypLike.getId());
+                            if (userLikes.containsKey("discussion"))
+                                for (DocumentReference discussionLike : (ArrayList<DocumentReference>) userLikes.get("discussion"))
+                                    user.addDiscussionLikeKey(discussionLike.getId());
+
+                            // get list of user ratings
+                            HashMap<String, Object> userRatings = (HashMap<String, Object>) document.get("ratings");
+                            if (userRatings.containsKey("pyp"))
+                                for (DocumentReference pypRating : (ArrayList<DocumentReference>) userRatings.get("pyp"))
+                                    user.addPypRatingKey(pypRating.getId());
+                            if (userRatings.containsKey("discussion"))
+                                for (DocumentReference discussionRating : (ArrayList<DocumentReference>) userRatings.get("discussion"))
+                                    user.addDiscussionRatingKey(discussionRating.getId());
+
+                            // get list of registered courses
+                            String b = String.valueOf(document.get("registered"));
+                            if (b != "null" && b != null && b != "[]")
+                                for (DocumentReference registeredCourse : (ArrayList<DocumentReference>) document.get("registered"))
+                                    user.addRegisteredCourseKey(registeredCourse.getId());
+
+                            userList.add(user);
+
+                            if(user.getKey().equals(currentFbUser.getUid())){
+                                currentUser = user;
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -157,6 +212,13 @@ public class CourseReviewViewModel extends ViewModel {
                                 String description = document.getString("description");
                                 String courseKey = ratedByKey.toString();
                                 CourseReview courseReview = new CourseReview(key, rating, dateTime, ratedByKeyString, description, courseKey);
+
+                                for(User u : userList){
+                                    String userKey = ratedByKey.getId();
+                                    if(u.getKey().equals(userKey)){
+                                        courseReview.setRatedBy(u);
+                                    }
+                                }
                                 reviewList.add(courseReview);
                             }
                         }
@@ -202,11 +264,5 @@ public class CourseReviewViewModel extends ViewModel {
 
         db.collection("CourseReview").document(review.getKey()).set(docData);
         //.update("ratedDateTime", getTimestamp());
-    }
-
-    public String getTimestamp() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss",
-                Locale.getDefault());
-        return sdf.format(new Date());
     }
 }
