@@ -40,7 +40,7 @@
             android:textSize="15dp"
             android:text="Name" />
 
-        <TextView
+        <EditText
             android:id="@+id/profile_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             android:text="Course of study"
             android:layout_marginTop="15dp"/>
 
-        <TextView
+        <EditText
             android:id="@+id/profile_course"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
             android:text="Expected year of graduation"
             android:layout_marginTop="15dp"/>
 
-        <TextView
+        <EditText
             android:id="@+id/profile_graduation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -10,8 +10,8 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="-20dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/logo" />
 
@@ -21,6 +21,31 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/imageView"
         android:gravity="bottom|center_horizontal">
+
+        <EditText
+            android:id="@+id/su_nameInput"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:hint="Full Name"/>
+
+        <EditText
+            android:id="@+id/su_cosInput"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:hint="Course of Study"/>
+
+        <EditText
+            android:id="@+id/su_eyogInput"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:hint="Expected Year of Graduation"/>
+
+        <EditText
+            android:id="@+id/su_bioInput"
+            android:layout_width="300dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="match_parent"
+            android:hint="Biography"/>
 
         <EditText
             android:id="@+id/su_emailInput"
@@ -40,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Sign Up"
             android:id="@+id/SignUpBtn"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:background="@color/colourNavy"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"/>

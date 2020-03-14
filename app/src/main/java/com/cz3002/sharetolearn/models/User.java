@@ -52,12 +52,12 @@ public class User implements Serializable {
 
     // get firestore format to add
     public Map<String, Object> getFireStoreFormat() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> userDocData = new HashMap<>();
         userDocData.put("biography", this.biography);
         userDocData.put("courseOfStudy", this.courseOfStudy);
         userDocData.put("email", this.email);
         userDocData.put("expectedYearOfGrad", this.expectedYearOfGrad);
+        userDocData.put("name", this.name);
         userDocData.put("registered", this.getReferenceListFireStoreFormat(this.registeredCourseKeys, "CourseModule"));
 
         HashMap<String, ArrayList> likes = new HashMap<>();
