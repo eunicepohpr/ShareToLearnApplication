@@ -3,6 +3,10 @@ package com.cz3002.sharetolearn.View;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,14 +16,29 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.ProfileViewModel;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
+
+import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
@@ -27,6 +46,12 @@ public class ProfileFragment extends Fragment {
     private EditText userName, userCourse, userGradYr, userBio;
     private TextView userEmail, userCourseTitle, userGradYrTitle;
     private Button updateProfile;
+
+    private ImageView profileImage;
+    StorageReference storageReference;
+    private static final int IMAGE_REQUEST = 1;
+    private StorageTask uploadTask;
+    private Uri imageUri;
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -38,6 +63,8 @@ public class ProfileFragment extends Fragment {
         profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.profile_fragment, container, false);
 
+        storageReference = FirebaseStorage.getInstance().getReference();
+
         userName = root.findViewById(R.id.profile_name);
         userEmail = root.findViewById(R.id.profile_email);
         userCourse = root.findViewById(R.id.profile_course);
@@ -46,6 +73,7 @@ public class ProfileFragment extends Fragment {
         updateProfile = root.findViewById(R.id.save_button);
         userCourseTitle = root.findViewById(R.id.profile_title_course);
         userGradYrTitle = root.findViewById(R.id.profile_title_graduation);
+        profileImage = root.findViewById(R.id.profile_photo);
 
         profileViewModel.getUser().observe(this, new Observer<User>() {
             @Override
@@ -61,6 +89,10 @@ public class ProfileFragment extends Fragment {
                     userCourseTitle.setVisibility(View.INVISIBLE);
                     userGradYrTitle.setVisibility(View.INVISIBLE);
                 }
+                if (user.getImageURL() != "")
+                    Glide.with(getContext()).load(user.getImageURL()).apply(RequestOptions.circleCropTransform()).into(profileImage);
+                else
+                    Glide.with(getContext()).load(R.mipmap.ic_launcher_round).apply(RequestOptions.circleCropTransform()).into(profileImage);
             }
         });
 
@@ -73,7 +105,77 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openImage();
+            }
+        });
+
         return root;
     }
 
+    private void openImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, IMAGE_REQUEST);
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getContext().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void uploadImage() {
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setMessage("Uploading");
+        pd.show();
+
+        if (imageUri != null) {
+            final StorageReference fileReference = storageReference.child(
+                    profileViewModel.getUser().getValue().getKey() + "_" + System.currentTimeMillis() +
+                            "." + getFileExtension(imageUri));
+            uploadTask = fileReference.putFile(imageUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) throw task.getException();
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = (Uri) task.getResult();
+                        String mUri = downloadUri.toString();
+
+                        // update user db
+                        profileViewModel.uploadImage(mUri);
+
+                        Toast.makeText(getContext(), mUri, Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
+                    } else {
+                        Toast.makeText(getContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
+                    }
+                }
+            });
+        } else
+            Toast.makeText(getContext(), "No image selected", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK &&
+                data != null && data.getData() != null) {
+            imageUri = data.getData();
+            if (uploadTask != null && uploadTask != null)
+                Toast.makeText(getContext(), "Upload in progress", Toast.LENGTH_SHORT).show();
+            else
+                uploadImage();
+        }
+    }
 }

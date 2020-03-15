@@ -10,7 +10,7 @@ public class MainUserViewModel extends ViewModel {
     private MutableLiveData<User> mMainUser;
 
     public MainUserViewModel(){
-        User mainUser = new User("user1", "My biography", "lam022@e.ntu.edu.sg", "Computer Science", "2021", "lam", "student");
+        User mainUser = new User("user1", "My biography", "lam022@e.ntu.edu.sg", "Computer Science", "2021", "lam", "Student", "");
         mMainUser = new MutableLiveData<>();
         mMainUser.setValue(mainUser);
     }

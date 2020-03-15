@@ -15,20 +15,16 @@ import com.cz3002.sharetolearn.models.Discussion;
 import com.cz3002.sharetolearn.models.DiscussionResponse;
 import com.cz3002.sharetolearn.models.PYP;
 import com.cz3002.sharetolearn.models.PYPResponse;
-import com.cz3002.sharetolearn.models.ShareToLearnApplication;
 import com.cz3002.sharetolearn.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Serializable;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,7 +34,6 @@ public class Splashscreen extends AppCompatActivity {
     private ProgressBar progressBar;
     private int progress;
 
-    private ShareToLearnApplication shareToLearnApp = new ShareToLearnApplication();
     private HashMap<String, Course> courses = new HashMap<>();
     private HashMap<String, User> users = new HashMap<>();
     private HashMap<String, Discussion> discussions = new HashMap<>();
@@ -120,7 +115,6 @@ public class Splashscreen extends AppCompatActivity {
                             courses.put(key, course); // add to hashmap
                         }
                     }
-                    shareToLearnApp.setCourses(courses);
                 }
             }
         });
@@ -142,8 +136,9 @@ public class Splashscreen extends AppCompatActivity {
                             String email = document.getString("email");
                             String expectedYearOfGrad = document.getString("expectedYearOfGrad");
                             String domain = document.getString("domain");
+                            String imageUrl = document.getString("imageUrl");
 
-                            User user = new User(key, bio, email, courseOfStudy, expectedYearOfGrad, name, domain);
+                            User user = new User(key, bio, email, courseOfStudy, expectedYearOfGrad, name, domain, imageUrl);
 
                             // get list of user registered courses
                             String b = String.valueOf(document.get("registered"));
@@ -172,7 +167,6 @@ public class Splashscreen extends AppCompatActivity {
                             users.put(key, user); // add to hashmap
                         }
                     }
-                    shareToLearnApp.setUsers(users);
                 }
             }
         });
@@ -211,7 +205,6 @@ public class Splashscreen extends AppCompatActivity {
                             discussions.put(key, discussion); //add to hashmap
                         }
                     }
-                    shareToLearnApp.setDiscussions(discussions);
                 }
             }
         });
@@ -250,7 +243,6 @@ public class Splashscreen extends AppCompatActivity {
                             pyps.put(key, pyp); // add to hashmap
                         }
                     }
-                    shareToLearnApp.setPyps(pyps);
                 }
             }
         });
@@ -277,7 +269,6 @@ public class Splashscreen extends AppCompatActivity {
                             courseReviews.put(key, courseReview); // add to hashmap
                         }
                     }
-                    shareToLearnApp.setCourseReviews(courseReviews);
                 }
             }
         });
@@ -315,7 +306,6 @@ public class Splashscreen extends AppCompatActivity {
                             discussionResponses.put(key, discussionResponse);
                         }
                     }
-                    shareToLearnApp.setDiscussionResponses(discussionResponses);
                 }
             }
         });
@@ -354,7 +344,6 @@ public class Splashscreen extends AppCompatActivity {
                             pypResponses.put(key, pypResponse);
                         }
                     }
-                    shareToLearnApp.setPypResponses(pypResponses);
                 }
             }
         });

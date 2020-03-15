@@ -1,9 +1,9 @@
 package com.cz3002.sharetolearn.View;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,8 +25,8 @@ public class SignIn extends AppCompatActivity implements AdapterView.OnItemSelec
     private Button login, create;
     private EditText emailTV, pwdTV;
     private Spinner spinner;
-    //    private ShareToLearnApplication shareToLearnApp;
     private FirebaseAuth mAuth;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +35,10 @@ public class SignIn extends AppCompatActivity implements AdapterView.OnItemSelec
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
-//        shareToLearnApp = (ShareToLearnApplication) args.getSerializable("ShareToLearnApp");
 
         mAuth = FirebaseAuth.getInstance();
+
+        pd = new ProgressDialog(this);
 
         emailTV = findViewById(R.id.si_emailInput);
         pwdTV = findViewById(R.id.si_pwdInput);
@@ -67,6 +68,9 @@ public class SignIn extends AppCompatActivity implements AdapterView.OnItemSelec
     }
 
     private void loginUserAccount() {
+        pd.setMessage("Logging in..");
+        pd.show();
+
         String email, password;
         email = emailTV.getText().toString();
         password = pwdTV.getText().toString();
@@ -85,7 +89,8 @@ public class SignIn extends AppCompatActivity implements AdapterView.OnItemSelec
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                            pd.dismiss();
                             Intent intent = new Intent(SignIn.this, MainFeed.class);
                             startActivity(intent);
                             finish(); // to stop it from rerunning

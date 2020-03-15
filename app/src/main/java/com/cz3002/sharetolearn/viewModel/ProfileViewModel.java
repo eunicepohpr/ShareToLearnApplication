@@ -13,6 +13,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,8 +54,9 @@ public class ProfileViewModel extends ViewModel {
                         String bio = documentSnapshot.getString("biography");
                         String email = documentSnapshot.getString("email");
                         String domain = documentSnapshot.getString("domain");
+                        String imageUrl = documentSnapshot.getString("imageUrl");
 
-                        User user = new User(key, bio, email, course, grad, name, domain);
+                        User user = new User(key, bio, email, course, grad, name, domain, imageUrl);
 
                         // get list of user likes
                         HashMap<String, Object> userLikes = (HashMap<String, Object>) documentSnapshot.get("likes");
@@ -98,9 +100,14 @@ public class ProfileViewModel extends ViewModel {
         userDocData.put("courseOfStudy", currentUser.getCourseOfStudy());
         userDocData.put("expectedYearOfGrad", currentUser.getExpectedYearOfGrad());
         userDocData.put("name", currentUser.getName());
-        db.collection("User")
-                .document(currentUser.getKey())
-                .update(userDocData);
+        db.collection("User") .document(currentUser.getKey()) .update(userDocData);
         mUser.setValue(currentUser);
+    }
+
+    public void uploadImage(String mUri) {
+        currentUser.setImageURL(mUri);
+        Map<String, Object> userDocData = new HashMap<>();
+        userDocData.put("imageUrl", currentUser.getImageURL());
+        db.collection("User") .document(currentUser.getKey()) .update(userDocData);
     }
 }
