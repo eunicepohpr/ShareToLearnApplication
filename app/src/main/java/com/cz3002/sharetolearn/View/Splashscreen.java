@@ -141,8 +141,9 @@ public class Splashscreen extends AppCompatActivity {
                             String courseOfStudy = document.getString("courseOfStudy");
                             String email = document.getString("email");
                             String expectedYearOfGrad = document.getString("expectedYearOfGrad");
+                            String domain = document.getString("domain");
 
-                            User user = new User(key, bio, email, courseOfStudy, expectedYearOfGrad, name);
+                            User user = new User(key, bio, email, courseOfStudy, expectedYearOfGrad, name, domain);
 
                             // get list of user registered courses
                             String b = String.valueOf(document.get("registered"));

@@ -112,7 +112,7 @@ public class SignUp extends AppCompatActivity {
                                 if (currentUser != null) {
                                     String userId = currentUser.getUid();
                                     String email = currentUser.getEmail();
-                                    appUser = new User(userId, bio, email, cos, eyog, name);
+                                    appUser = new User(userId, bio, email, cos, eyog, name, "Student");
                                     setFireStoreData(appUser);
                                 }
 

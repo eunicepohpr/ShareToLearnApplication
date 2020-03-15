@@ -52,8 +52,9 @@ public class ProfileViewModel extends ViewModel {
                         String course = documentSnapshot.getString("courseOfStudy");
                         String bio = documentSnapshot.getString("biography");
                         String email = documentSnapshot.getString("email");
+                        String domain = documentSnapshot.getString("domain");
 
-                        User user = new User(key, bio, email, course, grad, name);
+                        User user = new User(key, bio, email, course, grad, name, domain);
 
                         // get list of user likes
                         HashMap<String, Object> userLikes = (HashMap<String, Object>) documentSnapshot.get("likes");

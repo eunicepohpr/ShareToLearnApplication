@@ -36,6 +36,11 @@
             android:inputType="textPassword"
             android:text="12345678"/>
 
+        <Spinner
+            android:id="@+id/si_doaminInput"
+            android:layout_width="300dp"
+            android:layout_height="match_parent" />
+
         <Button
             android:layout_width="300dp"
             android:layout_height="wrap_content"

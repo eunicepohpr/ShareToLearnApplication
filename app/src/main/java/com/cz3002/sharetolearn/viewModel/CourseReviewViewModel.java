@@ -111,8 +111,9 @@ public class CourseReviewViewModel extends ViewModel {
                             String course = document.getString("courseOfStudy");
                             String bio = document.getString("biography");
                             String email = document.getString("email");
+                            String domain = document.getString("domain");
 
-                            User user = new User(key, bio, email, course, grad, name);
+                            User user = new User(key, bio, email, course, grad, name, domain);
 
                             // get list of user likes
                             HashMap<String, Object> userLikes = (HashMap<String, Object>) document.get("likes");

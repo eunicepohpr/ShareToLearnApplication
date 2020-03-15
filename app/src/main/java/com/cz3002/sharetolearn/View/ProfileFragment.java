@@ -25,7 +25,7 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
     private EditText userName, userCourse, userGradYr, userBio;
-    private TextView userEmail;
+    private TextView userEmail, userCourseTitle, userGradYrTitle;
     private Button updateProfile;
 
     public static ProfileFragment newInstance() {
@@ -44,15 +44,23 @@ public class ProfileFragment extends Fragment {
         userGradYr = root.findViewById(R.id.profile_graduation);
         userBio = root.findViewById(R.id.profile_biography);
         updateProfile = root.findViewById(R.id.save_button);
+        userCourseTitle = root.findViewById(R.id.profile_title_course);
+        userGradYrTitle = root.findViewById(R.id.profile_title_graduation);
 
         profileViewModel.getUser().observe(this, new Observer<User>() {
             @Override
-            public void onChanged(User users) {
-                userName.setText(users.getName());
-                userEmail.setText(users.getEmail());
-                userCourse.setText(users.getCourseOfStudy());
-                userGradYr.setText(users.getExpectedYearOfGrad());
-                userBio.setText(users.getBiography());
+            public void onChanged(User user) {
+                userName.setText(user.getName());
+                userEmail.setText(user.getEmail());
+                userCourse.setText(user.getCourseOfStudy());
+                userGradYr.setText(user.getExpectedYearOfGrad());
+                userBio.setText(user.getBiography());
+                if (user.getDomain().equals("Staff")) {
+                    userCourse.setVisibility(View.INVISIBLE);
+                    userGradYr.setVisibility(View.INVISIBLE);
+                    userCourseTitle.setVisibility(View.INVISIBLE);
+                    userGradYrTitle.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
