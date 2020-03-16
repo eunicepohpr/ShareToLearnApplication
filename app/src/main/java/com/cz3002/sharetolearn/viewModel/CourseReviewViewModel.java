@@ -32,12 +32,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CourseReviewViewModel extends ViewModel {
+    private MutableLiveData<User> mUser = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Course>> mCourses = new MutableLiveData<>();
     private MutableLiveData<ArrayList<CourseReview>> mReviewList = new MutableLiveData<>();
     private ArrayList<Course> courseList = new ArrayList<>();
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
     private ArrayList<User> userList = new ArrayList<>();
-    private User currentUser;
+//    private User currentUser;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
@@ -60,6 +61,11 @@ public class CourseReviewViewModel extends ViewModel {
     public LiveData<ArrayList<Course>> getCourseList() {
         realtimeCourseData();
         return mCourses;
+    }
+
+    public LiveData<User> getUser() {
+        getAllUserData();
+        return mUser;
     }
 
     public void realtimeCourseData() {
@@ -146,7 +152,8 @@ public class CourseReviewViewModel extends ViewModel {
                             userList.add(user);
 
                             if (user.getKey().equals(currentFbUser.getUid())) {
-                                currentUser = user;
+//                                currentUser = user;
+                                mUser.setValue(user);
                             }
                         }
                     }
@@ -180,7 +187,6 @@ public class CourseReviewViewModel extends ViewModel {
                                     course.addRegisteredUserKeys(userRef);
                                 }
                             }
-
                             // get list of reviews
                             String a = String.valueOf(document.get("reviews"));
                             if (a != "null" && a != null && a != "[]") {

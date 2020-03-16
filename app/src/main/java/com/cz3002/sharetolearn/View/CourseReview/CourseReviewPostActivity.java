@@ -2,6 +2,7 @@ package com.cz3002.sharetolearn.View.CourseReview;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,16 +62,15 @@ public class CourseReviewPostActivity extends AppCompatActivity {
                 courseReview = new CourseReview(rating, ratedByKey, description, courseKey, new Date());
 
                 courseReviewViewModel.newReview(courseReview, selectedCourse);
-
                 onBackPressed();
-                /*Bundle args = new Bundle();
-                Intent reviewActivity = new Intent(getApplicationContext(), CourseReviewActivity.class);
-                args.putSerializable("SELECTEDCOURSE", selectedCourse);
-                reviewActivity.putExtra("BUNDLE", args);
-                startActivity(reviewActivity);*/
-
-                //Toast.makeText(getApplicationContext(), Float.toString(ratingBar.getRating()),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

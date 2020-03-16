@@ -48,6 +48,7 @@
                 android:layout_gravity="center"
                 android:textColor="@color/colorWhite"
                 android:text="Post discussion topic"/>
+
         </LinearLayout>
 
     </LinearLayout>

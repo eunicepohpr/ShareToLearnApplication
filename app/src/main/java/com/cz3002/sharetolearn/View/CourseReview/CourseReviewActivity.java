@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
+import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.CourseReviewViewModel;
 
 import java.text.DecimalFormat;
@@ -34,6 +35,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     private CourseReviewViewModel courseReviewViewModel;
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
     private Course selectedCourse = new Course();
+    private User currentUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,24 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         progressBar2 = findViewById(R.id.progressBar2);
         progressBar1 = findViewById(R.id.progressBar1);
 
+        postReview = findViewById(R.id.writeReview_button);
+        reviewToList = findViewById(R.id.review_layout);
+
         courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
+        courseReviewViewModel.getUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                currentUser = user;
+
+                String domain = currentUser.getDomain();
+                String domains = currentUser.getDomain();
+                if(currentUser.getDomain().equals("Staff")){
+                    postReview.setVisibility(View.INVISIBLE);
+                }else{
+                    postReview.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         courseReviewViewModel.getCourseReviewList(selectedCourse).observe(this, new Observer<ArrayList<CourseReview>>() {
             @Override
             public void onChanged(ArrayList<CourseReview> courseReviews) {
@@ -90,8 +109,6 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
             }
         });
 
-
-        postReview = findViewById(R.id.writeReview_button);
         postReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +121,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
             }
         });
 
-        reviewToList = findViewById(R.id.review_layout);
+
         reviewToList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //String msg = reviewList.get(0).getCourseKey().toString();
