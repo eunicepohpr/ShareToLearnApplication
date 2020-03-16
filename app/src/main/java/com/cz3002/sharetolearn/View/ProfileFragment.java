@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
     private EditText userName, userCourse, userGradYr, userBio;
-    private TextView userEmail, userCourseTitle, userGradYrTitle;
+    private TextView userEmail, userCourseTitle, userGradYrTitle, userBioTitle;
     private Button updateProfile;
 
     private ImageView profileImage;
@@ -70,6 +70,7 @@ public class ProfileFragment extends Fragment {
         userCourse = root.findViewById(R.id.profile_course);
         userGradYr = root.findViewById(R.id.profile_graduation);
         userBio = root.findViewById(R.id.profile_biography);
+        userBioTitle = root.findViewById(R.id.profile_title_biography);
         updateProfile = root.findViewById(R.id.save_button);
         userCourseTitle = root.findViewById(R.id.profile_title_course);
         userGradYrTitle = root.findViewById(R.id.profile_title_graduation);
@@ -88,6 +89,8 @@ public class ProfileFragment extends Fragment {
                     userGradYr.setVisibility(View.INVISIBLE);
                     userCourseTitle.setVisibility(View.INVISIBLE);
                     userGradYrTitle.setVisibility(View.INVISIBLE);
+                    userBio.setVisibility(View.INVISIBLE);
+                    userBioTitle.setVisibility(View.INVISIBLE);
                 }
                 if (user.getImageURL() != "")
                     Glide.with(getContext()).load(user.getImageURL()).apply(RequestOptions.circleCropTransform()).into(profileImage);
