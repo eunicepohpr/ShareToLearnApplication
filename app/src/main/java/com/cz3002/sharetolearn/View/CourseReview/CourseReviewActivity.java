@@ -25,18 +25,10 @@ import java.util.ArrayList;
 
 public class CourseReviewActivity extends AppCompatActivity implements Button.OnClickListener {
     private Button postReview;
-    private TextView avgRatingTV;
-    private TextView coursenameTV;
-    private TextView coursedescTV;
-    private TextView courseAssignmentTV;
-    private TextView noreviewsTV;
+    private TextView avgRatingTV, coursenameTV, coursedescTV, courseAssignmentTV, noreviewsTV;
     private LinearLayout reviewToList;
     private RatingBar ratingbar;
-    private ProgressBar progressBar5;
-    private ProgressBar progressBar4;
-    private ProgressBar progressBar3;
-    private ProgressBar progressBar2;
-    private ProgressBar progressBar1;
+    private ProgressBar progressBar5, progressBar4, progressBar3, progressBar2, progressBar1;
     private double count5, count4, count3, count2, count1;
 
     private CourseReviewViewModel courseReviewViewModel;
@@ -74,15 +66,19 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
             @Override
             public void onChanged(ArrayList<CourseReview> courseReviews) {
                 reviewList = courseReviews;
-                count5 = 0; count4 = 0; count3 = 0; count2 = 0; count1 = 0;
-                if(!courseReviews.isEmpty()){
+                count5 = 0;
+                count4 = 0;
+                count3 = 0;
+                count2 = 0;
+                count1 = 0;
+                if (!courseReviews.isEmpty()) {
                     progressCount(courseReviews);
                     //display avg
                     String avg = getAvgRating(reviewList);
                     avgRatingTV.setText(avg);
                     //display rating bar
                     ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
-                }else{
+                } else {
                     noreviewsTV.setVisibility(View.VISIBLE);
                 }
                 //display progressbar
@@ -93,6 +89,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
                 progressBar1.setProgress((int) count1);
             }
         });
+
 
         postReview = findViewById(R.id.writeReview_button);
         postReview.setOnClickListener(new View.OnClickListener() {
@@ -123,9 +120,9 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     }
 
     private String getAvgRating(ArrayList<CourseReview> reviewList) {
-        if(reviewList.isEmpty()){
+        if (reviewList.isEmpty()) {
             return "0";
-        }else{
+        } else {
             DecimalFormat df = new DecimalFormat("0.00");
             double sum = 0;
             double avg = 0;

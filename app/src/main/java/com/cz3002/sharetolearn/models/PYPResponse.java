@@ -6,39 +6,40 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 public class PYPResponse implements Serializable {
     private String key;
     private User postedBy;
     private PYP pyp;
-    private String working;
     private String answer;
     private Date postedDateTime;
     private String postedByKey;
     private String pypKey;
-    private ArrayList<String> downvoteKeys;
-    private ArrayList<String> upvoteKeys;
+    private HashSet<String> downvoteKeys;
+    private HashSet<String> upvoteKeys;
 //    private ArrayList<User> downvotes;
 //    private ArrayList<User> upvotes;
 
     public PYPResponse() {
     }
 
-    public PYPResponse(String key, String postedByKey, String pypKey, String working, String answer,
+    public PYPResponse(String key, String postedByKey, String pypKey, String answer,
                        Date postedDateTime) {
         this.key = key;
         this.postedByKey = postedByKey;
         this.pypKey = pypKey;
-        this.working = working;
         this.answer = answer;
         this.postedDateTime = postedDateTime;
-        this.downvoteKeys = new ArrayList<>();
-        this.upvoteKeys = new ArrayList<>();
-//        this.downvotes = new ArrayList<>();
-//        this.upvotes = new ArrayList<>();
+        this.downvoteKeys = new HashSet<>();
+        this.upvoteKeys = new HashSet<>();
+//        this.downvotes = new HashSet<>();
+//        this.upvotes = new HashSet<>();
     }
 
 
@@ -52,16 +53,15 @@ public class PYPResponse implements Serializable {
         pypResponseDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
         pypResponseDocData.put("pyp", db.collection("PYP").document(this.pypKey));
         pypResponseDocData.put("upvotes", this.getReferenceListFireStoreFormat(this.upvoteKeys, "User"));
-        pypResponseDocData.put("working", this.working);
         return pypResponseDocData;
     }
 
     // format string into firestore document reference format
-    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(ArrayList<String> list, String collection) {
+    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(Collection<String> list, String collection) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<DocumentReference> docList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++)
-            docList.add(db.collection(collection).document(list.get(i)));
+        for (String key: list)
+            docList.add(db.collection(collection).document(key));
         return docList;
     }
 
@@ -92,16 +92,6 @@ public class PYPResponse implements Serializable {
         this.pyp = pyp;
     }
 
-
-    public String getWorking() {
-        return working;
-    }
-
-    public void setWorking(String working) {
-        this.working = working;
-    }
-
-
     public String getAnswer() {
         return answer;
     }
@@ -120,11 +110,11 @@ public class PYPResponse implements Serializable {
     }
 
 
-    public ArrayList<String> getDownvoteKeys() {
+    public HashSet<String> getDownvoteKeys() {
         return downvoteKeys;
     }
 
-    public void setDownvoteKeys(ArrayList<String> downvoteKeys) {
+    public void setDownvoteKeys(HashSet<String> downvoteKeys) {
         this.downvoteKeys = downvoteKeys;
     }
 
@@ -133,11 +123,11 @@ public class PYPResponse implements Serializable {
     }
 
 
-    public ArrayList<String> getUpvoteKeys() {
+    public HashSet<String> getUpvoteKeys() {
         return upvoteKeys;
     }
 
-    public void setUpvoteKeys(ArrayList<String> upvoteKeys) {
+    public void setUpvoteKeys(HashSet<String> upvoteKeys) {
         this.upvoteKeys = upvoteKeys;
     }
 
@@ -161,6 +151,14 @@ public class PYPResponse implements Serializable {
 
     public void setPypKey(String pypKey) {
         this.pypKey = pypKey;
+    }
+
+    public void removeDownvoteKey(String key) {
+        this.downvoteKeys.remove(key);
+    }
+
+    public void removeUpvoteKey(String key) {
+        this.upvoteKeys.remove(key);
     }
 
 

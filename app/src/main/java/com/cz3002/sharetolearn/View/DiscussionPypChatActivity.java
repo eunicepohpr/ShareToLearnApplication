@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.View.Discussion.DiscussionFragment;
+import com.cz3002.sharetolearn.View.Pyp.PypFragment;
 import com.cz3002.sharetolearn.models.Course;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

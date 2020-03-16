@@ -164,6 +164,11 @@ public class PYP implements Serializable {
     }
 
 
+    public void removeLikeKey(String key) {
+        this.likeKeys.remove(key);
+    }
+
+
 //    public ArrayList<PYPResponse> getResponses() {
 //        return responses;
 //    }

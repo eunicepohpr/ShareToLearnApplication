@@ -29,9 +29,9 @@ public class UserViewModel extends ViewModel {
 
     public UserViewModel() {
         mUsers = new MutableLiveData<>();
+        mUsers.setValue(userMap);
         realtimeFireStoreUserData();
         getFireStoreUserData();
-        mUsers.setValue(userMap);
     }
 
     public HashMap<String, User> getUserMap(){

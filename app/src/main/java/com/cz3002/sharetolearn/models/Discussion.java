@@ -27,6 +27,8 @@ public class Discussion implements Serializable {
 //    private ArrayList<User> likes;
 
     public Discussion() {
+        responseKeys = new HashSet<>();
+        likeKeys = new HashSet<>();
     }
 
     public Discussion(String key, String courseKey, String question, String postedByKey, String title,

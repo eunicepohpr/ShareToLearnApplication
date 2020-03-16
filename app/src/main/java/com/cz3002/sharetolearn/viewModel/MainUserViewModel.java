@@ -1,8 +1,7 @@
 package com.cz3002.sharetolearn.viewModel;
 
 import com.cz3002.sharetolearn.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -11,56 +10,89 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MainUserViewModel extends ViewModel {
-    private MutableLiveData<User> mMainUser;
+
+    private MutableLiveData<User> mMainUser = new MutableLiveData<>();
+    private User currentUser;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
-    private DocumentReference documentReference;
 
-    public MainUserViewModel(){
+    public MainUserViewModel() {
+//        User mainUser = new User("user1", "My biography", "lam022@e.ntu.edu.sg", "Computer Science", "2021", "lam", "Student", "");
+//        mMainUser = new MutableLiveData<>();
+//        mMainUser.setValue(mainUser);
+    }
+
+    public LiveData<User> getMainUser() {
+        return mMainUser;
+    }
+
+    public void setMainUser(User user) {
         mMainUser = new MutableLiveData<>();
-        realtimeFireStoreMainUserData();
+        mMainUser.setValue(user);
+    }
+
+    public LiveData<User> getUser() {
         getFirestoreUser();
+        return mMainUser;
     }
 
     public void getFirestoreUser() {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser fbCurrentUser = mAuth.getCurrentUser();
         if (fbCurrentUser != null) {
-            db.collection("User").document(fbCurrentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            db.collection("User").document(fbCurrentUser.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
+                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                    if (documentSnapshot != null) {
                         String key = documentSnapshot.getId();
                         String name = documentSnapshot.getString("name");
-                        User mainUser = new User(key, name);
-                        mMainUser.setValue(mainUser);
+                        String grad = documentSnapshot.getString("expectedYearOfGrad");
+                        String course = documentSnapshot.getString("courseOfStudy");
+                        String bio = documentSnapshot.getString("biography");
+                        String email = documentSnapshot.getString("email");
+                        String domain = documentSnapshot.getString("domain");
+                        String imageUrl = documentSnapshot.getString("imageUrl");
+
+                        User user = new User(key, bio, email, course, grad, name, domain, imageUrl);
+
+                        // get list of user likes
+                        HashMap<String, Object> userLikes = (HashMap<String, Object>) documentSnapshot.get("likes");
+                        if (userLikes.containsKey("pyp"))
+                            for (DocumentReference pypLike : (ArrayList<DocumentReference>) userLikes.get("pyp"))
+                                user.addPypLikeKey(pypLike.getId());
+                        if (userLikes.containsKey("discussion"))
+                            for (DocumentReference discussionLike : (ArrayList<DocumentReference>) userLikes.get("discussion"))
+                                user.addDiscussionLikeKey(discussionLike.getId());
+
+                        // get list of user ratings
+                        HashMap<String, Object> userRatings = (HashMap<String, Object>) documentSnapshot.get("ratings");
+                        if (userRatings.containsKey("pyp"))
+                            for (DocumentReference pypRating : (ArrayList<DocumentReference>) userRatings.get("pyp"))
+                                user.addPypRatingKey(pypRating.getId());
+                        if (userRatings.containsKey("discussion"))
+                            for (DocumentReference discussionRating : (ArrayList<DocumentReference>) userRatings.get("discussion"))
+                                user.addDiscussionRatingKey(discussionRating.getId());
+
+                        // get list of registered courses
+                        String b = String.valueOf(documentSnapshot.get("registered"));
+                        if (b != "null" && b != null && b != "[]")
+                            for (DocumentReference registeredCourse : (ArrayList<DocumentReference>) documentSnapshot.get("registered"))
+                                user.addRegisteredCourseKey(registeredCourse.getId());
+
+                        currentUser = user;
+                        mMainUser.setValue(user);
                     }
                 }
             });
         }
-
     }
-
-    public void realtimeFireStoreMainUserData() {
-        mAuth = FirebaseAuth.getInstance();
-        documentReference = db.collection("User").document(mAuth.getCurrentUser().getUid());
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                getFirestoreUser();
-            }
-        });
-    }
-
-    public LiveData<User> getMainUser() { return mMainUser; }
-
 }

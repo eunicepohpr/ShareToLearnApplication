@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class DiscussionResponse implements Serializable {
@@ -17,13 +18,15 @@ public class DiscussionResponse implements Serializable {
     private String answer;
     private String discussionKey;
     private String postedByKey;
-    private ArrayList<String> downvoteKeys;
-    private ArrayList<String> upvoteKeys;
+    private HashSet<String> downvoteKeys;
+    private HashSet<String> upvoteKeys;
     private Date postedDateTime;
 //    private ArrayList<User> downvotes;
 //    private ArrayList<User> upvotes;
 
     public DiscussionResponse() {
+        this.downvoteKeys = new HashSet<>();
+        this.upvoteKeys = new HashSet<>();
     }
 
     public DiscussionResponse(String key, String discussionKey, String postedByKey, String answer,
@@ -33,8 +36,8 @@ public class DiscussionResponse implements Serializable {
         this.postedByKey = postedByKey;
         this.answer = answer;
         this.postedDateTime = postedDateTime;
-        this.downvoteKeys = new ArrayList<>();
-        this.upvoteKeys = new ArrayList<>();
+        this.downvoteKeys = new HashSet<>();
+        this.upvoteKeys = new HashSet<>();
 //        this.downvotes = new ArrayList<>();
 //        this.upvotes = new ArrayList<>();
     }
@@ -46,10 +49,10 @@ public class DiscussionResponse implements Serializable {
         Map<String, Object> disResDocData = new HashMap<>();
         disResDocData.put("answer", this.answer);
         disResDocData.put("discussion", db.collection("Discussion").document(this.discussionKey));
-        disResDocData.put("downvotes", this.getReferenceListFireStoreFormat(this.downvoteKeys, "User"));
+        disResDocData.put("downvotes", this.getReferenceListFireStoreFormat(new ArrayList<String>(this.downvoteKeys), "User"));
         disResDocData.put("postedBy", db.collection("User").document(this.postedByKey));
         disResDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
-        disResDocData.put("upvotes", this.getReferenceListFireStoreFormat(this.upvoteKeys, "User"));
+        disResDocData.put("upvotes", this.getReferenceListFireStoreFormat(new ArrayList<String>(this.upvoteKeys), "User"));
         return disResDocData;
     }
 
@@ -108,11 +111,11 @@ public class DiscussionResponse implements Serializable {
     }
 
 
-    public ArrayList<String> getDownvoteKeys() {
+    public HashSet<String> getDownvoteKeys() {
         return downvoteKeys;
     }
 
-    public void setDownvoteKeys(ArrayList<String> downvoteKeys) {
+    public void setDownvoteKeys(HashSet<String> downvoteKeys) {
         this.downvoteKeys = downvoteKeys;
     }
 
@@ -124,11 +127,11 @@ public class DiscussionResponse implements Serializable {
         this.downvoteKeys.remove(downvoteKey);
     }
 
-    public ArrayList<String> getUpvoteKeys() {
+    public HashSet<String> getUpvoteKeys() {
         return upvoteKeys;
     }
 
-    public void setUpvoteKeys(ArrayList<String> upvoteKeys) {
+    public void setUpvoteKeys(HashSet<String> upvoteKeys) {
         this.upvoteKeys = upvoteKeys;
     }
 

@@ -20,6 +20,9 @@ public class User implements Serializable {
     private ArrayList<String> pypLikeKeys;
     private ArrayList<String> discussionRatingKeys;
     private ArrayList<String> pypRatingKeys;
+//    enum Domain {Student,Staff};
+    private String domain;
+    private String imageURL;
 //    private ArrayList<Course> registeredCourses;
 //    private ArrayList<Discussion> discussionLikes;
 //    private ArrayList<PYP> pypLikes;
@@ -35,7 +38,7 @@ public class User implements Serializable {
     }
 
     public User(String key, String biography, String email, String courseOfStudy, String expectedYearOfGrad,
-                String name) {
+                String name, String domain, String imageURL) {
         this.key = key;
         this.biography = biography;
         this.email = email;
@@ -47,6 +50,8 @@ public class User implements Serializable {
         this.pypLikeKeys = new ArrayList<>();
         this.discussionRatingKeys = new ArrayList<>();
         this.pypRatingKeys = new ArrayList<>();
+        this.domain = domain;
+        this.imageURL = imageURL;
 //        this.registeredCourses = new ArrayList<>();
 //        this.discussionLikes = new ArrayList<>();
 //        this.pypLikes = new ArrayList<>();
@@ -64,6 +69,8 @@ public class User implements Serializable {
         userDocData.put("expectedYearOfGrad", this.expectedYearOfGrad);
         userDocData.put("name", this.name);
         userDocData.put("registered", this.getReferenceListFireStoreFormat(this.registeredCourseKeys, "CourseModule"));
+        userDocData.put("domain", this.domain);
+        userDocData.put("imageUrl", this.imageURL);
 
         HashMap<String, ArrayList> likes = new HashMap<>();
         likes.put("discussion", this.getReferenceListFireStoreFormat(this.discussionLikeKeys, "Discussion"));
@@ -203,6 +210,24 @@ public class User implements Serializable {
 
     public void addPypRatingKey(String pypRatingKey) {
         this.pypRatingKeys.add(pypRatingKey);
+    }
+
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
 

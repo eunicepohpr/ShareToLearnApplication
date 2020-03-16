@@ -11,41 +11,41 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
         android:src="@drawable/logo" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/imageView"
-        android:gravity="bottom|center_horizontal">
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/su_nameInput"
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:hint="Full Name"/>
+            android:hint="Full Name" />
 
         <EditText
             android:id="@+id/su_cosInput"
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:hint="Course of Study"/>
+            android:hint="Course of Study" />
 
         <EditText
             android:id="@+id/su_eyogInput"
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:hint="Expected Year of Graduation"/>
+            android:hint="Expected Year of Graduation" />
 
         <EditText
             android:id="@+id/su_bioInput"
             android:layout_width="300dp"
-            android:layout_marginBottom="10dp"
             android:layout_height="match_parent"
-            android:hint="Biography"/>
+            android:layout_marginBottom="10dp"
+            android:hint="Biography" />
 
         <EditText
             android:id="@+id/su_emailInput"
@@ -58,27 +58,27 @@
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:hint="Enter Password"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
 
         <Button
+            android:id="@+id/SignUpBtn"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:id="@+id/SignUpBtn"
             android:layout_marginTop="20dp"
             android:background="@color/colourNavy"
+            android:text="Sign Up"
             android:textColor="@color/colorWhite"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
+            android:id="@+id/BackBtn"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Back"
-            android:id="@+id/BackBtn"
             android:layout_marginTop="10dp"
             android:background="@color/colorSnow"
+            android:text="Back"
             android:textColor="@color/colorBlack"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 </RelativeLayout>

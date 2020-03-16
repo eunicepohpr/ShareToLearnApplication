@@ -1,0 +1,84 @@
+package com.cz3002.sharetolearn.View.Pyp;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.adapter.PYPAdapter;
+import com.cz3002.sharetolearn.models.Course;
+import com.cz3002.sharetolearn.models.PYP;
+import com.cz3002.sharetolearn.viewModel.Pyp.PYPViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class PypFragment extends Fragment {
+
+    private String mainUserKey;
+    private PYPViewModel pypViewModel;
+    private Course course;
+    private ListView pypsListView;
+    private PYPAdapter PYPAdapter;
+    private FloatingActionButton fab;
+
+    public PypFragment(Course course){
+        this.course = course;
+    }
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        pypViewModel = ViewModelProviders.of(this).get(PYPViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_pyp, container, false);
+        pypsListView = root.findViewById(R.id.pyp_thread_list);
+        mainUserKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        fab = root.findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent launchactivity = new  Intent(getContext(), AddPYP.class);
+//                launchactivity.putExtra("course", course);
+//                launchactivity.putExtra("mainUserKey", mainUserKey);
+//                startActivity(launchactivity);
+                /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+//            }
+//        });
+
+        pypViewModel.getpyps().observe(this, new Observer<List<PYP>>() {
+            @Override
+            public void onChanged(@Nullable List<PYP> pyps) {
+                List<PYP> PYPList = new ArrayList<>();
+                for (PYP dis: pyps){
+                    if (dis.getCourseKey().equals(course.getKey())) {
+                        PYPList.add(dis);
+                    }
+                }
+                Collections.sort(PYPList, new Comparator<PYP>() {
+                    @Override
+                    public int compare(PYP t0, PYP t1) {
+                        return t0.getPostedDateTime().compareTo(t1.getPostedDateTime());
+                    }
+                });
+                PYPAdapter = new PYPAdapter(getActivity(), getActivity(),PYPList, mainUserKey);
+                pypsListView.setAdapter(PYPAdapter);
+                PYPAdapter.notifyDataSetChanged();
+            }
+        });
+        return root;
+    }
+    
+}

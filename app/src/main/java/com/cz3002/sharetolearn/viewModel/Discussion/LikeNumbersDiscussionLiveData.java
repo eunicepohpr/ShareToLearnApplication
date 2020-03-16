@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn.viewModel;
+package com.cz3002.sharetolearn.viewModel.Discussion;
 
 import com.cz3002.sharetolearn.models.Discussion;
 
@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class LikeNumbersLiveData extends ViewModel {
+public class LikeNumbersDiscussionLiveData extends ViewModel {
     private static Map<String, MutableLiveData<Integer>> likeNumbers = new HashMap<>();
 
     public static LiveData<Integer> getLikeNumber(Discussion discussionThread){

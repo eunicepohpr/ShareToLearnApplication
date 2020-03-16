@@ -1,11 +1,13 @@
 package com.cz3002.sharetolearn.viewModel;
 
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.models.User;
@@ -23,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,7 +100,7 @@ public class CourseReviewViewModel extends ViewModel {
         });
     }
 
-    public void getAllUserData(){
+    public void getAllUserData() {
         db.collection("User").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -111,8 +114,10 @@ public class CourseReviewViewModel extends ViewModel {
                             String course = document.getString("courseOfStudy");
                             String bio = document.getString("biography");
                             String email = document.getString("email");
+                            String domain = document.getString("domain");
+                            String imageUrl = document.getString("imageUrl");
 
-                            User user = new User(key, bio, email, course, grad, name);
+                            User user = new User(key, bio, email, course, grad, name, domain, imageUrl);
 
                             // get list of user likes
                             HashMap<String, Object> userLikes = (HashMap<String, Object>) document.get("likes");
@@ -140,7 +145,7 @@ public class CourseReviewViewModel extends ViewModel {
 
                             userList.add(user);
 
-                            if(user.getKey().equals(currentFbUser.getUid())){
+                            if (user.getKey().equals(currentFbUser.getUid())) {
                                 currentUser = user;
                             }
                         }
@@ -213,9 +218,9 @@ public class CourseReviewViewModel extends ViewModel {
                                 String courseKey = ratedByKey.toString();
                                 CourseReview courseReview = new CourseReview(key, rating, dateTime, ratedByKeyString, description, courseKey);
 
-                                for(User u : userList){
+                                for (User u : userList) {
                                     String userKey = ratedByKey.getId();
-                                    if(u.getKey().equals(userKey)){
+                                    if (u.getKey().equals(userKey)) {
                                         courseReview.setRatedBy(u);
                                     }
                                 }

@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/course_card_view"
         android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="10dp"
         android:layout_width="match_parent"
@@ -26,7 +25,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/pyp_userImage"
+                    android:id="@+id/userImage"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -41,7 +40,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/pyp_userImage">
                     <TextView
-                        android:id="@+id/pyptopic_title"
+                        android:id="@+id/topic_title"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -57,7 +56,7 @@
                     android:layout_below="@+id/topic"
                     android:layout_toRightOf="@+id/pyp_userImage">
                     <TextView
-                        android:id="@+id/pyp_postDetails"
+                        android:id="@+id/postDetails"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -89,7 +88,7 @@
                     android:src="@drawable/dialogue" />
 
                 <TextView
-                    android:id="@+id/pyp_comment_number"
+                    android:id="@+id/comment_number"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="15dp"
@@ -105,7 +104,7 @@
                     android:src="@drawable/liked" />
 
                 <TextView
-                    android:id="@+id/pyp_liked_number"
+                    android:id="@+id/liked_number"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="15dp"

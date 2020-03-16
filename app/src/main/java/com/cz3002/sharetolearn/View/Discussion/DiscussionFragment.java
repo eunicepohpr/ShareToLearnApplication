@@ -1,6 +1,5 @@
-package com.cz3002.sharetolearn.View;
+package com.cz3002.sharetolearn.View.Discussion;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,13 +15,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.View.AddDiscussion;
 import com.cz3002.sharetolearn.adapter.DiscussionAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.Discussion;
-import com.cz3002.sharetolearn.viewModel.DiscussionViewModel;
-import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
-import com.cz3002.sharetolearn.viewModel.ProfileViewModel;
+import com.cz3002.sharetolearn.viewModel.Discussion.DiscussionViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class DiscussionFragment extends Fragment {
-    private ProfileViewModel mainUserViewModel;
+    private String mainUserKey;
     private DiscussionViewModel discussionViewModel;
     private Course course;
     private ListView discussionThreadsListView;
@@ -46,13 +45,14 @@ public class DiscussionFragment extends Fragment {
         discussionViewModel = ViewModelProviders.of(this).get(DiscussionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_discussion, container, false);
         discussionThreadsListView = root.findViewById(R.id.discussion_thread_list);
-
+        mainUserKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
         fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent launchactivity = new  Intent(getContext(), AddDiscussion.class);
                 launchactivity.putExtra("course", course);
+                launchactivity.putExtra("mainUserKey", mainUserKey);
                 startActivity(launchactivity);
                 /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
@@ -74,7 +74,7 @@ public class DiscussionFragment extends Fragment {
                         return t0.getPostedDateTime().compareTo(t1.getPostedDateTime());
                     }
                 });
-                discussionAdapter = new DiscussionAdapter(getActivity(), getActivity(),discussionList, mainUserViewModel.getUser().getValue());
+                discussionAdapter = new DiscussionAdapter(getActivity(), getActivity(),discussionList, mainUserKey);
                 discussionThreadsListView.setAdapter(discussionAdapter);
                 discussionAdapter.notifyDataSetChanged();
             }
@@ -89,7 +89,7 @@ public class DiscussionFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Discussion discussionThread = (Discussion) adapterView.getItemAtPosition(position);
                 Intent launchactivity = new  Intent(getContext(), DiscussionActivity.class);
-
+                launchactivity.putExtra("key", mainUserKey);
                 DiscussionActivity.discussionThread = discussionThread;
                 startActivity(launchactivity);
                 /*Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);
