@@ -40,7 +40,6 @@ public class Course implements Serializable {
 
     // get firestore format to add
     public Map<String, Object> getFireStoreFormat() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> courseDocData = new HashMap<>();
         courseDocData.put("courseAssessment", this.courseAssessment);
         courseDocData.put("courseCode", this.courseCode);

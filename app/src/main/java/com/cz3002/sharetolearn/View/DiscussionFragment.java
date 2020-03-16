@@ -21,6 +21,7 @@ import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.Discussion;
 import com.cz3002.sharetolearn.viewModel.DiscussionViewModel;
 import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
+import com.cz3002.sharetolearn.viewModel.ProfileViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class DiscussionFragment extends Fragment {
-    private MainUserViewModel mainUserViewModel;
+    private ProfileViewModel mainUserViewModel;
     private DiscussionViewModel discussionViewModel;
     private Course course;
     private ListView discussionThreadsListView;
@@ -43,7 +44,6 @@ public class DiscussionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         discussionViewModel = ViewModelProviders.of(this).get(DiscussionViewModel.class);
-        mainUserViewModel = ViewModelProviders.of(this).get(MainUserViewModel.class);
         View root = inflater.inflate(R.layout.fragment_discussion, container, false);
         discussionThreadsListView = root.findViewById(R.id.discussion_thread_list);
 
@@ -64,8 +64,9 @@ public class DiscussionFragment extends Fragment {
             public void onChanged(@Nullable List<Discussion> discussionThreads) {
                 List<Discussion> discussionList = new ArrayList<>();
                 for (Discussion dis: discussionThreads){
-                    if (dis.getCourseKey().equals(course.getKey()))
+                    if (dis.getCourseKey().equals(course.getKey())) {
                         discussionList.add(dis);
+                    }
                 }
                 Collections.sort(discussionList, new Comparator<Discussion>() {
                     @Override
@@ -73,7 +74,7 @@ public class DiscussionFragment extends Fragment {
                         return t0.getPostedDateTime().compareTo(t1.getPostedDateTime());
                     }
                 });
-                discussionAdapter = new DiscussionAdapter(getActivity(), getActivity(),discussionList, mainUserViewModel.getMainUser().getValue());
+                discussionAdapter = new DiscussionAdapter(getActivity(), getActivity(),discussionList, mainUserViewModel.getUser().getValue());
                 discussionThreadsListView.setAdapter(discussionAdapter);
                 discussionAdapter.notifyDataSetChanged();
             }
@@ -88,6 +89,7 @@ public class DiscussionFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Discussion discussionThread = (Discussion) adapterView.getItemAtPosition(position);
                 Intent launchactivity = new  Intent(getContext(), DiscussionActivity.class);
+
                 DiscussionActivity.discussionThread = discussionThread;
                 startActivity(launchactivity);
                 /*Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);

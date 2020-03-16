@@ -2,12 +2,9 @@ package com.cz3002.sharetolearn.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,30 +14,29 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cz3002.sharetolearn.R;
-import com.cz3002.sharetolearn.adapter.DiscussionAdapter;
 import com.cz3002.sharetolearn.adapter.DiscussionReponseAdapter;
 import com.cz3002.sharetolearn.models.Discussion;
 import com.cz3002.sharetolearn.models.DiscussionResponse;
 import com.cz3002.sharetolearn.models.User;
+import com.cz3002.sharetolearn.viewModel.CommentNumberLiveData;
 import com.cz3002.sharetolearn.viewModel.DiscussionResponseViewModel;
-import com.cz3002.sharetolearn.viewModel.DiscussionViewModel;
-import com.cz3002.sharetolearn.viewModel.LikeNumbersViewModel;
+import com.cz3002.sharetolearn.viewModel.LikeNumbersLiveData;
 import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
+import com.cz3002.sharetolearn.viewModel.UserViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class DiscussionActivity extends AppCompatActivity {
     public static  Discussion discussionThread;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US);
     private DiscussionResponseViewModel discussionResponseViewModel;
-    private MainUserViewModel mainUserViewModel;
-    private LikeNumbersViewModel likeNumbersViewModel;
+    private UserViewModel userViewModel;
     private DiscussionReponseAdapter discussionReponseAdapter;
     private ListView commentsListView;
 
@@ -50,20 +46,29 @@ public class DiscussionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_discussion);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         discussionResponseViewModel = ViewModelProviders.of(this).get(DiscussionResponseViewModel.class);
-        mainUserViewModel = ViewModelProviders.of(this).get(MainUserViewModel.class);
-        likeNumbersViewModel = ViewModelProviders.of(this).get(LikeNumbersViewModel.class);
-        final User mainUser = mainUserViewModel.getMainUser().getValue();
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
+        final User mainUser = (User) getIntent().getExtras().get("mainUser");
 
         TextView topicView = findViewById(R.id.topic_title);
         topicView.setText(discussionThread.getTitle());
         TextView postDetailsView = findViewById(R.id.postDetails);
-        postDetailsView.setText("Posted by "+discussionThread.getPostedBy().getName()+" on "+dateFormat.format(discussionThread.getPostedDateTime()));
+        String name;
+        if (mainUser.getKey().equals(discussionThread.getPostedByKey())){
+            name = "you";
+        } else name = discussionThread.getPostedBy().getName();
+        postDetailsView.setText("Posted by "+name+" on "+dateFormat.format(discussionThread.getPostedDateTime()));
         TextView questionView = findViewById(R.id.question);
         questionView.setText(discussionThread.getQuestion());
         final TextView commentNumberView = findViewById(R.id.comment_number);
-        commentNumberView.setText(Integer.toString(discussionThread.getResponseKeys().size()));
+        CommentNumberLiveData.getCommentNumber(discussionThread).observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer commentNumber) {
+                commentNumberView.setText(Integer.toString(commentNumber));
+            }
+        });
         final TextView likedNumberView = findViewById(R.id.liked_number);
-        likeNumbersViewModel.getLikeNumber(discussionThread).observe(this, new Observer<Integer>() {
+        LikeNumbersLiveData.getLikeNumber(discussionThread).observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer likeNumber) {
                 likedNumberView.setText(likeNumber.toString());
@@ -71,16 +76,12 @@ public class DiscussionActivity extends AppCompatActivity {
         });
         commentsListView = findViewById(R.id.discussion_comment_list);
 
-        discussionResponseViewModel.getDiscussionResponse().observe(this, new Observer<List<DiscussionResponse>>() {
+        discussionResponseViewModel.getDiscussionResponse().observe(this, new Observer<HashMap<String, DiscussionResponse>>() {
             @Override
-            public void onChanged(@Nullable List<DiscussionResponse> discussionResponseList) {
+            public void onChanged(@Nullable HashMap<String, DiscussionResponse> discussionResponsesMap) {
                 List<DiscussionResponse>  discussionResponses = new ArrayList<>();
                 for (String responseKey: discussionThread.getResponseKeys()){
-                    for (DiscussionResponse response: discussionResponseList){
-                        if (response.getKey().equals(responseKey)){
-                            discussionResponses.add(response);
-                        }
-                    }
+                    discussionResponses.add(discussionResponsesMap.get(responseKey));
                 }
                 Collections.sort(discussionResponses, new Comparator<DiscussionResponse>() {
                     @Override
@@ -121,11 +122,11 @@ public class DiscussionActivity extends AppCompatActivity {
                 //liked , unliked action
                 if (discussionThread.getLikeKeys().contains(mainUser.getKey())){
                     discussionThread.removeLikeKey(mainUser.getKey());
-                    likeNumbersViewModel.setLikeNumber(discussionThread.getKey(), discussionThread.getLikeKeys().size());
+                    LikeNumbersLiveData.setLikeNumber(discussionThread.getKey(), discussionThread.getLikeKeys().size());
                     ((ImageView) view).setImageResource(R.drawable.unliked);
                 } else {
                     discussionThread.addLikeKey(mainUser.getKey());
-                    likeNumbersViewModel.setLikeNumber(discussionThread.getKey(), discussionThread.getLikeKeys().size());
+                    LikeNumbersLiveData.setLikeNumber(discussionThread.getKey(), discussionThread.getLikeKeys().size());
                     ((ImageView) view).setImageResource(R.drawable.liked);
                 }
             }

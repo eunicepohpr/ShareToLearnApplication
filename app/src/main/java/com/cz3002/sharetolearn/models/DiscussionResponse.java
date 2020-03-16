@@ -157,6 +157,21 @@ public class DiscussionResponse implements Serializable {
         this.postedByKey = postedByKey;
     }
 
+    @Override
+    public int hashCode(){
+        if (key != null)
+            return key.hashCode();
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o){
+        DiscussionResponse response;
+        if (!(o instanceof DiscussionResponse))
+            return false;
+        response = (DiscussionResponse) o;
+        return key.equals(response.getKey());
+    }
 
 //    public ArrayList<User> getDownvotes() {
 //        return downvotes;
