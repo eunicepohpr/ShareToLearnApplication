@@ -81,97 +81,54 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/darker_gray" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="0dp">
+            android:layout_gravity="left"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:src="@drawable/dialogue" />
 
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:src="@drawable/dialogue" />
-
-                <TextView
-                    android:id="@+id/comment_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:text="5"
-                    android:textSize="15dp" />
-
-                <ImageView
-                    android:id="@+id/like_image"
-                    android:layout_width="25dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:src="@drawable/liked" />
-
-                <TextView
-                    android:id="@+id/liked_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="15dp"
-                    android:layout_weight="1"
-                    android:text="5"
-                    android:textSize="15dp" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/delete_button"
+            <TextView
+                android:id="@+id/comment_number"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginBottom="1dp"
-                android:background="@color/colorPrimary"
-                android:text="delete post"
-                android:textColor="@color/colorWhite"
-                android:textSize="10dp"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="5"
+                android:textSize="15dp" />
 
-            <Button
-                android:id="@+id/edit_button"
+            <ImageView
+                android:id="@+id/like_image"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:src="@drawable/liked" />
+
+            <TextView
+                android:id="@+id/liked_number"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/colorPrimary"
-                android:text="Edit"
-                android:textColor="@color/colorWhite"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/delete_button"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="5"
+                android:textSize="15dp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="5dp"
             android:background="@android:color/darker_gray" />
     </LinearLayout>
 
@@ -230,7 +187,7 @@
 
 
         <ListView
-            android:id="@+id/discussion_comment_list"
+            android:id="@+id/pyp_comment_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:divider="#00000000"

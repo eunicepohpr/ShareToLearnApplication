@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn.viewModel;
+package com.cz3002.sharetolearn.viewModel.Discussion;
 
 import com.cz3002.sharetolearn.models.Discussion;
 
@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class LikeNumbersViewModel extends ViewModel {
+public class LikeNumbersDiscussionLiveData extends ViewModel {
     private static Map<String, MutableLiveData<Integer>> likeNumbers = new HashMap<>();
 
     public static LiveData<Integer> getLikeNumber(Discussion discussionThread){
@@ -24,5 +24,11 @@ public class LikeNumbersViewModel extends ViewModel {
         if (!likeNumbers.containsKey(key))
             likeNumbers.put(key, new MutableLiveData<Integer>());
         likeNumbers.get(key).setValue(likeNumber);
+    }
+
+    public static void setLikeNumber(Discussion discussionThread){
+        if (! likeNumbers.containsKey(discussionThread.getKey()))
+            likeNumbers.put(discussionThread.getKey(), new MutableLiveData<Integer>());
+        likeNumbers.get(discussionThread.getKey()).setValue(discussionThread.getLikeKeys().size());
     }
 }

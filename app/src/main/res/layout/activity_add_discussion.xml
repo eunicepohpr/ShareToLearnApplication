@@ -41,14 +41,14 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <Button
-                android:id="@+id/writeReview_button"
+                android:id="@+id/postDiscussion_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:layout_gravity="center"
                 android:textColor="@color/colorWhite"
-                android:text="Write a review"
-                android:visibility="invisible"/>
+                android:text="Post discussion topic"/>
+
         </LinearLayout>
 
     </LinearLayout>

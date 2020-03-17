@@ -1,6 +1,7 @@
 package com.cz3002.sharetolearn.viewModel;
 
 import com.cz3002.sharetolearn.models.User;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -18,20 +19,17 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MainUserViewModel extends ViewModel {
+
     private MutableLiveData<User> mMainUser = new MutableLiveData<>();
     private User currentUser;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
 
     public MainUserViewModel() {
-//        User mainUser = new User("user1", "My biography", "lam022@e.ntu.edu.sg", "Computer Science", "2021", "lam", "Student", "");
-//        mMainUser = new MutableLiveData<>();
-//        mMainUser.setValue(mainUser);
+        getFirestoreUser();
     }
 
-    public LiveData<User> getMainUser() {
-        return mMainUser;
-    }
+
 
     public void setMainUser(User user) {
         mMainUser = new MutableLiveData<>();
@@ -39,7 +37,6 @@ public class MainUserViewModel extends ViewModel {
     }
 
     public LiveData<User> getUser() {
-        getFirestoreUser();
         return mMainUser;
     }
 

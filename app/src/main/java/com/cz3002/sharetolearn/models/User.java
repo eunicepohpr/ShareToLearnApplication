@@ -32,6 +32,11 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User(String key, String name){
+        this.key = key;
+        this.name = name;
+    }
+
     public User(String key, String biography, String email, String courseOfStudy, String expectedYearOfGrad,
                 String name, String domain, String imageURL) {
         this.key = key;

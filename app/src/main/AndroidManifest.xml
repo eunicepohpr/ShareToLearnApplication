@@ -13,17 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.DiscussionActivity"
-            android:label="@string/title_activity_discussion"></activity>
+        <activity android:name=".View.Pyp.PypActivity"></activity>
+        <activity
+            android:name=".View.Discussion.DiscussionActivity"
+            android:label="@string/title_activity_discussion" />
         <activity
             android:name=".View.CourseReview.CourseReviewListActivity"
-            android:label="Reviews"></activity>
+            android:label="Reviews" />
         <activity
             android:name=".View.CourseReview.CourseReviewPostActivity"
-            android:label="Write a review"></activity>
+            android:label="Write a review" />
         <activity
             android:name=".View.AddDiscussion"
-            android:label="@string/title_activity_add_discussion"></activity>
+            android:label="@string/title_activity_add_discussion" />
         <activity
             android:name=".View.AddCourseActivity"
             android:label="@string/title_activity_add_course">

@@ -6,8 +6,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class Discussion implements Serializable {
@@ -19,12 +21,14 @@ public class Discussion implements Serializable {
     private Date postedDateTime;
     private String courseKey;
     private String postedByKey;
-    private ArrayList<String> responseKeys;
-    private ArrayList<String> likeKeys;
+    private HashSet<String> responseKeys;
+    private HashSet<String> likeKeys;
 //    private ArrayList<User> responses;
 //    private ArrayList<User> likes;
 
     public Discussion() {
+        responseKeys = new HashSet<>();
+        likeKeys = new HashSet<>();
     }
 
     public Discussion(String key, String courseKey, String question, String postedByKey, String title,
@@ -35,8 +39,8 @@ public class Discussion implements Serializable {
         this.postedDateTime = postedDateTime;
         this.courseKey = courseKey;
         this.postedByKey = postedByKey;
-        this.responseKeys = new ArrayList<>();
-        this.likeKeys = new ArrayList<>();
+        this.responseKeys = new HashSet<>();
+        this.likeKeys = new HashSet<>();
 //        this.responses = new ArrayList<>();
 //        this.likes = new ArrayList<>();
     }
@@ -46,11 +50,11 @@ public class Discussion implements Serializable {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> discussionDocData = new HashMap<>();
         discussionDocData.put("course", db.collection("CourseModule").document(this.courseKey));
-        discussionDocData.put("likes", this.getReferenceListFireStoreFormat(this.likeKeys, "User"));
+        discussionDocData.put("likes", this.getReferenceListFireStoreFormat(new ArrayList<String>(this.likeKeys), "User"));
         discussionDocData.put("postedBy", db.collection("User").document(this.postedByKey));
         discussionDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
         discussionDocData.put("question", this.question);
-        discussionDocData.put("responses", this.getReferenceListFireStoreFormat(this.responseKeys, "DiscussionResponse"));
+        discussionDocData.put("responses", this.getReferenceListFireStoreFormat(new ArrayList<String>(this.responseKeys), "DiscussionResponse"));
         discussionDocData.put("title", this.title);
         return discussionDocData;
     }
@@ -119,11 +123,11 @@ public class Discussion implements Serializable {
     }
 
 
-    public ArrayList<String> getResponseKeys() {
+    public HashSet<String> getResponseKeys() {
         return responseKeys;
     }
 
-    public void setResponseKeys(ArrayList<String> responseKeys) {
+    public void setResponseKeys(HashSet<String> responseKeys) {
         this.responseKeys = responseKeys;
     }
 
@@ -131,11 +135,11 @@ public class Discussion implements Serializable {
         this.responseKeys.add(responseKey);
     }
 
-    public ArrayList<String> getLikeKeys() {
+    public HashSet<String> getLikeKeys() {
         return likeKeys;
     }
 
-    public void setLikeKeys(ArrayList<String> likeKeys) {
+    public void setLikeKeys(HashSet<String> likeKeys) {
         this.likeKeys = likeKeys;
     }
 
@@ -164,6 +168,21 @@ public class Discussion implements Serializable {
         this.courseKey = courseKey;
     }
 
+    @Override
+    public int hashCode(){
+        if (key != null)
+            return key.hashCode();
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o){
+        Discussion discussionThread;
+        if (!(o instanceof Discussion))
+            return false;
+        discussionThread = (Discussion) o;
+        return key.equals(discussionThread.getKey());
+    }
 
 //    public ArrayList<User> getResponses() {
 //        return responses;

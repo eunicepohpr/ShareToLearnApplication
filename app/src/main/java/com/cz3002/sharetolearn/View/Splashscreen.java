@@ -321,13 +321,12 @@ public class Splashscreen extends AppCompatActivity {
                         if (document != null) {
                             String key = document.getId();
                             String answer = document.getString("answer");
-                            String working = document.getString("working");
                             Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
                             DocumentReference pypKey = document.getDocumentReference("pyp");
                             DocumentReference postedByKey = document.getDocumentReference("postedBy");
 
                             PYPResponse pypResponse = new PYPResponse(key, postedByKey.getId(),
-                                    pypKey.getId(), working, answer, postedDateTime);
+                                    pypKey.getId(), answer, postedDateTime);
 
                             // get list of upvotes
                             String a = String.valueOf(document.get("upvotes"));
