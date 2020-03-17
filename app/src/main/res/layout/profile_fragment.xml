@@ -5,116 +5,127 @@
     android:layout_height="match_parent"
     android:layout_gravity="top|center"
     android:background="#07111111"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="100">
 
     <LinearLayout
         android:id="@+id/profile_background"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="0dp"
+        android:layout_weight="30"
         android:background="@color/colorPrimary"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="100">
 
         <ImageView
             android:id="@+id/profile_photo"
-            android:scaleType="fitXY"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
-            android:layout_width="120dp"
-            android:layout_height="120dp" />
+            android:layout_weight="80"
+            android:scaleType="fitXY" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="60"
+        android:layout_margin="10dp"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:layout_below="@id/profile_background"
-        android:layout_margin="20dp">
+        android:layout_below="@id/profile_background">
 
-        <TextView
-            android:id="@+id/profile_title_name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="Name" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/profile_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/profile_title_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/profile_title_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="Email"
-            android:layout_marginTop="15dp"/>
+            <EditText
+                android:id="@+id/profile_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/profile_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/profile_title_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Email"
+                android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/profile_title_course"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="Course of study"
-            android:layout_marginTop="15dp"/>
+            <TextView
+                android:id="@+id/profile_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/profile_course"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/profile_title_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Course of study"
+                android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/profile_title_graduation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="Expected year of graduation"
-            android:layout_marginTop="15dp"/>
+            <EditText
+                android:id="@+id/profile_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/profile_graduation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/profile_title_graduation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Expected year of graduation"
+                android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/profile_title_biography"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="Biography"
-            android:layout_marginTop="15dp"/>
+            <EditText
+                android:id="@+id/profile_graduation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/profile_biography"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/profile_title_biography"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Biography"
+                android:textSize="15dp" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/profile_biography"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/save_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:textColor="@color/colorWhite"
         android:layout_margin="20dp"
-        android:text="Update profile"/>
+        android:layout_weight="10"
+        android:background="@color/colorPrimary"
+        android:text="Update profile"
+        android:textColor="@color/colorWhite" />
 </LinearLayout>
