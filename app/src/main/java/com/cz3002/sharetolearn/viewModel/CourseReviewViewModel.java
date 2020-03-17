@@ -53,7 +53,6 @@ public class CourseReviewViewModel extends ViewModel {
     }
 
     public LiveData<ArrayList<CourseReview>> getCourseReviewList(Course selectedCourse) {
-        getAllUserData();
         realtimeReviewData(selectedCourse);
         return mReviewList;
     }
@@ -103,8 +102,10 @@ public class CourseReviewViewModel extends ViewModel {
                     return;
                 }
                 if (snapshot != null && snapshot.exists()) {
+                    getAllUserData();
                     getFireStoreCourseReviewsData(selectedCourse);
                 } else {
+                    getAllUserData();
                     getFireStoreCourseReviewsData(selectedCourse);
                 }
             }

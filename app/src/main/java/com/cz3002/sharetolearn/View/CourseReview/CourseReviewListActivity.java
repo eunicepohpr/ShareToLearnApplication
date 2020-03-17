@@ -39,7 +39,7 @@ public class CourseReviewListActivity extends AppCompatActivity {
     private ProgressBar progressBar1;
     private double count5, count4, count3, count2, count1;
     private ListView reviewListView;
-    private CourseReviewViewModel courseReviewViewModel;
+//    private CourseReviewViewModel courseReviewViewModel;
     private ReviewAdapter reviewAdapter;
 
     @Override
@@ -72,20 +72,20 @@ public class CourseReviewListActivity extends AppCompatActivity {
             avgRatingTV.setText(avg);
             //display rating bar
             ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
+            //display progressbar
+            progressBar5.setProgress((int) count5);
+            progressBar4.setProgress((int) count4);
+            progressBar3.setProgress((int) count3);
+            progressBar2.setProgress((int) count2);
+            progressBar1.setProgress((int) count1);
+
+            //display list of reviews
+            reviewAdapter = new ReviewAdapter(getApplicationContext(), reviewList);
+            reviewListView.setAdapter(reviewAdapter);
+            reviewAdapter.notifyDataSetChanged();
         }else{
             noreviewsTV.setVisibility(View.VISIBLE);
         }
-        //display progressbar
-        progressBar5.setProgress((int) count5);
-        progressBar4.setProgress((int) count4);
-        progressBar3.setProgress((int) count3);
-        progressBar2.setProgress((int) count2);
-        progressBar1.setProgress((int) count1);
-
-        //display list of reviews
-        reviewAdapter = new ReviewAdapter(getApplicationContext(), reviewList);
-        reviewListView.setAdapter(reviewAdapter);
-        reviewAdapter.notifyDataSetChanged();
     }
 
     @Override
