@@ -12,7 +12,7 @@
         android:id="@+id/profile_background"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30"
+        android:layout_weight="27"
         android:background="@color/colorPrimary"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
@@ -31,8 +31,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="60"
-        android:layout_margin="10dp"
+        android:layout_weight="65"
+        android:layout_margin="20dp"
         android:gravity="center_horizontal|center_vertical"
         android:layout_below="@id/profile_background">
 
@@ -124,7 +124,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:layout_weight="10"
+        android:layout_weight="8"
         android:background="@color/colorPrimary"
         android:text="Update profile"
         android:textColor="@color/colorWhite" />
