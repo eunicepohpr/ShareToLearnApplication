@@ -42,7 +42,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_weight="1"
                 android:src="@drawable/tick"
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

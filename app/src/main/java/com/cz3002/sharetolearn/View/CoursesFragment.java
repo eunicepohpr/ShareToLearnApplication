@@ -18,6 +18,9 @@ import com.cz3002.sharetolearn.viewModel.CourseViewModel;
 import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -57,6 +60,12 @@ public class CoursesFragment extends Fragment {
                             registeredCourses.add(course);
                         if (registeredCourses.size() == registeredCourseKeys.size()) break;
                     }
+                    Collections.sort(registeredCourses, new Comparator<Course>() {
+                        @Override
+                        public int compare(Course c1, Course c2) {
+                            return c1.getCourseCode().compareTo(c2.getCourseCode());
+                        }
+                    });
                     courseAdapter = new CourseAdapter(getActivity(), registeredCourses);
                     courseListView.setAdapter(courseAdapter);
                     courseAdapter.notifyDataSetChanged();
@@ -74,6 +83,12 @@ public class CoursesFragment extends Fragment {
                             registeredCourses.add(course);
                         if (registeredCourses.size() == registeredCourseKeys.size()) break;
                     }
+                    Collections.sort(registeredCourses, new Comparator<Course>() {
+                        @Override
+                        public int compare(Course c1, Course c2) {
+                            return c1.getCourseCode().compareTo(c2.getCourseCode());
+                        }
+                    });
                     courseAdapter = new CourseAdapter(getActivity(), registeredCourses);
                     courseListView.setAdapter(courseAdapter);
                     courseAdapter.notifyDataSetChanged();
