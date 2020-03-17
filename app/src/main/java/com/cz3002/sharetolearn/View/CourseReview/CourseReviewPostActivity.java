@@ -32,6 +32,7 @@ public class CourseReviewPostActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentFbUser;
+    private CourseReview userReview = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class CourseReviewPostActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
         selectedCourse = (Course) args.getSerializable("SELECTEDCOURSE");
+        userReview = (CourseReview) args.getSerializable("USERREVIEW");
 
         mAuth = FirebaseAuth.getInstance();
         currentFbUser = mAuth.getCurrentUser();
@@ -52,6 +54,11 @@ public class CourseReviewPostActivity extends AppCompatActivity {
         reviewDescET = findViewById(R.id.postreview_desc);
         postReviewBtn = findViewById(R.id.post_button);
 
+        if(userReview != null){
+            ratingBar.setRating((float)userReview.getRating());
+            reviewDescET.setText(userReview.getDescription());
+        }
+
         postReviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +68,7 @@ public class CourseReviewPostActivity extends AppCompatActivity {
                 String ratedByKey = currentFbUser.getUid();
                 courseReview = new CourseReview(rating, ratedByKey, description, courseKey, new Date());
 
-                courseReviewViewModel.newReview(courseReview, selectedCourse);
+                courseReviewViewModel.newReview(courseReview, selectedCourse, userReview);
                 onBackPressed();
             }
         });

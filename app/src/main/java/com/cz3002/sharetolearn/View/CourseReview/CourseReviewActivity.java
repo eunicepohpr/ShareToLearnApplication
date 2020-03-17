@@ -36,6 +36,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
     private Course selectedCourse = new Course();
     private User currentUser = new User();
+    private CourseReview userReview = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,16 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
             }
         });
 
+        courseReviewViewModel.getUserReview(selectedCourse).observe(this, new Observer<CourseReview>() {
+            @Override
+            public void onChanged(CourseReview courseReview) {
+                if (courseReview != null){
+                    userReview = courseReview;
+                    postReview.setText("Edit my review");
+                }
+            }
+        });
+
         postReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +127,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
                 Bundle args = new Bundle();
                 Intent reviewpostActivity = new Intent(getApplicationContext(), CourseReviewPostActivity.class);
                 args.putSerializable("SELECTEDCOURSE", selectedCourse);
+                args.putSerializable("USERREVIEW", userReview);
                 reviewpostActivity.putExtra("BUNDLE", args);
                 startActivity(reviewpostActivity);
             }
@@ -124,8 +136,6 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
 
         reviewToList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //String msg = reviewList.get(0).getCourseKey().toString();
-                //Toast.makeText(getApplicationContext(), msg,Toast.LENGTH_SHORT).show();
                 Bundle args = new Bundle();
                 Intent reviewlistActivity = new Intent(getApplicationContext(), CourseReviewListActivity.class);
                 args.putSerializable("REVIEWLIST", reviewList);
@@ -185,12 +195,6 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     @Override
     protected void onResume() {
         super.onResume();
-        /*questionListView = findViewById(R.id.question_list);
-
-        questionViewModel = ViewModelProviders.of(this).get(ReviewQuestionViewModel.class);
-        ArrayList<String> questionList = questionViewModel.getQuestionList().getValue();
-        reviewQuestionAdapter = new ReviewQuestionAdapter(getApplicationContext(), questionList);
-        questionListView.setAdapter(reviewQuestionAdapter);*/
     }
 
 
