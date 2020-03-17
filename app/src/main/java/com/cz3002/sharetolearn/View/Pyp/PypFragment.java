@@ -54,8 +54,8 @@ public class PypFragment extends Fragment {
 //                launchactivity.putExtra("course", course);
 //                launchactivity.putExtra("mainUserKey", mainUserKey);
 //                startActivity(launchactivity);
-                /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+//                /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();*/
 //            }
 //        });
 

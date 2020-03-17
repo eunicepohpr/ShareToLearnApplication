@@ -37,7 +37,6 @@ public class DiscussionViewModel extends ViewModel {
     public DiscussionViewModel() {
         mDiscussionThreads = new MutableLiveData<>();
         realtimeFireStoreDiscussionData();
-        getFireStoreDiscussionData();
     }
 
     public LiveData<List<Discussion>> getDiscussionThreads() {
@@ -51,22 +50,26 @@ public class DiscussionViewModel extends ViewModel {
             if (task.isSuccessful()) {
                 discussionList.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    if (document != null) {
-                        // get course details
-                        String key = document.getId();
-                        String courseKey = document.getDocumentReference("course").getId();
-                        String title = document.getString("title");
-                        String question = document.getString("question");
-                        String postedByKey = document.getDocumentReference("postedBy").getId();
-                        Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
-                        Discussion discussionThread = new Discussion(key, courseKey, question, postedByKey, title, postedDateTime);
-                        for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
-                            discussionThread.addResponseKey(response.getId());
-                        for (DocumentReference like : (ArrayList<DocumentReference>) document.get("likes"))
-                            discussionThread.addLikeKey(like.getId());
-                        LikeNumbersDiscussionLiveData.setLikeNumber(discussionThread);
-                        CommentNumberDiscussionLiveData.setCommentNumber(discussionThread);
-                        discussionList.add(discussionThread);
+                    try {
+                        if (document != null) {
+                            // get course details
+                            String key = document.getId();
+                            String courseKey = document.getDocumentReference("course").getId();
+                            String title = document.getString("title");
+                            String question = document.getString("question");
+                            String postedByKey = document.getDocumentReference("postedBy").getId();
+                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
+                            Discussion discussionThread = new Discussion(key, courseKey, question, postedByKey, title, postedDateTime);
+                            for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
+                                discussionThread.addResponseKey(response.getId());
+                            for (DocumentReference like : (ArrayList<DocumentReference>) document.get("likes"))
+                                discussionThread.addLikeKey(like.getId());
+                            LikeNumbersDiscussionLiveData.setLikeNumber(discussionThread);
+                            CommentNumberDiscussionLiveData.setCommentNumber(discussionThread);
+                            discussionList.add(discussionThread);
+                        }
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
                 }
                 mDiscussionThreads.setValue(discussionList);

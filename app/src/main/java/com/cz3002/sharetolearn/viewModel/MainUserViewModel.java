@@ -26,14 +26,10 @@ public class MainUserViewModel extends ViewModel {
     private FirebaseAuth mAuth;
 
     public MainUserViewModel() {
-//        User mainUser = new User("user1", "My biography", "lam022@e.ntu.edu.sg", "Computer Science", "2021", "lam", "Student", "");
-//        mMainUser = new MutableLiveData<>();
-//        mMainUser.setValue(mainUser);
+        getFirestoreUser();
     }
 
-    public LiveData<User> getMainUser() {
-        return mMainUser;
-    }
+
 
     public void setMainUser(User user) {
         mMainUser = new MutableLiveData<>();
@@ -41,7 +37,6 @@ public class MainUserViewModel extends ViewModel {
     }
 
     public LiveData<User> getUser() {
-        getFirestoreUser();
         return mMainUser;
     }
 

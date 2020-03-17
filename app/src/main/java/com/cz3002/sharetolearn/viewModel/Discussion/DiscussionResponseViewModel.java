@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,7 +40,6 @@ public class DiscussionResponseViewModel extends ViewModel {
         mDiscussionResponses = new MutableLiveData<>();
         mDiscussionResponses.setValue(discussionResponses);
         realtimeFireStoreDiscussionData();
-        getFireStoreDiscussionReponseData();
     }
 
     public LiveData<HashMap<String, DiscussionResponse>> getDiscussionResponse(){ return mDiscussionResponses; }
@@ -53,20 +53,24 @@ public class DiscussionResponseViewModel extends ViewModel {
                 if (task.isSuccessful()) {
                     discussionResponses.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (document != null) {
-                            // get course details
-                            String key = document.getId();
-                            String discussionKey = document.getDocumentReference("discussion").getId();
-                            String postedByKey = document.getDocumentReference("postedBy").getId();
-                            Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
-                            String answer = document.getString("answer");
-                            DiscussionResponse response = new DiscussionResponse(key, discussionKey, postedByKey, answer, postedDateTime);
-                            for (DocumentReference upvote : (ArrayList<DocumentReference>) document.get("upvotes"))
-                                response.addUpvoteKey(upvote.getId());
-                            for (DocumentReference downvote : (ArrayList<DocumentReference>) document.get("downvotes"))
-                                response.addDownvoteKey(downvote.getId());
-                            VoteNumberDiscussionLiveData.setVoteNumber(response);
-                            discussionResponses.put(key, response);
+                        try {
+                            if (document != null) {
+                                // get course details
+                                String key = document.getId();
+                                String discussionKey = document.getDocumentReference("discussion").getId();
+                                String postedByKey = document.getDocumentReference("postedBy").getId();
+                                Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
+                                String answer = document.getString("answer");
+                                DiscussionResponse response = new DiscussionResponse(key, discussionKey, postedByKey, answer, postedDateTime);
+                                for (DocumentReference upvote : (ArrayList<DocumentReference>) document.get("upvotes"))
+                                    response.addUpvoteKey(upvote.getId());
+                                for (DocumentReference downvote : (ArrayList<DocumentReference>) document.get("downvotes"))
+                                    response.addDownvoteKey(downvote.getId());
+                                VoteNumberDiscussionLiveData.setVoteNumber(response);
+                                discussionResponses.put(key, response);
+                            }
+                        } catch (Exception e){
+                            e.printStackTrace();
                         }
                     }
                     mDiscussionResponses.setValue(discussionResponses);
@@ -87,7 +91,7 @@ public class DiscussionResponseViewModel extends ViewModel {
     }
 
     public static void addDiscussionResponse(final Context context, final Discussion discussion, DiscussionResponse response){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> responseDoc = response.getFireStoreFormat();
         db.collection("DiscussionResponse")
                 .add(responseDoc)
@@ -96,7 +100,9 @@ public class DiscussionResponseViewModel extends ViewModel {
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
                         discussion.addResponseKey(documentReference.getId());
-                        DiscussionViewModel.updateDiscussion(context, discussion);
+                        db.collection("Discussion")
+                                .document(discussion.getKey())
+                                .update("responses", FieldValue.arrayUnion(documentReference));
                         Toast.makeText(context, "Successfully posted answer", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -138,17 +144,5 @@ public class DiscussionResponseViewModel extends ViewModel {
         db.collection("DiscussionResponse")
                 .document(response.getKey())
                 .update(doc);
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Toast.makeText(context, "Successfully updated", Toast.LENGTH_SHORT).show();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(context, "Update failed", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
     }
 }

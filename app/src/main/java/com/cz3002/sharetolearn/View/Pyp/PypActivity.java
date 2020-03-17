@@ -38,6 +38,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cz3002.sharetolearn.viewModel.Pyp.PYPResponseViewModel;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class PypActivity extends AppCompatActivity {
     public static PYP pyp;
@@ -134,14 +136,21 @@ public class PypActivity extends AppCompatActivity {
         likedImageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 //liked , unliked action
                 if (pyp.getLikeKeys().contains(mainUserKey)){
                     pyp.removeLikeKey(mainUserKey);
-                    PYPViewModel.updatePYP(getBaseContext(), pyp);
+                    db.collection("PYP")
+                            .document(pyp.getKey())
+                            .update("likes", FieldValue.arrayRemove(db.collection("User").document(mainUserKey)));
+//                    PYPViewModel.updatePYP(getBaseContext(), pyp);
                     ((ImageView) view).setImageResource(R.drawable.unliked);
                 } else {
                     pyp.addLikeKey(mainUserKey);
-                    PYPViewModel.updatePYP(getBaseContext(), pyp);
+                    db.collection("PYP")
+                            .document(pyp.getKey())
+                            .update("likes", FieldValue.arrayUnion(db.collection("User").document(mainUserKey)));
+//                    PYPViewModel.updatePYP(getBaseContext(), pyp);
                     ((ImageView) view).setImageResource(R.drawable.liked);
                 }
             }

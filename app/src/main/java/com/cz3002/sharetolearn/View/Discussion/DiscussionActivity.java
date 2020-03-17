@@ -1,14 +1,17 @@
 package com.cz3002.sharetolearn.View.Discussion;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,6 +30,8 @@ import com.cz3002.sharetolearn.viewModel.Discussion.DiscussionViewModel;
 import com.cz3002.sharetolearn.viewModel.Discussion.LikeNumbersDiscussionLiveData;
 import com.cz3002.sharetolearn.viewModel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -127,14 +132,21 @@ public class DiscussionActivity extends AppCompatActivity {
         likedImageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 //liked , unliked action
                 if (discussionThread.getLikeKeys().contains(mainUserKey)){
                     discussionThread.removeLikeKey(mainUserKey);
-                    DiscussionViewModel.updateDiscussion(getBaseContext(), discussionThread);
+                    db.collection("Discussion")
+                            .document(discussionThread.getKey())
+                            .update("likes", FieldValue.arrayRemove(db.collection("User").document(mainUserKey)));
+//                    DiscussionViewModel.updateDiscussion(getBaseContext(), discussionThread);
                     ((ImageView) view).setImageResource(R.drawable.unliked);
                 } else {
                     discussionThread.addLikeKey(mainUserKey);
-                    DiscussionViewModel.updateDiscussion(getBaseContext(), discussionThread);
+                    db.collection("Discussion")
+                            .document(discussionThread.getKey())
+                            .update("likes", FieldValue.arrayUnion(db.collection("User").document(mainUserKey)));
+//                    DiscussionViewModel.updateDiscussion(getBaseContext(), discussionThread);
                     ((ImageView) view).setImageResource(R.drawable.liked);
                 }
             }
@@ -160,6 +172,42 @@ public class DiscussionActivity extends AppCompatActivity {
                 commentEditText.setText("");
             }
         });
+
+        if (discussionThread.getPostedByKey().equals(mainUserKey)){
+            Button deleteButton = findViewById(R.id.delete_button);
+            deleteButton.setVisibility(View.VISIBLE);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("Confirm!");
+                    builder.setMessage("Do you want to delete?");
+                    builder.setCancelable(false);
+                    builder
+                            .setPositiveButton(
+                            "Yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Toast.makeText(activity, "Deleting this post", Toast.LENGTH_SHORT);
+                                            DiscussionViewModel.removeDiscussionFireStore(activity,discussionThread);
+                                            activity.finish();
+                                        }
+                                    })
+                            .setNegativeButton(
+                                    "No",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    }
+                            );
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            });
+        }
 
     }
 
