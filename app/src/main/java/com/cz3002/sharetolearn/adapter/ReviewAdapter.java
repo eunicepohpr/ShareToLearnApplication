@@ -21,7 +21,6 @@ public class ReviewAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<CourseReview> courseReviews;
-    CourseReview courseReview = new CourseReview();
     private static LayoutInflater inflater = null;
 
     private FirebaseAuth mAuth;
@@ -49,26 +48,29 @@ public class ReviewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        courseReview = courseReviews.get(i);
-        User user = courseReview.getRatedBy();
-        String username = user.getName();
-        Date date = courseReview.getRatedDateTime();
-        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
-        String formatedDate = simpleDate.format(date);
-        String description = courseReview.getDescription();
-        double rating = courseReview.getRating();
-
+        LayoutInflater inflater = LayoutInflater.from(context);
         if (view == null) view = inflater.inflate(R.layout.listitem_review, null);
-        TextView usernameTV = view.findViewById(R.id.review_username);
-        usernameTV.setText(username);
-        TextView dateTV = view.findViewById(R.id.review_date);
-        dateTV.setText(formatedDate);
-        TextView descriptionTV = view.findViewById(R.id.review_desc);
-        descriptionTV.setText(description);
-        RatingBar ratingBarTV = view.findViewById(R.id.review_ratingBar);
-        ratingBarTV.setRating((float) rating);
+
+        //courseReview = courseReviews.get(i);
+        CourseReview courseReview = (CourseReview) getItem(i);
+        User user = courseReview.getRatedBy();
+        if(user != null){
+            String username = user.getName();
+            Date date = courseReview.getRatedDateTime();
+            SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+            String formatedDate = simpleDate.format(date);
+            String description = courseReview.getDescription();
+            double rating = courseReview.getRating();
+
+            TextView usernameTV = view.findViewById(R.id.review_username);
+            usernameTV.setText(username);
+            TextView dateTV = view.findViewById(R.id.review_date);
+            dateTV.setText(formatedDate);
+            TextView descriptionTV = view.findViewById(R.id.review_desc);
+            descriptionTV.setText(description);
+            RatingBar ratingBarTV = view.findViewById(R.id.review_ratingBar);
+            ratingBarTV.setRating((float) rating);
+        }
 
         return view;
     }
