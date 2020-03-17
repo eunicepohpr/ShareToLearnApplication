@@ -9,22 +9,24 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.CourseReview;
+import com.cz3002.sharetolearn.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ReviewAdapter extends BaseAdapter {
 
     private Context context;
-    private List<CourseReview> courseReviews;
+    private ArrayList<CourseReview> courseReviews;
     private static LayoutInflater inflater = null;
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
-    public ReviewAdapter(Context context, List<CourseReview> courseReviews) {
+    public ReviewAdapter(Context context, ArrayList<CourseReview> courseReviews) {
         this.context = context;
         this.courseReviews = courseReviews;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,7 +52,8 @@ public class ReviewAdapter extends BaseAdapter {
         currentUser = mAuth.getCurrentUser();
 
         CourseReview courseReview = courseReviews.get(i);
-        String username = courseReview.getRatedBy().getName();
+        User user = courseReview.getRatedBy();
+        String username = user.getName();
         Date date = courseReview.getRatedDateTime();
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
         String formatedDate = simpleDate.format(date);

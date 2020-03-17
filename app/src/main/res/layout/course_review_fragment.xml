@@ -1,266 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="top|center"
-    android:background="#07111111"
-    android:orientation="vertical">
-
-    //course description
-    <LinearLayout
-        android:id="@+id/review_tolist"
-        android:layout_width="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#07111111">
+    <ScrollView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:layout_margin="20dp">
-
-        <TextView
-            android:id="@+id/review_overview_coursename"
+        android:layout_centerVertical="true">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="Name of course" />
-
-        <TextView
-            android:id="@+id/review_overview_coursedesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:gravity="center"
-            android:textStyle="normal"
-            android:layout_marginTop="10dp"
-            android:text="Description of course" />
-
-        <TextView
-            android:id="@+id/overview_assignment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:gravity="left"
-            android:textStyle="normal"
-            android:layout_marginTop="10dp"
-            android:text="@string/assignmentTag"/>
-
-        <TextView
-            android:id="@+id/overview_assignmentDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:gravity="left"
-            android:textStyle="normal"
-            android:text="display a list of assignment here"/>
-
-    </LinearLayout>
-
-    //summary
-    <LinearLayout
-        android:id="@+id/review_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="5dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="15dp"
-        android:background="@drawable/linearlayout_shadow"
-        android:clickable="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/review_title"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:text="Rating and reviews"
-                android:layout_marginLeft="10dp"
-                android:layout_alignParentLeft="true"/>
-
-            <ImageView
-                android:id="@+id/review_toList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_forward_foreground" />
-
-            <TextView
-                android:id="@+id/review_avgRating"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="55dp"
-                android:textAlignment="center"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/review_title"/>
-
-            <RatingBar
-                android:id="@+id/ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/review_avgRating"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="51dp"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:stepSize="0.1" />
+            android:layout_height="match_parent"
+            android:layout_gravity="top|center"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="180dp"
+                android:id="@+id/review_tolist"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:gravity="center_horizontal|center_vertical"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:layout_below="@+id/review_title"
-                android:gravity="center_horizontal|center_vertical">
+                android:layout_margin="20dp">
 
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/review_rating5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="5"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/review_overview_coursename"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="Name of course" />
 
-                    <ProgressBar
-                        android:id="@+id/progressBar5"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/review_rating5"
-                        android:max="100"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-                </RelativeLayout>
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/review_rating4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/review_overview_coursedesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:gravity="center"
+                    android:textStyle="normal"
+                    android:layout_marginTop="10dp"
+                    android:text="Description of course" />
 
-                    <ProgressBar
-                        android:id="@+id/progressBar4"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/review_rating4"
-                        android:max="100"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-                </RelativeLayout>
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/review_rating3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="3"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/overview_assignment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:gravity="left"
+                    android:textStyle="normal"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/assignmentTag"/>
 
-                    <ProgressBar
-                        android:id="@+id/progressBar3"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/review_rating3"
-                        android:max="100"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-                </RelativeLayout>
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/review_rating2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"/>
-
-                    <ProgressBar
-                        android:id="@+id/progressBar2"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/review_rating2"
-                        android:max="100"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-                </RelativeLayout>
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/review_rating1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"/>
-
-                    <ProgressBar
-                        android:id="@+id/progressBar1"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/review_rating1"
-                        android:max="100"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-                </RelativeLayout>
+                <TextView
+                    android:id="@+id/overview_assignmentDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:gravity="left"
+                    android:textStyle="normal"
+                    android:text="display a list of assignment here"/>
 
             </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_margin="20dp">
-        <TextView
-            android:id="@+id/noreviews_overview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No review yet, write one now!"
-            android:visibility="invisible"/>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/review_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="5dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="15dp"
+                android:background="@drawable/linearlayout_shadow"
+                android:clickable="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|bottom"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:layout_margin="20dp">
-        <Button
-            android:id="@+id/writeReview_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:layout_gravity="center"
-            android:textColor="@color/colorWhite"
-            android:text="Write a review"
-            android:visibility="invisible"/>
-    </LinearLayout>
-</LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/review_title"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:text="Rating and reviews"
+                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentLeft="true"/>
+
+                    <ImageView
+                        android:id="@+id/review_toList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_forward_foreground" />
+
+                    <TextView
+                        android:id="@+id/review_avgRating"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="55dp"
+                        android:textAlignment="center"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/review_title"
+                        android:gravity="center_horizontal" />
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/review_avgRating"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="51dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:stepSize="0.1" />
+
+                    <LinearLayout
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:layout_below="@+id/review_title"
+                        android:gravity="center_horizontal|center_vertical">
+
+                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/review_rating5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5"
+                                android:textStyle="bold"
+                                android:textSize="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar5"
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/review_rating5"
+                                android:max="100"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                        </RelativeLayout>
+                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/review_rating4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="4"
+                                android:textStyle="bold"
+                                android:textSize="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar4"
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/review_rating4"
+                                android:max="100"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                        </RelativeLayout>
+                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/review_rating3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3"
+                                android:textStyle="bold"
+                                android:textSize="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar3"
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/review_rating3"
+                                android:max="100"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                        </RelativeLayout>
+                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/review_rating2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2"
+                                android:textStyle="bold"
+                                android:textSize="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar2"
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/review_rating2"
+                                android:max="100"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                        </RelativeLayout>
+                        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/review_rating1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:textStyle="bold"
+                                android:textSize="15dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"/>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar1"
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/review_rating1"
+                                android:max="100"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_margin="20dp">
+                <TextView
+                    android:id="@+id/noreviews_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No review yet, write one now!"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center|bottom"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <Button
+                    android:id="@+id/writeReview_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:text="Write a review"
+                    android:visibility="visible"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

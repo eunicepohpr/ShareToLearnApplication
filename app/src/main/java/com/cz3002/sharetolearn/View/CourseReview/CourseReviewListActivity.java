@@ -64,35 +64,28 @@ public class CourseReviewListActivity extends AppCompatActivity {
         progressBar1 = findViewById(R.id.list_progressBar1);
         reviewListView = findViewById(R.id.review_list);
 
-        courseReviewViewModel = ViewModelProviders.of(this).get(CourseReviewViewModel.class);
-        courseReviewViewModel.getCourseReviewList(selectedCourse).observe(this, new Observer<ArrayList<CourseReview>>() {
-            @Override
-            public void onChanged(ArrayList<CourseReview> courseReviews) {
-                reviewList = courseReviews;
-                count5 = 0; count4 = 0; count3 = 0; count2 = 0; count1 = 0;
-                if(!courseReviews.isEmpty()){
-                    progressCount(reviewList);
-                    //display avg
-                    String avg = getAvgRating(reviewList);
-                    avgRatingTV.setText(avg);
-                    //display rating bar
-                    ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
-                }else{
-                    noreviewsTV.setVisibility(View.VISIBLE);
-                }
-                //display progressbar
-                progressBar5.setProgress((int) count5);
-                progressBar4.setProgress((int) count4);
-                progressBar3.setProgress((int) count3);
-                progressBar2.setProgress((int) count2);
-                progressBar1.setProgress((int) count1);
+        if(!reviewList.isEmpty()){
+            noreviewsTV.setVisibility(View.GONE);
+            progressCount(reviewList);
+            //display avg
+            String avg = getAvgRating(reviewList);
+            avgRatingTV.setText(avg);
+            //display rating bar
+            ratingbar.setRating(Float.valueOf(getAvgRating(reviewList)));
+        }else{
+            noreviewsTV.setVisibility(View.VISIBLE);
+        }
+        //display progressbar
+        progressBar5.setProgress((int) count5);
+        progressBar4.setProgress((int) count4);
+        progressBar3.setProgress((int) count3);
+        progressBar2.setProgress((int) count2);
+        progressBar1.setProgress((int) count1);
 
-                //display list of reviews
-                reviewAdapter = new ReviewAdapter(getApplicationContext(), courseReviews);
-                reviewListView.setAdapter(reviewAdapter);
-                reviewAdapter.notifyDataSetChanged();
-            }
-        });
+        //display list of reviews
+        reviewAdapter = new ReviewAdapter(getApplicationContext(), reviewList);
+        reviewListView.setAdapter(reviewAdapter);
+        reviewAdapter.notifyDataSetChanged();
     }
 
     @Override
