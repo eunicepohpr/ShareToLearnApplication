@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,7 +40,7 @@ public class PYPResponseViewModel extends ViewModel {
         mPYPResponses = new MutableLiveData<>();
         mPYPResponses.setValue(PYPResponses);
         realtimeFireStorePYPData();
-        getFireStorePYPReponseData();
+//        getFireStorePYPReponseData();
     }
 
     public LiveData<HashMap<String, PYPResponse>> getPYPResponse(){ return mPYPResponses; }
@@ -86,8 +87,8 @@ public class PYPResponseViewModel extends ViewModel {
         });
     }
 
-    public static void addPYPResponse(final Context context, final PYP PYP, PYPResponse response){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static void addPYPResponse(final Context context, final PYP pyp, PYPResponse response){
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> responseDoc = response.getFireStoreFormat();
         db.collection("PYPResponse")
                 .add(responseDoc)
@@ -95,9 +96,11 @@ public class PYPResponseViewModel extends ViewModel {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d("Success", "DocumentSnapshot written with ID: " + documentReference.getId());
-                        PYP.addResponseKey(documentReference.getId());
-                        PYPViewModel.updatePYP(context, PYP);
-                        Toast.makeText(context, "Successfully posted answer", Toast.LENGTH_SHORT).show();
+                        pyp.addResponseKey(documentReference.getId());
+                        db.collection("PYP")
+                                .document(pyp.getKey())
+                                .update("responses", FieldValue.arrayUnion(documentReference));
+                        Toast.makeText(context, "Successfully posted", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

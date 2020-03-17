@@ -37,7 +37,7 @@ public class PYPViewModel extends ViewModel {
     public PYPViewModel() {
         mPyps = new MutableLiveData<>();
         realtimeFireStorePypData();
-        getFireStorePypData();
+//        getFireStorePypData();
     }
 
     public LiveData<List<PYP>> getpyps() {
@@ -136,18 +136,6 @@ public class PYPViewModel extends ViewModel {
         db.collection("PYP")
                 .document(pyp.getKey())
                 .update(PYPDoc);
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Toast.makeText(context, "Successfully updated", Toast.LENGTH_SHORT).show();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(context, "Update failed", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
 
     }
 }

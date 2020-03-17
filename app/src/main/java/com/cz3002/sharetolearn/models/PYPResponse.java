@@ -27,6 +27,8 @@ public class PYPResponse implements Serializable {
 //    private ArrayList<User> upvotes;
 
     public PYPResponse() {
+        this.downvoteKeys = new HashSet<>();
+        this.upvoteKeys = new HashSet<>();
     }
 
     public PYPResponse(String key, String postedByKey, String pypKey, String answer,

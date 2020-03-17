@@ -29,6 +29,7 @@ public class AddDiscussion extends AppCompatActivity {
         final Course course = (Course) getIntent().getExtras().get("course");
         final String mainUserKey = (String) getIntent().getExtras().get("mainUserKey");
         final Context context = this;
+        final AppCompatActivity activity = this;
         Button postDiscussionButton = findViewById(R.id.postDiscussion_button);
         postDiscussionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +51,7 @@ public class AddDiscussion extends AppCompatActivity {
                 discussion.setQuestion(question);
                 discussion.setPostedDateTime(new Date());
                 DiscussionViewModel.addDiscussionFireStore(context, discussion);
+                activity.finish();
             }
         });
 

@@ -15,6 +15,8 @@ import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.Pyp.PYPResponseViewModel;
 import com.cz3002.sharetolearn.viewModel.Pyp.VoteNumberPypLiveData;
 import com.cz3002.sharetolearn.viewModel.UserViewModel;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -95,32 +97,52 @@ public class PYPResponseAdapter extends BaseAdapter {
         View.OnClickListener actionListener = new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 switch (view.getId()){
                     case R.id.up_vote:
                         if (!response.getUpvoteKeys().contains(mainUserKey)){
                             if (response.getDownvoteKeys().contains(mainUserKey)){
                                 response.removeDownvoteKey(mainUserKey);
+                                db.collection("PYPResponse")
+                                        .document(response.getKey())
+                                        .update("downvotes", FieldValue.arrayRemove(db.collection("User").document(mainUserKey)));
                             }
                             response.addUpvoteKey(mainUserKey);
+                            db.collection("PYPResponse")
+                                    .document(response.getKey())
+                                    .update("upvotes", FieldValue.arrayUnion(db.collection("User").document(mainUserKey)));
                             Toast.makeText(context, "You have upvoted this answer", Toast.LENGTH_SHORT).show();
                         } else {
                             response.removeUpvoteKey(mainUserKey);
+                            db.collection("PYPResponse")
+                                    .document(response.getKey())
+                                    .update("upvotes", FieldValue.arrayRemove(db.collection("User").document(mainUserKey)));
                             Toast.makeText(context, "You have undone your upvote for this answer", Toast.LENGTH_SHORT).show();
                         }
-                        PYPResponseViewModel.updatePYPResponseFireStore(context, response);
+//                        PYPResponseViewModel.updatePYPResponseFireStore(context, response);
                         break;
                     case R.id.down_vote:
                         if (!response.getDownvoteKeys().contains(mainUserKey)){
                             if (response.getUpvoteKeys().contains(mainUserKey)){
                                 response.removeUpvoteKey(mainUserKey);
+                                db.collection("PYPResponse")
+                                        .document(response.getKey())
+                                        .update("upvotes", FieldValue.arrayRemove(db.collection("User").document(mainUserKey)));
                             }
                             response.addDownvoteKey(mainUserKey);
+                            db.collection("PYPResponse")
+                                    .document(response.getKey())
+                                    .update("downvotes", FieldValue.arrayUnion(db.collection("User").document(mainUserKey)));
                             Toast.makeText(context, "You have downvoted this answer", Toast.LENGTH_SHORT).show();
                         } else {
                             response.removeDownvoteKey(mainUserKey);
+                            db.collection("PYPResponse")
+                                    .document(response.getKey())
+                                    .update("downvotes", FieldValue.arrayRemove(db.collection("User").document(mainUserKey)));
+
                             Toast.makeText(context, "You have undone your downvote for this answer", Toast.LENGTH_SHORT).show();
                         }
-                        PYPResponseViewModel.updatePYPResponseFireStore(context, response);
+//                        PYPResponseViewModel.updatePYPResponseFireStore(context, response);
                         break;
                 }
             }
