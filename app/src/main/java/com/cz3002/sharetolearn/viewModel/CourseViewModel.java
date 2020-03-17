@@ -1,6 +1,7 @@
 package com.cz3002.sharetolearn.viewModel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,23 +11,32 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class CourseViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<Course>> mCourses = new MutableLiveData<>();
-    private ArrayList<Course> courseList = new ArrayList<>();
+    private MutableLiveData<ArrayList<Course>> mCourses;
+    private ArrayList<Course> courseList;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
-    private DocumentReference usersDoc;
-    private FirebaseUser currentUser;
+    private CollectionReference collectionReference;
+
+    public CourseViewModel(){
+        mCourses = new MutableLiveData<>();
+        courseList = new ArrayList<>();
+        mCourses.setValue(courseList);
+        realtimeFireStoreCourseData();
+    }
 
     public LiveData<ArrayList<Course>> getCourseList() {
-        getFireStoreCoursesData();
         return mCourses;
     }
 
@@ -65,6 +75,17 @@ public class CourseViewModel extends ViewModel {
                     }
                     mCourses.setValue(courseList);
                 }
+            }
+        });
+    }
+
+    public void realtimeFireStoreCourseData() {
+        collectionReference = db.collection("CourseModule");
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                @Nullable FirebaseFirestoreException e) {
+                getFireStoreCoursesData();
             }
         });
     }

@@ -107,9 +107,8 @@ public class PYPViewModel extends ViewModel {
                 });
     }
 
-    public static void removePYPFireStore(final Context context, PYP pyp){
+    public static void removePYPFireStore(final Context context, final PYP pyp){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> PYPDoc = pyp.getFireStoreFormat();
         final String docKey = pyp.getKey();
         db.collection("PYP")
                 .document(docKey)
@@ -118,6 +117,8 @@ public class PYPViewModel extends ViewModel {
                     @Override
                     public void onSuccess(Void task) {
                         Log.d("Success", "DocumentSnapshot deleted with ID: " + docKey);
+                        for (DocumentReference doc: pyp.getReferenceListFireStoreFormat(pyp.getResponseKeys(), "DiscussionResponses"))
+                            doc.delete();
                         Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
                     }
                 })

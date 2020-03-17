@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,21 +51,21 @@ public class Discussion implements Serializable {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> discussionDocData = new HashMap<>();
         discussionDocData.put("course", db.collection("CourseModule").document(this.courseKey));
-        discussionDocData.put("likes", this.getReferenceListFireStoreFormat(new ArrayList<String>(this.likeKeys), "User"));
+        discussionDocData.put("likes", this.getReferenceListFireStoreFormat(this.likeKeys, "User"));
         discussionDocData.put("postedBy", db.collection("User").document(this.postedByKey));
         discussionDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
         discussionDocData.put("question", this.question);
-        discussionDocData.put("responses", this.getReferenceListFireStoreFormat(new ArrayList<String>(this.responseKeys), "DiscussionResponse"));
+        discussionDocData.put("responses", this.getReferenceListFireStoreFormat(this.responseKeys, "DiscussionResponse"));
         discussionDocData.put("title", this.title);
         return discussionDocData;
     }
 
     // format string into firestore document reference format
-    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(ArrayList<String> list, String collection) {
+    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(Collection<String> list, String collection) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<DocumentReference> docList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++)
-            docList.add(db.collection(collection).document(list.get(i)));
+        for (String docId: list)
+            docList.add(db.collection(collection).document(docId));
         return docList;
     }
 

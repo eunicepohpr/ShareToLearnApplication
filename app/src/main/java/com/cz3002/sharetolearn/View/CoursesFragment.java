@@ -13,7 +13,10 @@ import android.widget.ListView;
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
 import com.cz3002.sharetolearn.models.Course;
+import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.CourseViewModel;
+import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
+
 import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class CoursesFragment extends Fragment {
 
     private CourseViewModel coursesViewModel;
+    private MainUserViewModel mainUserViewModel;
     private ListView courseListView;
     private CourseAdapter courseAdapter;
 
@@ -35,10 +39,18 @@ public class CoursesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         coursesViewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
+        mainUserViewModel = ViewModelProviders.of(this).get(MainUserViewModel.class);
         View coursesFragmentView = inflater.inflate(R.layout.courses_fragment, container, false);
         ((MainFeed) getActivity()).hideFloatingActionButton();
         courseListView = coursesFragmentView.findViewById(R.id.course_list);
+        mainUserViewModel.getUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user != null){
 
+                }
+            }
+        });
         coursesViewModel.getCourseList().observe(this, new Observer<ArrayList<Course>>() {
             @Override
             public void onChanged(ArrayList<Course> courses) {

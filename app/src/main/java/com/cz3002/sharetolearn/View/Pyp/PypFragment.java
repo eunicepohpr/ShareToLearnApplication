@@ -57,7 +57,7 @@ public class PypFragment extends Fragment {
 //                /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();*/
 //            }
-//        });
+//        })
 
         pypViewModel.getpyps().observe(this, new Observer<List<PYP>>() {
             @Override

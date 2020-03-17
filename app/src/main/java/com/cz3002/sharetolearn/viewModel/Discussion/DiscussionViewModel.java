@@ -110,10 +110,11 @@ public class DiscussionViewModel extends ViewModel {
                 });
     }
 
-    public static void removeDiscussionFireStore(final Context context, Discussion discussionThread){
+    public static void removeDiscussionFireStore(final Context context, final Discussion discussionThread){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> discussionDoc = discussionThread.getFireStoreFormat();
         final String docKey = discussionThread.getKey();
+
         db.collection("Discussion")
                 .document(docKey)
                 .delete()
@@ -121,6 +122,8 @@ public class DiscussionViewModel extends ViewModel {
                     @Override
                     public void onSuccess(Void task) {
                         Log.d("Success", "DocumentSnapshot deleted with ID: " + docKey);
+                        for (DocumentReference doc: discussionThread.getReferenceListFireStoreFormat(discussionThread.getResponseKeys(), "DiscussionResponses"))
+                            doc.delete();
                         Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
                     }
                 })
