@@ -33,12 +33,12 @@ import java.util.Map;
 
 public class CourseReviewViewModel extends ViewModel {
     private MutableLiveData<User> mUser = new MutableLiveData<>();
+    private MutableLiveData<CourseReview> mUserReview = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Course>> mCourses = new MutableLiveData<>();
     private MutableLiveData<ArrayList<CourseReview>> mReviewList = new MutableLiveData<>();
     private ArrayList<Course> courseList = new ArrayList<>();
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
     private ArrayList<User> userList = new ArrayList<>();
-//    private User currentUser;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
@@ -47,7 +47,7 @@ public class CourseReviewViewModel extends ViewModel {
     private FirebaseUser currentFbUser;
 
     public CourseReviewViewModel() {
-        // get current login user
+        // get current login user id
         mAuth = FirebaseAuth.getInstance();
         currentFbUser = mAuth.getCurrentUser();
     }
@@ -66,6 +66,11 @@ public class CourseReviewViewModel extends ViewModel {
     public LiveData<User> getUser() {
         getAllUserData();
         return mUser;
+    }
+
+    public LiveData<CourseReview> getUserReview(Course selectedCourse) {
+        realtimeReviewData(selectedCourse);
+        return mUserReview;
     }
 
     public void realtimeCourseData() {
@@ -224,11 +229,15 @@ public class CourseReviewViewModel extends ViewModel {
                                 String courseKey = ratedByKey.toString();
                                 CourseReview courseReview = new CourseReview(key, rating, dateTime, ratedByKeyString, description, courseKey);
 
+                                String userKey = ratedByKey.getId();
                                 for (User u : userList) {
-                                    String userKey = ratedByKey.getId();
                                     if (u.getKey().equals(userKey)) {
                                         courseReview.setRatedBy(u);
                                     }
+                                }
+
+                                if(currentFbUser.getUid().equals(userKey)){
+                                    mUserReview.setValue(courseReview);
                                 }
                                 reviewList.add(courseReview);
                             }
@@ -240,8 +249,28 @@ public class CourseReviewViewModel extends ViewModel {
         });
     }
 
-    public void newReview(CourseReview courseReview, final Course selectedCourse) {
+    public void newReview(CourseReview courseReview, final Course selectedCourse, CourseReview userReview) {
         final Map<String, Object> docData = courseReview.getFireStoreReviewFormat();
+        //delete old review
+        if(userReview != null){
+            String c = userReview.getKey();
+            db.collection("CourseReview").document(userReview.getKey())
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("SUCCESS", "DocumentSnapshot successfully deleted!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("FAILURE", "Error deleting document", e);
+                        }
+                    });
+        }
+
+        //create new review
         db.collection("CourseReview")
                 .add(docData)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -262,7 +291,7 @@ public class CourseReviewViewModel extends ViewModel {
                 });
     }
 
-    public void updateTime(CourseReview review) {
+/*    public void updateTime(CourseReview review) {
         Map<String, Object> docData = new HashMap<>();
         docData.put("description", review.getDescription());
         docData.put("ratedBy", review.getRatedBy());
@@ -270,10 +299,10 @@ public class CourseReviewViewModel extends ViewModel {
         docData.put("rating", review.getRating());
         docData.put("ratedDateTime", new Timestamp(new Date()));
         //docData.put("course", db.collection("CourseModule").document("YxLTpfzIKMQOk4QifP8u"));
-/*        Long tsLong = System.currentTimeMillis()/1000;
-        String ts = tsLong.toString();*/
+*//*        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();*//*
 
         db.collection("CourseReview").document(review.getKey()).set(docData);
         //.update("ratedDateTime", getTimestamp());
-    }
+    }*/
 }
