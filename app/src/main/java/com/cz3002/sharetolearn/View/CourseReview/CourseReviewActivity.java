@@ -36,7 +36,7 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
     private ArrayList<CourseReview> reviewList = new ArrayList<>();
     private Course selectedCourse = new Course();
     private User currentUser = new User();
-    private CourseReview userReview = new CourseReview();
+    private CourseReview userReview = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

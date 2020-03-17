@@ -32,7 +32,7 @@ public class CourseReviewPostActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentFbUser;
-    private CourseReview userReview;
+    private CourseReview userReview = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
