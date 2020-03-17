@@ -31,7 +31,7 @@ public class UserViewModel extends ViewModel {
         mUsers = new MutableLiveData<>();
         mUsers.setValue(userMap);
         realtimeFireStoreUserData();
-        getFireStoreUserData();
+//        getFireStoreUserData();
     }
 
     public HashMap<String, User> getUserMap(){
@@ -57,6 +57,7 @@ public class UserViewModel extends ViewModel {
                             userMap.put(key, user);
                         }
                     }
+                    mUsers.setValue(userMap);
                 }
             }
         });
@@ -69,7 +70,6 @@ public class UserViewModel extends ViewModel {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
                                 @Nullable FirebaseFirestoreException e) {
                 getFireStoreUserData();
-                mUsers.setValue(userMap);
             }
         });
     }

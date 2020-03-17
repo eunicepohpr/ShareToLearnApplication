@@ -14,6 +14,7 @@ import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.PYPResponseAdapter;
 import com.cz3002.sharetolearn.models.PYP;
 import com.cz3002.sharetolearn.models.PYPResponse;
+import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.Pyp.CommentNumberPypLiveData;
 import com.cz3002.sharetolearn.viewModel.Pyp.LikeNumberPypLiveData;
 import com.cz3002.sharetolearn.viewModel.Pyp.PYPViewModel;
@@ -58,12 +59,26 @@ public class PypActivity extends AppCompatActivity {
         final FragmentActivity activity = this;
         TextView topicView = findViewById(R.id.topic_title);
         topicView.setText(pyp.getTitle());
-        TextView postDetailsView = findViewById(R.id.postDetails);
-        String name;
-        if (mainUserKey.equals(pyp.getPostedByKey())){
-            name = "you";
-        } else name = pyp.getPostedBy().getName();
-        postDetailsView.setText("Posted by "+name+" on "+dateFormat.format(pyp.getPostedDateTime()));
+        final TextView postDetailsView = findViewById(R.id.postDetails);
+        if (mainUserKey.equals(pyp.getPostedByKey())) {
+            postDetailsView.setText("Posted by you on "+dateFormat.format(pyp.getPostedDateTime()));
+        } else {
+            userViewModel.getUsers().observe(this, new Observer<HashMap<String, User>>() {
+                @Override
+                public void onChanged(HashMap<String, User> userMap) {
+                    String name = "...";
+                    if(userMap.containsKey(pyp.getPostedByKey())) {
+                        name = userMap.get(pyp.getPostedByKey()).getName();
+                    }
+                    postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(pyp.getPostedDateTime()));
+                }
+            });
+            System.out.println("pyp postedByKey: "+pyp.getPostedByKey());
+            for (Map.Entry<String, User> item: userViewModel.getUsers().getValue().entrySet()){
+                System.out.println(item.getKey()+": "+item.getValue());
+            }
+        }
+
         TextView questionView = findViewById(R.id.question);
         questionView.setText(pyp.getQuestion());
         final TextView commentNumberView = findViewById(R.id.comment_number);
@@ -81,7 +96,7 @@ public class PypActivity extends AppCompatActivity {
             }
         });
         commentsListView = findViewById(R.id.pyp_comment_list);
-        pypResponseAdapter = new PYPResponseAdapter(getApplicationContext(), activity, new ArrayList<PYPResponse>(), userViewModel.getUsers().getValue(), mainUserKey);
+        pypResponseAdapter = new PYPResponseAdapter(getApplicationContext(), activity, new ArrayList<PYPResponse>(), userViewModel, mainUserKey);
         commentsListView.setAdapter(pypResponseAdapter);
         PYPResponseViewModel.getPYPResponse().observe(this, new Observer<HashMap<String, PYPResponse>>() {
             @Override
@@ -104,7 +119,7 @@ public class PypActivity extends AppCompatActivity {
                         }
                     }
                 });
-                pypResponseAdapter.updateData(getApplicationContext(), activity, PYPResponses, userViewModel.getUsers().getValue(), mainUserKey);
+                pypResponseAdapter.updateData(getApplicationContext(), activity, PYPResponses, userViewModel, mainUserKey);
 
             }
         });

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -79,6 +80,23 @@ public class PypFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        pypsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                PYP pyp = (PYP) adapterView.getItemAtPosition(position);
+                Intent launchactivity = new  Intent(getContext(), PypActivity.class);
+                launchactivity.putExtra("key", mainUserKey);
+                PypActivity.pyp = pyp;
+                startActivity(launchactivity);
+                /*Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);
+                toast.show();*/
+                //startActivity(new Intent(getActivity(), PYPPypChatActivity.class));
+            }
+        });
     }
     
 }

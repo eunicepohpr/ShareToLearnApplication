@@ -38,23 +38,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/pyp_userImage">
+                    android:layout_toRightOf="@+id/userImage">
+
                     <TextView
                         android:id="@+id/topic_title"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:text="CZ2005 PYP"
+                        android:text="CZ2005 Help"
                         android:textColor="@color/colorBlack"
                         android:textSize="20dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_below="@+id/topic"
-                    android:layout_toRightOf="@+id/pyp_userImage">
+                    android:layout_toRightOf="@+id/userImage">
                     <TextView
                         android:id="@+id/postDetails"
                         android:layout_width="fill_parent"
@@ -97,11 +98,12 @@
                     android:textSize="15dp" />
 
                 <ImageView
+                    android:id="@+id/like_image"
                     android:layout_width="25dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
-                    android:src="@drawable/liked" />
+                    android:src="@drawable/unliked" />
 
                 <TextView
                     android:id="@+id/liked_number"

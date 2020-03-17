@@ -9,13 +9,16 @@ import android.widget.TextView;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.PYP;
+import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.Pyp.CommentNumberPypLiveData;
 import com.cz3002.sharetolearn.viewModel.Pyp.LikeNumberPypLiveData;
 import com.cz3002.sharetolearn.viewModel.UserViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
@@ -41,7 +44,6 @@ public class PYPAdapter extends BaseAdapter {
         this.likeNumbersViewModel = ViewModelProviders.of(activity).get(LikeNumberPypLiveData.class);
         this.commentNumberPYPLiveData = ViewModelProviders.of(activity).get(CommentNumberPypLiveData.class);
         this.userViewModel = ViewModelProviders.of(activity).get(UserViewModel.class);
-        while (userViewModel.getUsers().getValue().size() == 0);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
@@ -61,7 +63,7 @@ public class PYPAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        PYP pyp = PYPList.get(i);
+        final PYP pyp = PYPList.get(i);
 
         if (view == null) view = inflater.inflate(R.layout.listitem_pyp_thread, null);
         TextView topicTextView = view.findViewById(R.id.topic_title);
@@ -80,13 +82,21 @@ public class PYPAdapter extends BaseAdapter {
                 likedTextView.setText(likeNumber.toString());
             }
         });
-        String name;
-        if (pyp.getPostedByKey().equals(mainUserKey)) {
-            name = "you";
-        }else name = userViewModel.getUsers().getValue().get(pyp.getPostedByKey()).getName();
-
-        TextView postDetail = view.findViewById(R.id.postDetails);
-        postDetail.setText("Posted by " +name+" on "+dateFormat.format(pyp.getPostedDateTime()));
+        final TextView postDetailsView = view.findViewById(R.id.postDetails);
+        if (mainUserKey.equals(pyp.getPostedByKey())) {
+            postDetailsView.setText("Posted by you on "+dateFormat.format(pyp.getPostedDateTime()));
+        } else {
+            userViewModel.getUsers().observe(fragmentActivity, new Observer<HashMap<String, User>>() {
+                @Override
+                public void onChanged(HashMap<String, User> userMap) {
+                    String name = "...";
+                    if(userMap.containsKey(pyp.getPostedByKey())) {
+                        name = userMap.get(pyp.getPostedByKey()).getName();
+                    }
+                    postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(pyp.getPostedDateTime()));
+                }
+            });
+        }
         return view;
     }
 }

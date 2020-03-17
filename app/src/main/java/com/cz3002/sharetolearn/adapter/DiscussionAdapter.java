@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.Discussion;
+import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.Discussion.CommentNumberDiscussionLiveData;
 import com.cz3002.sharetolearn.viewModel.Discussion.LikeNumbersDiscussionLiveData;
 import com.cz3002.sharetolearn.viewModel.UserViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import androidx.lifecycle.Observer;
@@ -60,7 +62,7 @@ public class DiscussionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        Discussion discussionThread = discussionList.get(i);
+        final Discussion discussionThread = discussionList.get(i);
 
         if (view == null) view = inflater.inflate(R.layout.listitem_discussion_thread, null);
         TextView topicTextView = view.findViewById(R.id.topic_title);
@@ -79,13 +81,19 @@ public class DiscussionAdapter extends BaseAdapter {
                 likedTextView.setText(likeNumber.toString());
             }
         });
-        String name;
-        if (discussionThread.getPostedByKey().equals(mainUserKey)) {
-            name = "you";
-        }else name = userViewModel.getUserMap().get(discussionThread.getPostedByKey()).getName();
-
-        TextView postDetail = view.findViewById(R.id.postDetails);
-        postDetail.setText("Posted by " +name+" on "+dateFormat.format(discussionThread.getPostedDateTime()));
+        final TextView postDetailsView = view.findViewById(R.id.postDetails);
+        if (mainUserKey.equals(discussionThread.getPostedByKey())) {
+            postDetailsView.setText("Posted by you on "+dateFormat.format(discussionThread.getPostedDateTime()));
+        } else userViewModel.getUsers().observe(fragmentActivity, new Observer<HashMap<String, User>>() {
+            @Override
+            public void onChanged(HashMap<String, User> userMap) {
+                String name = "...";
+                if(userMap.containsKey(discussionThread.getPostedByKey())) {
+                    name = userMap.get(discussionThread.getPostedByKey()).getName();
+                }
+                postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(discussionThread.getPostedDateTime()));
+            }
+        });
         return view;
     }
 }

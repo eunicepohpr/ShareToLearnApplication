@@ -59,7 +59,7 @@ public class PYPViewModel extends ViewModel {
                             String question = document.getString("question");
                             String postedByKey = document.getDocumentReference("postedBy").getId();
                             Date postedDateTime = document.getTimestamp("postedDateTime").toDate();
-                            PYP pyp = new PYP(key, courseKey, question, postedByKey, title, postedDateTime);
+                            PYP pyp = new PYP(key, courseKey, postedByKey,question, title, postedDateTime);
                             for (DocumentReference response : (ArrayList<DocumentReference>) document.get("responses"))
                                 pyp.addResponseKey(response.getId());
                             for (DocumentReference like : (ArrayList<DocumentReference>) document.get("likes"))

@@ -20,6 +20,7 @@ import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.DiscussionReponseAdapter;
 import com.cz3002.sharetolearn.models.Discussion;
 import com.cz3002.sharetolearn.models.DiscussionResponse;
+import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.Discussion.CommentNumberDiscussionLiveData;
 import com.cz3002.sharetolearn.viewModel.Discussion.DiscussionResponseViewModel;
 import com.cz3002.sharetolearn.viewModel.Discussion.DiscussionViewModel;
@@ -57,12 +58,20 @@ public class DiscussionActivity extends AppCompatActivity {
         final FragmentActivity activity = this;
         TextView topicView = findViewById(R.id.topic_title);
         topicView.setText(discussionThread.getTitle());
-        TextView postDetailsView = findViewById(R.id.postDetails);
-        String name;
-        if (mainUserKey.equals(discussionThread.getPostedByKey())){
-            name = "you";
-        } else name = discussionThread.getPostedBy().getName();
-        postDetailsView.setText("Posted by "+name+" on "+dateFormat.format(discussionThread.getPostedDateTime()));
+        final TextView postDetailsView = findViewById(R.id.postDetails);
+        if (mainUserKey.equals(discussionThread.getPostedByKey())) {
+            postDetailsView.setText("Posted by you on "+dateFormat.format(discussionThread.getPostedDateTime()));
+        } else userViewModel.getUsers().observe(this, new Observer<HashMap<String, User>>() {
+            @Override
+            public void onChanged(HashMap<String, User> userMap) {
+                String name = "...";
+                if(userMap.containsKey(discussionThread.getPostedByKey())) {
+                    name = userMap.get(discussionThread.getPostedByKey()).getName();
+                }
+                postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(discussionThread.getPostedDateTime()));
+            }
+        });
+
         TextView questionView = findViewById(R.id.question);
         questionView.setText(discussionThread.getQuestion());
         final TextView commentNumberView = findViewById(R.id.comment_number);
@@ -80,7 +89,7 @@ public class DiscussionActivity extends AppCompatActivity {
             }
         });
         commentsListView = findViewById(R.id.discussion_comment_list);
-        discussionReponseAdapter = new DiscussionReponseAdapter(getApplicationContext(), activity, new ArrayList<DiscussionResponse>(), userViewModel.getUsers().getValue(), mainUserKey);
+        discussionReponseAdapter = new DiscussionReponseAdapter(getApplicationContext(), activity, new ArrayList<DiscussionResponse>(), userViewModel, mainUserKey);
         commentsListView.setAdapter(discussionReponseAdapter);
         discussionResponseViewModel.getDiscussionResponse().observe(this, new Observer<HashMap<String, DiscussionResponse>>() {
             @Override
@@ -103,7 +112,7 @@ public class DiscussionActivity extends AppCompatActivity {
                         }
                     }
                 });
-                discussionReponseAdapter.updateData(getApplicationContext(), activity, discussionResponses, userViewModel.getUsers().getValue(), mainUserKey);
+                discussionReponseAdapter.updateData(getApplicationContext(), activity, discussionResponses, userViewModel, mainUserKey);
 
             }
         });

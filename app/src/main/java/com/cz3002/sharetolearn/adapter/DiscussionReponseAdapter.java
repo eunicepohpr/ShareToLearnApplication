@@ -14,8 +14,10 @@ import com.cz3002.sharetolearn.models.DiscussionResponse;
 import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.Discussion.DiscussionResponseViewModel;
 import com.cz3002.sharetolearn.viewModel.Discussion.VoteNumberDiscussionLiveData;
+import com.cz3002.sharetolearn.viewModel.UserViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -24,18 +26,18 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 
 public class DiscussionReponseAdapter extends BaseAdapter {
-    private Map<String, User> userMap;
     private String mainUserKey;
     private Context context;
+    private UserViewModel userViewModel;
     private FragmentActivity activity;
     private static LayoutInflater inflater = null;
     List<DiscussionResponse> discussionResponses;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US);
 
-    public DiscussionReponseAdapter(Context context, FragmentActivity activity, List<DiscussionResponse> discussionResponses, Map<String, User> userMap, String mainUserKey){
+    public DiscussionReponseAdapter(Context context, FragmentActivity activity, List<DiscussionResponse> discussionResponses, UserViewModel userViewModel, String mainUserKey){
         this.context = context;
         this.discussionResponses = discussionResponses;
-        this.userMap = userMap;
+        this.userViewModel = userViewModel;
         this.mainUserKey = mainUserKey;
         this.activity = activity;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -58,22 +60,31 @@ public class DiscussionReponseAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        final DiscussionResponse discussionResponse = discussionResponses.get(i);
+        final DiscussionResponse response = discussionResponses.get(i);
         if (view == null) view = inflater.inflate(R.layout.listitem_comment, null);
-        if (discussionResponse == null){
+        if (response == null){
             return view;
         }
         TextView commentTextView = view.findViewById(R.id.discussion_comment);
-        commentTextView.setText(discussionResponse.getAnswer());
-        TextView postDetailsView = view.findViewById(R.id.postDetails);
-        String name;
-        if (mainUserKey.equals(discussionResponse.getPostedByKey())){
-            name = "you";
-        } else name = userMap.get(discussionResponse.getPostedByKey()).getName();
-        postDetailsView.setText("Posted by "+name+" on "+dateFormat.format(discussionResponse.getPostedDateTime()));
+        commentTextView.setText(response.getAnswer());
+        final TextView postDetailsView = view.findViewById(R.id.postDetails);
+        if (mainUserKey.equals(response.getPostedByKey())) {
+            postDetailsView.setText("Posted by you on "+dateFormat.format(response.getPostedDateTime()));
+        } else {
+            userViewModel.getUsers().observe(activity, new Observer<HashMap<String, User>>() {
+                @Override
+                public void onChanged(HashMap<String, User> userMap) {
+                    String name = "...";
+                    if(userMap.containsKey(response.getPostedByKey())) {
+                        name = userMap.get(response.getPostedByKey()).getName();
+                    }
+                    postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(response.getPostedDateTime()));
+                }
+            });
+        }
         final TextView voteTextView = view.findViewById(R.id.comment_vote);
-        voteTextView.setText(Integer.toString(discussionResponse.getUpvoteKeys().size()));
-        VoteNumberDiscussionLiveData.getVoteNumber(discussionResponse).observe(this.activity, new Observer<Integer>() {
+        voteTextView.setText(Integer.toString(response.getUpvoteKeys().size()));
+        VoteNumberDiscussionLiveData.getVoteNumber(response).observe(this.activity, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 voteTextView.setText(Integer.toString(integer));
@@ -86,30 +97,30 @@ public class DiscussionReponseAdapter extends BaseAdapter {
                 public void onClick(View view) {
                     switch (view.getId()){
                         case R.id.up_vote:
-                            if (!discussionResponse.getUpvoteKeys().contains(mainUserKey)){
-                                if (discussionResponse.getDownvoteKeys().contains(mainUserKey)){
-                                    discussionResponse.removeDownvoteKey(mainUserKey);
+                            if (!response.getUpvoteKeys().contains(mainUserKey)){
+                                if (response.getDownvoteKeys().contains(mainUserKey)){
+                                    response.removeDownvoteKey(mainUserKey);
                                 }
-                                discussionResponse.addUpvoteKey(mainUserKey);
+                                response.addUpvoteKey(mainUserKey);
                                 Toast.makeText(context, "You have upvoted this answer", Toast.LENGTH_SHORT).show();
                             } else {
-                                discussionResponse.removeUpvoteKey(mainUserKey);
+                                response.removeUpvoteKey(mainUserKey);
                                 Toast.makeText(context, "You have undone your upvote for this answer", Toast.LENGTH_SHORT).show();
                             }
-                            DiscussionResponseViewModel.updateDiscussionResponseFireStore(context, discussionResponse);
+                            DiscussionResponseViewModel.updateDiscussionResponseFireStore(context, response);
                             break;
                         case R.id.down_vote:
-                            if (!discussionResponse.getDownvoteKeys().contains(mainUserKey)){
-                                if (discussionResponse.getUpvoteKeys().contains(mainUserKey)){
-                                    discussionResponse.removeUpvoteKey(mainUserKey);
+                            if (!response.getDownvoteKeys().contains(mainUserKey)){
+                                if (response.getUpvoteKeys().contains(mainUserKey)){
+                                    response.removeUpvoteKey(mainUserKey);
                                 }
-                                discussionResponse.addDownvoteKey(mainUserKey);
+                                response.addDownvoteKey(mainUserKey);
                                 Toast.makeText(context, "You have downvoted this answer", Toast.LENGTH_SHORT).show();
                             } else {
-                                discussionResponse.removeDownvoteKey(mainUserKey);
+                                response.removeDownvoteKey(mainUserKey);
                                 Toast.makeText(context, "You have undone your downvote for this answer", Toast.LENGTH_SHORT).show();
                             }
-                            DiscussionResponseViewModel.updateDiscussionResponseFireStore(context, discussionResponse);
+                            DiscussionResponseViewModel.updateDiscussionResponseFireStore(context, response);
                             break;
                     }
                 }
@@ -119,10 +130,10 @@ public class DiscussionReponseAdapter extends BaseAdapter {
         return view;
     }
 
-    public void updateData(Context context, FragmentActivity activity, List<DiscussionResponse> discussionResponses, Map<String, User> userMap, String mainUserKey){
+    public void updateData(Context context, FragmentActivity activity, List<DiscussionResponse> discussionResponses, UserViewModel userViewModel, String mainUserKey){
         this.context = context;
         this.discussionResponses = discussionResponses;
-        this.userMap = userMap;
+        this.userViewModel = userViewModel;
         this.mainUserKey = mainUserKey;
         this.activity = activity;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
