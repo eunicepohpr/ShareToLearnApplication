@@ -21,6 +21,7 @@ public class ReviewAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<CourseReview> courseReviews;
+    CourseReview courseReview = new CourseReview();
     private static LayoutInflater inflater = null;
 
     private FirebaseAuth mAuth;
@@ -50,8 +51,7 @@ public class ReviewAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-
-        CourseReview courseReview = courseReviews.get(i);
+        courseReview = courseReviews.get(i);
         User user = courseReview.getRatedBy();
         String username = user.getName();
         Date date = courseReview.getRatedDateTime();
