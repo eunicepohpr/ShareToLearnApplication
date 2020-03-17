@@ -18,6 +18,9 @@ import com.cz3002.sharetolearn.viewModel.CourseViewModel;
 import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -47,16 +50,34 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onChanged(User user) {
                 if (user != null){
-
+                    List<Course> registeredCourses = new ArrayList<>();
+                    Set<String> registeredCourseKeys = user.getRegisteredCourseKeys();
+                    for (Course course: coursesViewModel.getCourseList().getValue()){
+                        if (registeredCourseKeys.contains(course.getKey()))
+                            registeredCourses.add(course);
+                        if (registeredCourses.size() == registeredCourseKeys.size()) break;
+                    }
+                    courseAdapter = new CourseAdapter(getActivity(), registeredCourses);
+                    courseListView.setAdapter(courseAdapter);
+                    courseAdapter.notifyDataSetChanged();
                 }
             }
         });
         coursesViewModel.getCourseList().observe(this, new Observer<ArrayList<Course>>() {
             @Override
             public void onChanged(ArrayList<Course> courses) {
-                courseAdapter = new CourseAdapter(getActivity(), courses);
-                courseListView.setAdapter(courseAdapter);
-                courseAdapter.notifyDataSetChanged();
+                if (mainUserViewModel.getUser().getValue() != null){
+                    Set<String> registeredCourseKeys = mainUserViewModel.getUser().getValue().getRegisteredCourseKeys();
+                    List<Course> registeredCourses = new ArrayList<>();
+                    for (Course course: courses){
+                        if (registeredCourseKeys.contains(course.getKey()))
+                            registeredCourses.add(course);
+                        if (registeredCourses.size() == registeredCourseKeys.size()) break;
+                    }
+                    courseAdapter = new CourseAdapter(getActivity(), registeredCourses);
+                    courseListView.setAdapter(courseAdapter);
+                    courseAdapter.notifyDataSetChanged();
+                }
             }
         });
 

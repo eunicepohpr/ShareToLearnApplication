@@ -5,7 +5,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class User implements Serializable {
@@ -15,11 +17,11 @@ public class User implements Serializable {
     private String courseOfStudy;
     private String expectedYearOfGrad;
     private String name;
-    private ArrayList<String> registeredCourseKeys;
-    private ArrayList<String> discussionLikeKeys;
-    private ArrayList<String> pypLikeKeys;
-    private ArrayList<String> discussionRatingKeys;
-    private ArrayList<String> pypRatingKeys;
+    private HashSet<String> registeredCourseKeys;
+    private HashSet<String> discussionLikeKeys;
+    private HashSet<String> pypLikeKeys;
+    private HashSet<String> discussionRatingKeys;
+    private HashSet<String> pypRatingKeys;
 //    enum Domain {Student,Staff};
     private String domain;
     private String imageURL;
@@ -45,11 +47,11 @@ public class User implements Serializable {
         this.courseOfStudy = courseOfStudy;
         this.expectedYearOfGrad = expectedYearOfGrad;
         this.name = name;
-        this.registeredCourseKeys = new ArrayList<>();
-        this.discussionLikeKeys = new ArrayList<>();
-        this.pypLikeKeys = new ArrayList<>();
-        this.discussionRatingKeys = new ArrayList<>();
-        this.pypRatingKeys = new ArrayList<>();
+        this.registeredCourseKeys = new HashSet<>();
+        this.discussionLikeKeys = new HashSet<>();
+        this.pypLikeKeys = new HashSet<>();
+        this.discussionRatingKeys = new HashSet<>();
+        this.pypRatingKeys = new HashSet<>();
         this.domain = domain;
         this.imageURL = imageURL;
 //        this.registeredCourses = new ArrayList<>();
@@ -85,11 +87,11 @@ public class User implements Serializable {
     }
 
     // format string into firestore document reference format
-    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(ArrayList<String> list, String collection) {
+    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(Collection<String> list, String collection) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<DocumentReference> docList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++)
-            docList.add(db.collection(collection).document(list.get(i)));
+        for (String docId: list)
+            docList.add(db.collection(collection).document(docId));
         return docList;
     }
 
@@ -148,11 +150,11 @@ public class User implements Serializable {
     }
 
 
-    public ArrayList<String> getRegisteredCourseKeys() {
+    public HashSet<String> getRegisteredCourseKeys() {
         return registeredCourseKeys;
     }
 
-    public void setRegisteredCourseKeys(ArrayList<String> registeredCourseKeys) {
+    public void setRegisteredCourseKeys(HashSet<String> registeredCourseKeys) {
         this.registeredCourseKeys = registeredCourseKeys;
     }
 
@@ -161,11 +163,11 @@ public class User implements Serializable {
     }
 
 
-    public ArrayList<String> getDiscussionLikeKeys() {
+    public HashSet<String> getDiscussionLikeKeys() {
         return discussionLikeKeys;
     }
 
-    public void setDiscussionLikeKeys(ArrayList<String> discussionLikeKeys) {
+    public void setDiscussionLikeKeys(HashSet<String> discussionLikeKeys) {
         this.discussionLikeKeys = discussionLikeKeys;
     }
 
@@ -174,11 +176,11 @@ public class User implements Serializable {
     }
 
 
-    public ArrayList<String> getPypLikeKeys() {
+    public HashSet<String> getPypLikeKeys() {
         return pypLikeKeys;
     }
 
-    public void setPypLikeKeys(ArrayList<String> pypLikeKeys) {
+    public void setPypLikeKeys(HashSet<String> pypLikeKeys) {
         this.pypLikeKeys = pypLikeKeys;
     }
 
@@ -187,11 +189,11 @@ public class User implements Serializable {
     }
 
 
-    public ArrayList<String> getDiscussionRatingKeys() {
+    public HashSet<String> getDiscussionRatingKeys() {
         return discussionRatingKeys;
     }
 
-    public void setDiscussionRatingKeys(ArrayList<String> discussionRatingKeys) {
+    public void setDiscussionRatingKeys(HashSet<String> discussionRatingKeys) {
         this.discussionRatingKeys = discussionRatingKeys;
     }
 
@@ -200,11 +202,11 @@ public class User implements Serializable {
     }
 
 
-    public ArrayList<String> getPypRatingKeys() {
+    public HashSet<String> getPypRatingKeys() {
         return pypRatingKeys;
     }
 
-    public void setPypRatingKeys(ArrayList<String> pypRatingKeys) {
+    public void setPypRatingKeys(HashSet<String> pypRatingKeys) {
         this.pypRatingKeys = pypRatingKeys;
     }
 
