@@ -63,7 +63,7 @@ public class CourseReviewViewModel extends ViewModel {
     }
 
     public LiveData<User> getUser() {
-        getAllUserData();
+        getAllUserData(null);
         return mUser;
     }
 
@@ -102,17 +102,17 @@ public class CourseReviewViewModel extends ViewModel {
                     return;
                 }
                 if (snapshot != null && snapshot.exists()) {
-                    getAllUserData();
-                    getFireStoreCourseReviewsData(selectedCourse);
+                    getAllUserData(selectedCourse);
+//                    getFireStoreCourseReviewsData(selectedCourse);
                 } else {
-                    getAllUserData();
-                    getFireStoreCourseReviewsData(selectedCourse);
+                    getAllUserData(selectedCourse);
+//                    getFireStoreCourseReviewsData(selectedCourse);
                 }
             }
         });
     }
 
-    public void getAllUserData() {
+    public void getAllUserData(final Course selectedCourse) {
         db.collection("User").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -163,6 +163,9 @@ public class CourseReviewViewModel extends ViewModel {
                             }
                         }
                     }
+                }
+                if(selectedCourse != null){
+                    getFireStoreCourseReviewsData(selectedCourse);
                 }
             }
         });
