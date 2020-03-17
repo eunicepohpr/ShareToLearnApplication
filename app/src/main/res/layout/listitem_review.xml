@@ -27,7 +27,7 @@
                 android:layout_marginBottom="5dp">
 
                 <ImageView
-                    android:id="@+id/pyp_userImage"
+                    android:id="@+id/review_userImage"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/pyp_userImage">
+                    android:layout_toRightOf="@+id/review_userImage">
                     <TextView
                         android:id="@+id/review_username"
                         android:layout_width="fill_parent"
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_below="@+id/review_username_title"
-                    android:layout_toRightOf="@+id/pyp_userImage">
+                    android:layout_toRightOf="@+id/review_userImage">
                     <RatingBar
                         android:id="@+id/review_ratingBar"
                         style="?android:attr/ratingBarStyleSmall"

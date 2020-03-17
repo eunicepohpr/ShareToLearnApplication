@@ -5,8 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.models.User;
@@ -70,6 +74,11 @@ public class ReviewAdapter extends BaseAdapter {
             descriptionTV.setText(description);
             RatingBar ratingBarTV = view.findViewById(R.id.review_ratingBar);
             ratingBarTV.setRating((float) rating);
+            ImageView dpIV = view.findViewById(R.id.review_userImage);
+            if (user.getImageURL() != "")
+                Glide.with(view.getContext()).load(user.getImageURL()).apply(RequestOptions.circleCropTransform()).into(dpIV);
+            else
+                Glide.with(view.getContext()).load(R.mipmap.ic_launcher_round).apply(RequestOptions.circleCropTransform()).into(dpIV);
         }
 
         return view;
