@@ -78,7 +78,7 @@
                 android:text="Course of study"
                 android:textSize="15dp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/profile_course"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

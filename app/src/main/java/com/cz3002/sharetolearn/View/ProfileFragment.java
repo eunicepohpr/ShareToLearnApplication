@@ -43,8 +43,8 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
-    private EditText userName, userCourse, userGradYr, userBio;
-    private TextView userEmail, userCourseTitle, userGradYrTitle, userBioTitle;
+    private EditText userName, userGradYr, userBio;
+    private TextView userEmail, userCourseTitle, userGradYrTitle, userBioTitle, userCourse;
     private Button updateProfile;
 
     private ImageView profileImage;
