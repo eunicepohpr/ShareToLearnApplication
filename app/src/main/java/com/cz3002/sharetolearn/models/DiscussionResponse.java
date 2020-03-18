@@ -21,8 +21,6 @@ public class DiscussionResponse implements Serializable {
     private HashSet<String> downvoteKeys;
     private HashSet<String> upvoteKeys;
     private Date postedDateTime;
-//    private ArrayList<User> downvotes;
-//    private ArrayList<User> upvotes;
 
     public DiscussionResponse() {
         this.downvoteKeys = new HashSet<>();
@@ -38,8 +36,6 @@ public class DiscussionResponse implements Serializable {
         this.postedDateTime = postedDateTime;
         this.downvoteKeys = new HashSet<>();
         this.upvoteKeys = new HashSet<>();
-//        this.downvotes = new ArrayList<>();
-//        this.upvotes = new ArrayList<>();
     }
 
 
@@ -127,6 +123,7 @@ public class DiscussionResponse implements Serializable {
         this.downvoteKeys.remove(downvoteKey);
     }
 
+
     public HashSet<String> getUpvoteKeys() {
         return upvoteKeys;
     }
@@ -142,6 +139,7 @@ public class DiscussionResponse implements Serializable {
     public void removeUpvoteKey(String upvoteKey) {
         this.upvoteKeys.remove(upvoteKey);
     }
+
 
     public String getDiscussionKey() {
         return discussionKey;
@@ -160,6 +158,7 @@ public class DiscussionResponse implements Serializable {
         this.postedByKey = postedByKey;
     }
 
+
     @Override
     public int hashCode(){
         if (key != null)
@@ -176,28 +175,4 @@ public class DiscussionResponse implements Serializable {
         return key.equals(response.getKey());
     }
 
-//    public ArrayList<User> getDownvotes() {
-//        return downvotes;
-//    }
-//
-//    public void setDownvotes(ArrayList<User> downvotes) {
-//        this.downvotes = downvotes;
-//    }
-//
-//    public void addDownvotes(User user){
-//        this.downvotes.add(user);
-//    }
-//
-//
-//    public ArrayList<User> getUpvotes() {
-//        return upvotes;
-//    }
-//
-//    public void setUpvotes(ArrayList<User> upvotes) {
-//        this.upvotes = upvotes;
-//    }
-//
-//    public void addUpvotes(User user){
-//        this.upvotes.add(user);
-//    }
 }

@@ -23,8 +23,6 @@ public class PYPResponse implements Serializable {
     private String pypKey;
     private HashSet<String> downvoteKeys;
     private HashSet<String> upvoteKeys;
-//    private ArrayList<User> downvotes;
-//    private ArrayList<User> upvotes;
 
     public PYPResponse() {
         this.downvoteKeys = new HashSet<>();
@@ -40,8 +38,6 @@ public class PYPResponse implements Serializable {
         this.postedDateTime = postedDateTime;
         this.downvoteKeys = new HashSet<>();
         this.upvoteKeys = new HashSet<>();
-//        this.downvotes = new HashSet<>();
-//        this.upvotes = new HashSet<>();
     }
 
 
@@ -155,6 +151,7 @@ public class PYPResponse implements Serializable {
         this.pypKey = pypKey;
     }
 
+
     public void removeDownvoteKey(String key) {
         this.downvoteKeys.remove(key);
     }
@@ -163,29 +160,4 @@ public class PYPResponse implements Serializable {
         this.upvoteKeys.remove(key);
     }
 
-
-//    public ArrayList<User> getDownvotes() {
-//        return downvotes;
-//    }
-//
-//    public void setDownvotes(ArrayList<User> downvotes) {
-//        this.downvotes = downvotes;
-//    }
-//
-//    public void addDownvote(User user) {
-//        this.downvotes.add(user);
-//    }
-//
-//
-//    public ArrayList<User> getUpvotes() {
-//        return upvotes;
-//    }
-//
-//    public void setUpvotes(ArrayList<User> upvotes) {
-//        this.upvotes = upvotes;
-//    }
-//
-//    public void addUpvote(User user) {
-//        this.upvotes.add(user);
-//    }
 }

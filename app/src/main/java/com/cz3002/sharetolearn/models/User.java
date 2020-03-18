@@ -22,14 +22,8 @@ public class User implements Serializable {
     private HashSet<String> pypLikeKeys;
     private HashSet<String> discussionRatingKeys;
     private HashSet<String> pypRatingKeys;
-//    enum Domain {Student,Staff};
     private String domain;
     private String imageURL;
-//    private ArrayList<Course> registeredCourses;
-//    private ArrayList<Discussion> discussionLikes;
-//    private ArrayList<PYP> pypLikes;
-//    private ArrayList<Discussion> discussionRatings;
-//    private ArrayList<PYP> pypRatings;
 
     public User() {
     }
@@ -54,11 +48,6 @@ public class User implements Serializable {
         this.pypRatingKeys = new HashSet<>();
         this.domain = domain;
         this.imageURL = imageURL;
-//        this.registeredCourses = new ArrayList<>();
-//        this.discussionLikes = new ArrayList<>();
-//        this.pypLikes = new ArrayList<>();
-//        this.discussionRatings = new ArrayList<>();
-//        this.pypRatings = new ArrayList<>();
     }
 
 
@@ -232,68 +221,4 @@ public class User implements Serializable {
         this.imageURL = imageURL;
     }
 
-
-//    public ArrayList<Course> getRegisteredCourses() {
-//        return registeredCourses;
-//    }
-//
-//    public void setRegisteredCourses(ArrayList<Course> registeredCourse) {
-//        this.registeredCourses = registeredCourse;
-//    }
-//
-//    public void addRegisteredCourse(Course course) {
-//        this.registeredCourses.add(course);
-//    }
-//
-//
-//    public ArrayList<Discussion> getDiscussionLikes() {
-//        return discussionLikes;
-//    }
-//
-//    public void setDiscussionLikes(ArrayList<Discussion> discussionLikes) {
-//        this.discussionLikes = discussionLikes;
-//    }
-//
-//    public void addDiscussionLike(Discussion discussion) {
-//        this.discussionLikes.add(discussion);
-//    }
-//
-//
-//    public ArrayList<PYP> getPypLikes() {
-//        return pypLikes;
-//    }
-//
-//    public void setPypLikes(ArrayList<PYP> pypLikes) {
-//        this.pypLikes = pypLikes;
-//    }
-//
-//    public void addPypLike(PYP pypLikes) {
-//        this.pypLikes.add(pypLikes);
-//    }
-//
-//
-//    public ArrayList<Discussion> getDiscussionRatings() {
-//        return discussionRatings;
-//    }
-//
-//    public void setDiscussionRatings(ArrayList<Discussion> discussionRatings) {
-//        this.discussionRatings = discussionRatings;
-//    }
-//
-//    public void addDiscussionRating(Discussion discussionRating) {
-//        this.discussionRatings.add(discussionRating);
-//    }
-//
-//
-//    public ArrayList<PYP> getPypratings() {
-//        return pypRatings;
-//    }
-//
-//    public void setPypratings(ArrayList<PYP> pypratings) {
-//        this.pypRatings = pypratings;
-//    }
-//
-//    public void addPyprating(PYP pyprating) {
-//        this.pypRatings.add(pyprating);
-//    }
 }

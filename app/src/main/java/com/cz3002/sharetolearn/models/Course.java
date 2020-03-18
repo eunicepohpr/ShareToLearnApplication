@@ -4,7 +4,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +16,6 @@ public class Course implements Serializable {
     private String description;
     private ArrayList<String> reviewKeys;
     private String courseAssessment;
-//    private ArrayList<User> registeredUsers;
-//    private ArrayList<CourseReview> reviews;
 //    private ArrayList<Chat> chatMessages;
 
     public Course() {
@@ -32,8 +29,6 @@ public class Course implements Serializable {
         this.description = description;
         this.reviewKeys = new ArrayList<>();
         this.courseAssessment = courseAssessment;
-//        this.registeredUsers = new ArrayList<>();
-//        this.reviews = new ArrayList<>();
 //        this.chatMessages = new ArrayList<Chat>();
     }
 
@@ -139,30 +134,6 @@ public class Course implements Serializable {
         if (courseCode != null) return courseCode.hashCode();
         return super.hashCode();
     }
-//    public ArrayList<User> getRegisteredUsers() {
-//        return registeredUsers;
-//    }
-//
-//    public void setRegisteredUsers(ArrayList<User> registered) {
-//        this.registeredUsers = registered;
-//    }
-//
-//    public void addRegisteredUser(User user) {
-//        this.registeredUsers.add(user);
-//    }
-//
-//
-//    public ArrayList<CourseReview> getReviews() {
-//        return reviews;
-//    }
-//
-//    public void setReviews(ArrayList<CourseReview> reviews) {
-//        this.reviews = reviews;
-//    }
-//
-//    public void addReview(CourseReview review) {
-//        this.reviews.add(review);
-//    }
 
 //    public ArrayList<Chat> getChatMessages() {
 //        return chatMessages;

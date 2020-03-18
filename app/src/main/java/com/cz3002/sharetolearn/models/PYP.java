@@ -21,8 +21,6 @@ public class PYP implements Serializable {
     private String postedByKey;
     private ArrayList<String> responseKeys;
     private ArrayList<String> likeKeys;
-//    private ArrayList<PYPResponse> responses;
-//    private ArrayList<User> likes;
 
     public PYP() {
     }
@@ -37,8 +35,6 @@ public class PYP implements Serializable {
         this.postedDateTime = postedDateTime;
         this.responseKeys = new ArrayList<>();
         this.likeKeys = new ArrayList<>();
-//        this.responses = new ArrayList<>();
-//        this.likes = new ArrayList<>();
     }
 
 
@@ -168,29 +164,4 @@ public class PYP implements Serializable {
         this.likeKeys.remove(key);
     }
 
-
-//    public ArrayList<PYPResponse> getResponses() {
-//        return responses;
-//    }
-//
-//    public void setResponses(ArrayList<PYPResponse> responses) {
-//        this.responses = responses;
-//    }
-//
-//    public void addResponses(PYPResponse response) {
-//        this.responses.add(response);
-//    }
-//
-//
-//    public ArrayList<User> getLikes() {
-//        return likes;
-//    }
-//
-//    public void setLikes(ArrayList<User> likes) {
-//        this.likes = likes;
-//    }
-//
-//    public void addLikes(User user) {
-//        this.likes.add(user);
-//    }
 }

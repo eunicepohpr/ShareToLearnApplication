@@ -24,8 +24,6 @@ public class Discussion implements Serializable {
     private String postedByKey;
     private HashSet<String> responseKeys;
     private HashSet<String> likeKeys;
-//    private ArrayList<User> responses;
-//    private ArrayList<User> likes;
 
     public Discussion() {
         responseKeys = new HashSet<>();
@@ -42,9 +40,8 @@ public class Discussion implements Serializable {
         this.postedByKey = postedByKey;
         this.responseKeys = new HashSet<>();
         this.likeKeys = new HashSet<>();
-//        this.responses = new ArrayList<>();
-//        this.likes = new ArrayList<>();
     }
+
 
     // get firestore format to add
     public Map<String, Object> getFireStoreFormat() {
@@ -136,6 +133,7 @@ public class Discussion implements Serializable {
         this.responseKeys.add(responseKey);
     }
 
+
     public HashSet<String> getLikeKeys() {
         return likeKeys;
     }
@@ -151,6 +149,7 @@ public class Discussion implements Serializable {
     public void removeLikeKey(String likeKey) {
         this.likeKeys.remove(likeKey);
     }
+
 
     public String getPostedByKey() {
         return postedByKey;
@@ -169,6 +168,7 @@ public class Discussion implements Serializable {
         this.courseKey = courseKey;
     }
 
+
     @Override
     public int hashCode(){
         if (key != null)
@@ -185,28 +185,4 @@ public class Discussion implements Serializable {
         return key.equals(discussionThread.getKey());
     }
 
-//    public ArrayList<User> getResponses() {
-//        return responses;
-//    }
-//
-//    public void setResponses(ArrayList<User> responses) {
-//        this.responses = responses;
-//    }
-//
-//    public void addResponse(User user){
-//        this.responses.add(user);
-//    }
-//
-//
-//    public ArrayList<User> getLikes() {
-//        return likes;
-//    }
-//
-//    public void setLikes(ArrayList<User> likes) {
-//        this.likes = likes;
-//    }
-//
-//    public void addLikes(User like){
-//        this.likes.add(like);
-//    }
 }

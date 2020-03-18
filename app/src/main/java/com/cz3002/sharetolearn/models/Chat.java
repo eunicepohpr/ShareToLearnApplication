@@ -10,15 +10,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Chat implements Serializable {
+    private String key;
     private String courseKey;
     private Date dateCreated;
     private ArrayList<ChatMessage> chatMessages;
 
 
-    public Chat(String courseKey, Date dateCreated, ArrayList<ChatMessage> chatMessages) {
+    public Chat(String key, String courseKey, Date dateCreated) {
+        this.key = key;
         this.courseKey = courseKey;
         this.dateCreated = dateCreated;
-        this.chatMessages = chatMessages;
+        this.chatMessages = new ArrayList<>();
     }
 
 
@@ -62,5 +64,14 @@ public class Chat implements Serializable {
 
     public void addChatMessages(ChatMessage chatMsg) {
         this.chatMessages.add(chatMsg);
+    }
+
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
