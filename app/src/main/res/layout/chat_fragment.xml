@@ -45,6 +45,7 @@
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/ic_send_foreground"
             android:padding="10dp"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:clickable="true"/>
     </LinearLayout>
 </LinearLayout>

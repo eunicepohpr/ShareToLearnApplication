@@ -1,19 +1,15 @@
 package com.cz3002.sharetolearn.models;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Date;
 import java.util.HashMap;
 
 public class ChatMessage {
     private String message;
-    private Date postedDateTime;
     private String postedByKey;
 
-    public ChatMessage(String message, Date postedDateTime, String postedByKey) {
+    public ChatMessage(String message, String postedByKey) {
         this.message = message;
-        this.postedDateTime = postedDateTime;
         this.postedByKey = postedByKey;
     }
 
@@ -22,9 +18,10 @@ public class ChatMessage {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         HashMap<String, Object> hashed = new HashMap<>();
         hashed.put("message", this.message);
-        this.postedByKey.substring(0, 12);
-        hashed.put("postedBy", db.collection("User").document(this.postedByKey.substring(0, 12)));
-        hashed.put("postedDateTime", new Timestamp(this.postedDateTime));
+//        Log.d("Test", this.postedByKey); // /User/bgNcY2NTgObtT5vyBeLvdf9jJGh1
+//        Log.d("Test", this.postedByKey.substring(6)); // bgNcY2NTgObtT5vyBeLvdf9jJGh1
+//        hashed.put("postedBy", db.collection("User").document(this.postedByKey.substring(6)));
+        hashed.put("postedBy", this.postedByKey);
         return hashed;
     }
 
@@ -38,13 +35,13 @@ public class ChatMessage {
     }
 
 
-    public Date getPostedDateTime() {
-        return postedDateTime;
-    }
-
-    public void setPostedDateTime(Date postedDateTime) {
-        this.postedDateTime = postedDateTime;
-    }
+//    public Date getPostedDateTime() {
+//        return postedDateTime;
+//    }
+//
+//    public void setPostedDateTime(Date postedDateTime) {
+//        this.postedDateTime = postedDateTime;
+//    }
 
 
     public String getPostedByKey() {

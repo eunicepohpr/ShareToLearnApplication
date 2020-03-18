@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Chat implements Serializable {
     private String key;
@@ -25,13 +24,14 @@ public class Chat implements Serializable {
 
 
     // get firestore format to add
-    public Map<String, Object> getFireStoreFormat() {
+    public HashMap<String, Object> getFireStoreFormat() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> chatDocData = new HashMap<>();
+        HashMap<String, Object> chatDocData = new HashMap<>();
         chatDocData.put("course", db.collection("Course").document(this.courseKey));
         chatDocData.put("dateCreated", new Timestamp(this.dateCreated));
-        chatDocData.put("messages", chatMessages);
-
+        ArrayList<HashMap<String, Object>> cms = new ArrayList<>();
+        for (ChatMessage cm : chatMessages) cms.add(cm.hashFormat());
+        chatDocData.put("messages", cms);
         return chatDocData;
     }
 
