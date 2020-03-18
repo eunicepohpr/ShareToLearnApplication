@@ -2,6 +2,8 @@ package com.cz3002.sharetolearn.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,8 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.View.CourseReview.CourseReviewFragment;
 import com.cz3002.sharetolearn.adapter.CourseAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.User;
@@ -18,10 +22,8 @@ import com.cz3002.sharetolearn.viewModel.CourseViewModel;
 import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,7 @@ public class CoursesFragment extends Fragment {
     private MainUserViewModel mainUserViewModel;
     private ListView courseListView;
     private CourseAdapter courseAdapter;
+    private EditText search;
 
     public static CoursesFragment newInstance() {
         return new CoursesFragment();
@@ -53,7 +56,7 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onChanged(User user) {
                 if (user != null){
-                    List<Course> registeredCourses = new ArrayList<>();
+                    ArrayList<Course> registeredCourses = new ArrayList<>();
                     Set<String> registeredCourseKeys = user.getRegisteredCourseKeys();
                     for (Course course: coursesViewModel.getCourseList().getValue()){
                         if (registeredCourseKeys.contains(course.getKey()))
@@ -77,7 +80,7 @@ public class CoursesFragment extends Fragment {
             public void onChanged(ArrayList<Course> courses) {
                 if (mainUserViewModel.getUser().getValue() != null){
                     Set<String> registeredCourseKeys = mainUserViewModel.getUser().getValue().getRegisteredCourseKeys();
-                    List<Course> registeredCourses = new ArrayList<>();
+                    ArrayList<Course> registeredCourses = new ArrayList<>();
                     for (Course course: courses){
                         if (registeredCourseKeys.contains(course.getKey()))
                             registeredCourses.add(course);
@@ -96,14 +99,7 @@ public class CoursesFragment extends Fragment {
             }
         });
 
-/*        coursesViewModel.getCourseList().observe(this, new Observer<ArrayList<String>>() {
-            @Override
-            public void onChanged(ArrayList<String> courseList) {
-                courseAdapter = new CourseAdapter(getActivity(), courseList);
-                courseListView.setAdapter(courseAdapter);
-                courseAdapter.notifyDataSetChanged();
-            }
-        });*/
+        search = (EditText) coursesFragmentView.findViewById(R.id.course_inputSearch);
         return coursesFragmentView;
     }
 
@@ -115,6 +111,25 @@ public class CoursesFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), DiscussionPypChatActivity.class);
                 intent.putExtra("course", (Course) adapterView.getItemAtPosition(position));
                 startActivity(intent);
+            }
+        });
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                CoursesFragment.this.courseAdapter.getFilter().filter(s);
+                courseListView.setAdapter(courseAdapter);
+                courseAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

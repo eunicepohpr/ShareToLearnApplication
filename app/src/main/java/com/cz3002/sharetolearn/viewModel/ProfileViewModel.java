@@ -99,7 +99,7 @@ public class ProfileViewModel extends ViewModel {
         userDocData.put("courseOfStudy", currentUser.getCourseOfStudy());
         userDocData.put("expectedYearOfGrad", currentUser.getExpectedYearOfGrad());
         userDocData.put("name", currentUser.getName());
-        db.collection("User") .document(currentUser.getKey()) .update(userDocData);
+        db.collection("User").document(currentUser.getKey()).update(userDocData);
         mUser.setValue(currentUser);
     }
 
@@ -107,6 +107,6 @@ public class ProfileViewModel extends ViewModel {
         currentUser.setImageURL(mUri);
         Map<String, Object> userDocData = new HashMap<>();
         userDocData.put("imageUrl", currentUser.getImageURL());
-        db.collection("User") .document(currentUser.getKey()) .update(userDocData);
+        db.collection("User").document(currentUser.getKey()).update(userDocData);
     }
 }

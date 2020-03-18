@@ -4,55 +4,63 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Chat implements Serializable {
-    private Course course;
-    private Timestamp postedDateTime;
-    private String message;
-    private User postedBy;
+    private String courseKey;
+    private Date dateCreated;
+    private ArrayList<ChatMessage> chatMessages;
 
-    public Chat() {
-    }
 
-    public Chat(Timestamp postedDateTime, String message, User postedBy) {
-        this.postedDateTime = postedDateTime;
-        this.message = message;
-        this.postedBy = postedBy;
+    public Chat(String courseKey, Date dateCreated, ArrayList<ChatMessage> chatMessages) {
+        this.courseKey = courseKey;
+        this.dateCreated = dateCreated;
+        this.chatMessages = chatMessages;
     }
 
 
-    public Course getCourse() {
-        return course;
-    }
+    // get firestore format to add
+    public Map<String, Object> getFireStoreFormat() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> chatDocData = new HashMap<>();
+        chatDocData.put("course", db.collection("Course").document(this.courseKey));
+        chatDocData.put("dateCreated", new Timestamp(this.dateCreated));
+        chatDocData.put("messages", chatMessages);
 
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-
-    public Timestamp getPostedDateTime() {
-        return postedDateTime;
-    }
-
-    public void setPostedDateTime(Timestamp postedDateTime) {
-        this.postedDateTime = postedDateTime;
+        return chatDocData;
     }
 
 
-    public String getMessage() {
-        return message;
+    public String getCourseKey() {
+        return courseKey;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setCourseKey(String courseKey) {
+        this.courseKey = courseKey;
     }
 
 
-    public User getPostedBy() {
-        return postedBy;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public void setPostedBy(User postedBy) {
-        this.postedBy = postedBy;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+
+    public ArrayList<ChatMessage> getChatMessages() {
+        return chatMessages;
+    }
+
+    public void setChatMessages(ArrayList<ChatMessage> chatMessages) {
+        this.chatMessages = chatMessages;
+    }
+
+    public void addChatMessages(ChatMessage chatMsg) {
+        this.chatMessages.add(chatMsg);
     }
 }

@@ -10,10 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.cz3002.sharetolearn.R;
@@ -32,6 +35,7 @@ public class CourseReviewFragment extends Fragment {
     private ArrayList<Course> coursesList = new ArrayList<>();
     private ListView courseListView;
     private CourseAdapter courseAdapter;
+    private EditText search;
 
     public static CourseReviewFragment newInstance() {
         return new CourseReviewFragment();
@@ -55,6 +59,7 @@ public class CourseReviewFragment extends Fragment {
                 courseAdapter.notifyDataSetChanged();
             }
         });
+        search = (EditText) courseFragmentView.findViewById(R.id.course_inputSearch);
         return courseFragmentView;
     }
 
@@ -63,7 +68,8 @@ public class CourseReviewFragment extends Fragment {
         courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Course selectedCourse = coursesList.get(position);
+                Course selectedCourse = (Course) adapterView.getItemAtPosition(position);
+//                Course selectedCourse = coursesList.get(position);
                 //Toast.makeText(getActivity(), course.getCourseCode(),Toast.LENGTH_SHORT).show();
                 Bundle args = new Bundle();
                 Intent courseReviewActivity = new Intent(getActivity(), CourseReviewActivity.class);
@@ -71,6 +77,25 @@ public class CourseReviewFragment extends Fragment {
                 courseReviewActivity.putExtra("BUNDLE", args);
                 startActivity(courseReviewActivity);
                 //startActivity(new Intent(getActivity(), CourseReviewActivity.class));
+            }
+        });
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                CourseReviewFragment.this.courseAdapter.getFilter().filter(s);
+                courseListView.setAdapter(courseAdapter);
+                courseAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

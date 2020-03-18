@@ -28,4 +28,56 @@
         <item>Student</item>
         <item>Staff</item>
     </string-array>
+
+    <string-array name="courses_array">
+        <item>Course of Study</item>
+        <item>Accountancy</item>
+        <item>Engineering (Aerospace Engineering)</item>
+        <item>Fine Arts in Design Art</item>
+        <item>Fine Arts in Media Art</item>
+        <item>Arts (Education)</item>
+        <item>Engineering (Bioengineering)</item>
+        <item>Science in Biological Sciences</item>
+        <item>Science in Biological Sciences and Psychology</item>
+        <item>Science in Biomedical Sciences and BioBusiness</item>
+        <item>Business</item>
+        <item>Engineering (Chemical and Biomolecular Engineering)</item>
+        <item>Science in Chemistry and Biological Chemistry</item>
+        <item>Arts in Chinese</item>
+        <item>Engineering (Civil)</item>
+        <item>Communication Studies</item>
+        <item>Engineering (Computer Engineering)</item>
+        <item>Engineering (Computer Science)</item>
+        <item>Science in Data Science and Artificial Intelligence</item>
+        <item>Arts in Economics</item>
+        <item>Arts in Economics and Media Analytics</item>
+        <item>Arts in Economics and Psychology</item>
+        <item>Arts in Economics and Public Policy and Global Affairs</item>
+        <item>Engineering (Electrical and Electronic Engineering)</item>
+        <item>Arts in English</item>
+        <item>Arts in English Literature and Art History</item>
+        <item>Science in Environmental Earth Systems Science</item>
+        <item>Science in Environmental Earth Systems Science and Public Policy and Global Affairs</item>
+        <item>Engineering (Environmental Engineering)</item>
+        <item>Arts in History</item>
+        <item>Engineering (Information Engineering and Media)</item>
+        <item>Arts in Linguistics and Multilingual Studies</item>
+        <item>Science (Maritime Studies)</item>
+        <item>Engineering (Materials Engineering)</item>
+        <item>Science in Mathematical and Computer Sciences</item>
+        <item>Science in Mathematical Sciences</item>
+        <item>Science in Mathematical Sciences and Economics</item>
+        <item>Engineering (Mechanical Engineering)</item>
+        <item>Medicine and Surgery</item>
+        <item>Science in Applied Physics</item>
+        <item>Science in Physics</item>
+        <item>Arts in Philosophy</item>
+        <item>Arts in Psychology</item>
+        <item>Arts in Psychology and Media Analytics</item>
+        <item>Arts in Psychology and Linguistics and Multilingual Studies</item>
+        <item>Arts in Public Policy and Global Affairs</item>
+        <item>Science (Education)</item>
+        <item>Arts in Sociology</item>
+        <item>Science (Sport Science and Management)</item>
+    </string-array>
 </resources>

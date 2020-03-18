@@ -23,6 +23,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -111,6 +112,7 @@ public class MainFeed extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_LONG).show();
+                FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(MainFeed.this, SignIn.class);
                 startActivity(intent);
                 finish(); // to stop it from rerunning

@@ -3,9 +3,11 @@ package com.cz3002.sharetolearn.View;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,8 +46,8 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
-    private EditText userName, userCourse, userGradYr, userBio;
-    private TextView userEmail, userCourseTitle, userGradYrTitle, userBioTitle;
+    private EditText userName, userGradYr, userBio;
+    private TextView userEmail, userCourseTitle, userGradYrTitle, userBioTitle, userCourse;
     private Button updateProfile;
 
     private ImageView profileImage;
@@ -105,6 +108,7 @@ public class ProfileFragment extends Fragment {
                 profileViewModel.setUser(userName.getText().toString(), userCourse.getText().toString(),
                         userGradYr.getText().toString(), userBio.getText().toString());
                 Toast.makeText(getContext(), "Updated!", Toast.LENGTH_LONG).show();
+                hideKeyboard(getActivity());
             }
         });
 
@@ -180,5 +184,15 @@ public class ProfileFragment extends Fragment {
             else
                 uploadImage();
         }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
     }
 }
