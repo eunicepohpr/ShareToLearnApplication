@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:hint="Search courses"
         android:inputType="textVisiblePassword"
-        android:drawableStart="@drawable/ic_search_foreground"
-        android:drawablePadding="0dp"
-        android:drawableLeft="@drawable/ic_search_foreground"/>
+        android:drawablePadding="0dp"/>
+<!--        android:drawableStart="@drawable/ic_search_foreground"-->
+<!--        android:drawableLeft="@drawable/ic_search_foreground"/>-->
 
     <ListView
         android:id="@+id/course_list"
