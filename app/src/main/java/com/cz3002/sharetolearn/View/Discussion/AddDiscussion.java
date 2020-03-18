@@ -1,4 +1,4 @@
-package com.cz3002.sharetolearn.View;
+package com.cz3002.sharetolearn.View.Discussion;
 
 import androidx.appcompat.app.AppCompatActivity;
 

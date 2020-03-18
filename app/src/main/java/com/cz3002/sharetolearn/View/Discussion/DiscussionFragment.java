@@ -15,7 +15,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cz3002.sharetolearn.R;
-import com.cz3002.sharetolearn.View.AddDiscussion;
 import com.cz3002.sharetolearn.adapter.DiscussionAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.Discussion;

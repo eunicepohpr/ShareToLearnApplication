@@ -28,6 +28,7 @@ import com.cz3002.sharetolearn.viewModel.Discussion.CommentNumberDiscussionLiveD
 import com.cz3002.sharetolearn.viewModel.Discussion.DiscussionResponseViewModel;
 import com.cz3002.sharetolearn.viewModel.Discussion.DiscussionViewModel;
 import com.cz3002.sharetolearn.viewModel.Discussion.LikeNumbersDiscussionLiveData;
+import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
 import com.cz3002.sharetolearn.viewModel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
@@ -49,6 +50,7 @@ public class DiscussionActivity extends AppCompatActivity {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US);
     private DiscussionResponseViewModel discussionResponseViewModel;
     private UserViewModel userViewModel;
+    private MainUserViewModel mainUserViewModel;
     private DiscussionReponseAdapter discussionReponseAdapter;
     private ListView commentsListView;
 
@@ -59,6 +61,7 @@ public class DiscussionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         discussionResponseViewModel = ViewModelProviders.of(this).get(DiscussionResponseViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        mainUserViewModel = ViewModelProviders.of(this).get(MainUserViewModel.class);
         mainUserKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final FragmentActivity activity = this;
         TextView topicView = findViewById(R.id.topic_title);
@@ -108,13 +111,7 @@ public class DiscussionActivity extends AppCompatActivity {
                 Collections.sort(discussionResponses, new Comparator<DiscussionResponse>() {
                     @Override
                     public int compare(DiscussionResponse t0, DiscussionResponse t1) {
-                        if (t0.getUpvoteKeys().size() != t1.getUpvoteKeys().size()){
-                            return t1.getUpvoteKeys().size() - t0.getUpvoteKeys().size();
-                        } else if (t0.getDownvoteKeys().size() != t1.getDownvoteKeys().size()){
-                            return t0.getDownvoteKeys().size() - t1.getDownvoteKeys().size();
-                        } else {
-                            return t1.getPostedDateTime().compareTo(t0.getPostedDateTime());
-                        }
+                        return t0.getPostedDateTime().compareTo(t1.getPostedDateTime());
                     }
                 });
                 discussionReponseAdapter.updateData(getApplicationContext(), activity, discussionResponses, userViewModel, mainUserKey);
@@ -172,39 +169,47 @@ public class DiscussionActivity extends AppCompatActivity {
                 commentEditText.setText("");
             }
         });
-
-        if (discussionThread.getPostedByKey().equals(mainUserKey)){
-            Button deleteButton = findViewById(R.id.delete_button);
-            deleteButton.setVisibility(View.VISIBLE);
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setTitle("Confirm!");
-                    builder.setMessage("Do you want to delete?");
-                    builder.setCancelable(false);
-                    builder
-                            .setPositiveButton(
-                            "Yes",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            Toast.makeText(activity, "Deleting this post", Toast.LENGTH_SHORT);
-                                            DiscussionViewModel.removeDiscussionFireStore(activity,discussionThread);
-                                            activity.finish();
-                                        }
-                                    })
-                            .setNegativeButton(
-                                    "No",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.cancel();
-                                        }
+        final Button deleteButton = findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle("Confirm!");
+                builder.setMessage("Do you want to delete?");
+                builder.setCancelable(false);
+                builder
+                        .setPositiveButton(
+                                "Yes",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Toast.makeText(activity, "Deleting this post", Toast.LENGTH_SHORT);
+                                        DiscussionViewModel.removeDiscussionFireStore(activity,discussionThread);
+                                        activity.finish();
                                     }
-                            );
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+                                })
+                        .setNegativeButton(
+                                "No",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                }
+                        );
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+        if (discussionThread.getPostedByKey().equals(mainUserKey)){
+            deleteButton.setVisibility(View.VISIBLE);
+        } else {
+            deleteButton.setVisibility(View.GONE);
+            mainUserViewModel.getUser().observe(this, new Observer<User>() {
+                @Override
+                public void onChanged(User user) {
+                    if (user == null) return;
+                    if ("Staff".equals(user.getDomain())) deleteButton.setVisibility(View.VISIBLE);
                 }
             });
         }

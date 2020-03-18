@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
@@ -78,6 +79,41 @@ public class AddCourseActivity extends AppCompatActivity {
                 if (user != null) {
                     courseAdapter.updateData(getApplicationContext(), courses, user.getRegisteredCourseKeys(), user.getKey());
                 }
+            }
+        });
+        final SearchView searchView = findViewById(R.id.search_view);
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setIconified(false);
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                List<Course> courses = courseAdapter.getCourses();
+                List<Course> displayCourses = new ArrayList<>();
+                for (Course course: courses){
+                    String displayString = course.getCourseCode()+" "+course.getTitle();
+                    if (displayString.toLowerCase().contains(s.toLowerCase())){
+                        displayCourses.add(course);
+                    }
+                }
+                courseAdapter.setDisplayedCourses(displayCourses);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                courseAdapter.resetDisplayedCourses();
+                return false;
             }
         });
     }

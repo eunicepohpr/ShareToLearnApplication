@@ -21,6 +21,7 @@ import java.util.Set;
 public class AddCourseAdapter extends BaseAdapter {
     private Context context;
     private List<Course> courses;
+    private List<Course> displayedCourses;
     private Set<String> registeredCourseKeys;
     private String mainUserKey;
     private static LayoutInflater inflater = null;
@@ -28,6 +29,7 @@ public class AddCourseAdapter extends BaseAdapter {
     public AddCourseAdapter(Context context, List<Course> courses, Set<String> registeredCourseKeys, String mainUserKey) {
         this.context = context;
         this.courses = courses;
+        this.displayedCourses = courses;
         this.registeredCourseKeys = registeredCourseKeys;
         this.mainUserKey = mainUserKey;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -35,12 +37,12 @@ public class AddCourseAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return courses.size();
+        return displayedCourses.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return courses.get(i);
+        return displayedCourses.get(i);
     }
 
     @Override
@@ -50,7 +52,7 @@ public class AddCourseAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        final Course course = courses.get(i);
+        final Course course = displayedCourses.get(i);
         if (view == null) view = inflater.inflate(R.layout.listitem_course, null);
         TextView coursenameTV = view.findViewById(R.id.listitem_coursename);
         String courseName = course.getCourseCode() + " " + course.getTitle();
@@ -83,8 +85,23 @@ public class AddCourseAdapter extends BaseAdapter {
     public void updateData(Context context, List<Course> courses, Set<String> registeredCourseKeys, String mainUserKey) {
         this.context = context;
         this.courses = courses;
+        this.displayedCourses = courses;
         this.registeredCourseKeys = registeredCourseKeys;
         this.mainUserKey = mainUserKey;
         notifyDataSetChanged();
+    }
+
+    public void setDisplayedCourses(List<Course> displayedCourses){
+        this.displayedCourses = displayedCourses;
+        notifyDataSetChanged();
+    }
+
+    public void resetDisplayedCourses(){
+        this.displayedCourses = courses;
+        notifyDataSetChanged();
+    }
+
+    public List<Course> getCourses(){
+        return courses;
     }
 }

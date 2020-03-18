@@ -24,7 +24,7 @@
             android:name=".View.CourseReview.CourseReviewPostActivity"
             android:label="Write a review" />
         <activity
-            android:name=".View.AddDiscussion"
+            android:name=".View.Discussion.AddDiscussion"
             android:label="@string/title_activity_add_discussion" />
         <activity
             android:name=".View.AddCourseActivity"

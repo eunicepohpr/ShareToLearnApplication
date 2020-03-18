@@ -1,10 +1,12 @@
 package com.cz3002.sharetolearn.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,8 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 
@@ -67,12 +69,49 @@ public class PYPResponseAdapter extends BaseAdapter {
         if (response == null){
             return view;
         }
-        TextView commentTextView = view.findViewById(R.id.discussion_comment);
+        TextView commentTextView = view.findViewById(R.id.comment);
         commentTextView.setText(response.getAnswer());
         final TextView postDetailsView = view.findViewById(R.id.postDetails);
+        Button deleteButton = view.findViewById(R.id.delete_comment_button);
         if (mainUserKey.equals(response.getPostedByKey())) {
             postDetailsView.setText("Posted by you on "+dateFormat.format(response.getPostedDateTime()));
+            deleteButton.setVisibility(View.VISIBLE);
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("Confirm!");
+                    builder.setMessage("Do you want to delete?");
+                    builder.setCancelable(false);
+                    builder
+                            .setPositiveButton(
+                                    "Yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Toast.makeText(activity, "Deleting comment", Toast.LENGTH_SHORT);
+                                            PYPResponseViewModel.removePYPResponseFireStore(activity,response);
+                                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                            db.collection("PYP")
+                                                    .document(response.getPypKey())
+                                                    .update("responses", FieldValue.arrayRemove(db.collection("PYPResponse").document(response.getKey())));
+                                        }
+                                    })
+                            .setNegativeButton(
+                                    "No",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                        }
+                                    }
+                            );
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            });
         } else {
+            deleteButton.setVisibility(View.GONE);
             userViewModel.getUsers().observe(activity, new Observer<HashMap<String, User>>() {
                 @Override
                 public void onChanged(HashMap<String, User> userMap) {

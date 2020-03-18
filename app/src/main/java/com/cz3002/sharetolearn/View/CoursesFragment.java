@@ -44,8 +44,8 @@ public class CoursesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        coursesViewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
-        mainUserViewModel = ViewModelProviders.of(this).get(MainUserViewModel.class);
+        coursesViewModel = ViewModelProviders.of(getActivity()).get(CourseViewModel.class);
+        mainUserViewModel = ViewModelProviders.of(getActivity()).get(MainUserViewModel.class);
         View coursesFragmentView = inflater.inflate(R.layout.courses_fragment, container, false);
         ((MainFeed) getActivity()).hideFloatingActionButton();
         courseListView = coursesFragmentView.findViewById(R.id.course_list);

@@ -112,13 +112,7 @@ public class PypActivity extends AppCompatActivity {
                 Collections.sort(PYPResponses, new Comparator<PYPResponse>() {
                     @Override
                     public int compare(PYPResponse t0, PYPResponse t1) {
-                        if (t0.getUpvoteKeys().size() != t1.getUpvoteKeys().size()){
-                            return t1.getUpvoteKeys().size() - t0.getUpvoteKeys().size();
-                        } else if (t0.getDownvoteKeys().size() != t1.getDownvoteKeys().size()){
-                            return t0.getDownvoteKeys().size() - t1.getDownvoteKeys().size();
-                        } else {
-                            return t1.getPostedDateTime().compareTo(t0.getPostedDateTime());
-                        }
+                        return t0.getPostedDateTime().compareTo(t1.getPostedDateTime());
                     }
                 });
                 pypResponseAdapter.updateData(getApplicationContext(), activity, PYPResponses, userViewModel, mainUserKey);
