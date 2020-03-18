@@ -104,11 +104,11 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
         }
 
         if (cos.equals("Course of Study")) {
-            Toast.makeText(getApplicationContext(), "Select a course!" , Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Select a course!", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(!checkGradYrValidity(eyog)){
+        if (!checkGradYrValidity(eyog)) {
             Toast.makeText(getApplicationContext(), "Please enter valid year!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -188,7 +188,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        Toast.makeText(getApplicationContext(), "Select a course!" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Select a course!", Toast.LENGTH_SHORT).show();
     }
 }
 

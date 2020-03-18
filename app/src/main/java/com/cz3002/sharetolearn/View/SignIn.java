@@ -100,28 +100,33 @@ public class SignIn extends AppCompatActivity implements AdapterView.OnItemSelec
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            db.collection("User").document(task.getResult().getUser().getUid())
-                                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            db.collection("User").document(task.getResult().getUser().getUid()).get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
-                                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                            if (documentSnapshot != null) {
-                                                String domain = documentSnapshot.getString("domain");
-                                                if (selectedDomain.equals(domain)) {
-                                                    Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-                                                    pd.dismiss();
-                                                    Intent intent = new Intent(SignIn.this, MainFeed.class);
-                                                    startActivity(intent);
-                                                    finish(); // to stop it from rerunning
-                                                } else {
-                                                    FirebaseAuth.getInstance().signOut();
-                                                    Toast.makeText(getApplicationContext(), "Login failed: Account not found under " + selectedDomain + " domain", Toast.LENGTH_SHORT).show();
-                                                    pd.dismiss();
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot document = task.getResult();
+                                                if (document != null) {
+                                                    String domain = document.getString("domain");
+                                                    if (selectedDomain.equals(domain)) {
+                                                        Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                                        pd.dismiss();
+                                                        Intent intent = new Intent(SignIn.this, MainFeed.class);
+                                                        startActivity(intent);
+                                                        finish(); // to stop it from rerunning
+                                                    } else {
+                                                        FirebaseAuth.getInstance().signOut();
+                                                        Toast.makeText(getApplicationContext(), "Login failed: Account not found under " + selectedDomain + " domain", Toast.LENGTH_SHORT).show();
+                                                        pd.dismiss();
+                                                    }
                                                 }
                                             }
                                         }
                                     });
-                        } else
-                            Toast.makeText(getApplicationContext(), "Login failed! Please try again later", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Login failed! Please check and try again", Toast.LENGTH_LONG).show();
+                            pd.dismiss();
+                        }
                     }
                 });
     }
