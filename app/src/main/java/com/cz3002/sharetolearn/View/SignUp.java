@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cz3002.sharetolearn.R;
@@ -26,16 +29,21 @@ import java.util.regex.Pattern;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Button signup, back;
     private String email, password, name, cos, eyog, bio;
     private EditText emailTV, pwdTV, nameTV, cosTV, eyogTV, bioTV;
     private User appUser;
     private boolean checkAuth = false;
     private ProgressDialog pd;
+    private Spinner courseSpinner;
+    private String course;
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static final Pattern VALID_GRAD_YEAR_REGEX =
+            Pattern.compile("^\\d{4}$", Pattern.CASE_INSENSITIVE);
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -52,7 +60,14 @@ public class SignUp extends AppCompatActivity {
         emailTV = findViewById(R.id.su_emailInput);
         pwdTV = findViewById(R.id.su_pwdInput);
         nameTV = findViewById(R.id.su_nameInput);
-        cosTV = findViewById(R.id.su_cosInput);
+        //cosTV = findViewById(R.id.su_cosInput);
+        courseSpinner = findViewById(R.id.su_cosInput);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.courses_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        courseSpinner.setOnItemSelectedListener(this);
+        courseSpinner.setAdapter(adapter);
+
         eyogTV = findViewById(R.id.su_eyogInput);
         bioTV = findViewById(R.id.su_bioInput);
         signup = (Button) findViewById(R.id.SignUpBtn);
@@ -75,14 +90,28 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void registerNewUser() {
-        pd.setMessage("Signing up...");
-        pd.show();
         email = emailTV.getText().toString();
         password = pwdTV.getText().toString();
         name = nameTV.getText().toString();
-        cos = cosTV.getText().toString();
+        //cos = cosTV.getText().toString();
+        cos = course;
         eyog = eyogTV.getText().toString();
         bio = bioTV.getText().toString();
+
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(getApplicationContext(), "Please enter name!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (cos.equals("Course of Study")) {
+            Toast.makeText(getApplicationContext(), "Select a course!" , Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(!checkGradYrValidity(eyog)){
+            Toast.makeText(getApplicationContext(), "Please enter valid year!", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Please enter email!", Toast.LENGTH_LONG).show();
@@ -96,6 +125,7 @@ public class SignUp extends AppCompatActivity {
         // check for valid email and password
         if (checkEmailForValidity(email) && password.length() >= 8 && password.length() <= 20)
             checkAuth = true;
+
         else {
             if (!checkEmailForValidity(email))
                 Toast.makeText(getApplicationContext(), "Registration Failed. Please enter a valid email address!", Toast.LENGTH_SHORT).show();
@@ -105,6 +135,8 @@ public class SignUp extends AppCompatActivity {
 
         // allow signup if email and password is valid
         if (checkAuth) {
+            pd.setMessage("Signing up...");
+            pd.show();
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -141,6 +173,22 @@ public class SignUp extends AppCompatActivity {
     public static boolean checkEmailForValidity(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
+    }
+
+    // validate year
+    public static boolean checkGradYrValidity(String gradYrStr) {
+        Matcher matcher = VALID_GRAD_YEAR_REGEX.matcher(gradYrStr);
+        return matcher.find();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
+        course = adapterView.getItemAtPosition(i).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        Toast.makeText(getApplicationContext(), "Select a course!" , Toast.LENGTH_SHORT).show();
     }
 }
 
