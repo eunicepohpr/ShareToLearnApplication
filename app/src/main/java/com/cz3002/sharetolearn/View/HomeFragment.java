@@ -193,7 +193,7 @@ public class HomeFragment extends Fragment {
                         return d2.compareTo(d1);
                     }
                 });
-                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0,Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
+                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0, Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
             }
         });
 
@@ -265,7 +265,7 @@ public class HomeFragment extends Fragment {
                         return d2.compareTo(d1);
                     }
                 });
-                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0,Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
+                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0, Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
             }
         });
 
@@ -286,7 +286,7 @@ public class HomeFragment extends Fragment {
                     startActivity(launchactivity);
                 } else {
                     PYP pyp = (PYP) post;
-                    Intent launchactivity = new  Intent(getContext(), PypActivity.class);
+                    Intent launchactivity = new Intent(getContext(), PypActivity.class);
                     launchactivity.putExtra("key", mainUserKey);
                     PypActivity.pyp = pyp;
                     startActivity(launchactivity);

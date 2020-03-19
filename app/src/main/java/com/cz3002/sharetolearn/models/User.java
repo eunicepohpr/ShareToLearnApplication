@@ -28,9 +28,10 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String key, String name){
+    public User(String key, String name, String imageURL) {
         this.key = key;
         this.name = name;
+        this.imageURL = imageURL;
     }
 
     public User(String key, String biography, String email, String courseOfStudy, String expectedYearOfGrad,
@@ -79,7 +80,7 @@ public class User implements Serializable {
     public ArrayList<DocumentReference> getReferenceListFireStoreFormat(Collection<String> list, String collection) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<DocumentReference> docList = new ArrayList<>();
-        for (String docId: list)
+        for (String docId : list)
             docList.add(db.collection(collection).document(docId));
         return docList;
     }

@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.DiscussionReponseAdapter;
 import com.cz3002.sharetolearn.models.Discussion;
@@ -45,7 +47,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class DiscussionActivity extends AppCompatActivity {
-    public static  Discussion discussionThread;
+    public static Discussion discussionThread;
     String mainUserKey;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US);
     private DiscussionResponseViewModel discussionResponseViewModel;
@@ -67,19 +69,30 @@ public class DiscussionActivity extends AppCompatActivity {
         TextView topicView = findViewById(R.id.topic_title);
         topicView.setText(discussionThread.getTitle());
         final TextView postDetailsView = findViewById(R.id.postDetails);
-        if (mainUserKey.equals(discussionThread.getPostedByKey())) {
-            postDetailsView.setText("Posted by you on "+dateFormat.format(discussionThread.getPostedDateTime()));
-        } else userViewModel.getUsers().observe(this, new Observer<HashMap<String, User>>() {
+        final ImageView userImage = findViewById(R.id.userImage);
+        userViewModel.getUsers().observe(this, new Observer<HashMap<String, User>>() {
             @Override
             public void onChanged(HashMap<String, User> userMap) {
-                String name = "...";
-                if(userMap.containsKey(discussionThread.getPostedByKey())) {
-                    name = userMap.get(discussionThread.getPostedByKey()).getName();
+                String imageUrl = "";
+                if (mainUserKey.equals(discussionThread.getPostedByKey())) {
+                    postDetailsView.setText("Posted by you on " + dateFormat.format(discussionThread.getPostedDateTime()));
+                    if (userMap.containsKey(mainUserKey))
+                        imageUrl = userMap.get(mainUserKey).getImageURL();
+                } else {
+                    String name = "...";
+                    if (userMap.containsKey(discussionThread.getPostedByKey())) {
+                        User user = userMap.get(discussionThread.getPostedByKey());
+                        name = user.getName();
+                        imageUrl = user.getImageURL();
+                    }
+                    postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(discussionThread.getPostedDateTime()));
                 }
-                postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(discussionThread.getPostedDateTime()));
+                if (imageUrl != "")
+                    Glide.with(getApplicationContext()).load(imageUrl).apply(RequestOptions.circleCropTransform()).into(userImage);
+                else
+                    Glide.with(getApplicationContext()).load(R.mipmap.ic_launcher_round).apply(RequestOptions.circleCropTransform()).into(userImage);
             }
         });
-
         TextView questionView = findViewById(R.id.question);
         questionView.setText(discussionThread.getQuestion());
         final TextView commentNumberView = findViewById(R.id.comment_number);
@@ -102,8 +115,8 @@ public class DiscussionActivity extends AppCompatActivity {
         discussionResponseViewModel.getDiscussionResponse().observe(this, new Observer<HashMap<String, DiscussionResponse>>() {
             @Override
             public void onChanged(@Nullable HashMap<String, DiscussionResponse> discussionResponsesMap) {
-                List<DiscussionResponse>  discussionResponses = new ArrayList<>();
-                for (Map.Entry<String, DiscussionResponse> item: discussionResponsesMap.entrySet()){
+                List<DiscussionResponse> discussionResponses = new ArrayList<>();
+                for (Map.Entry<String, DiscussionResponse> item : discussionResponsesMap.entrySet()) {
                     if (item.getValue().getDiscussionKey().equals(discussionThread.getKey()))
                         discussionResponses.add(item.getValue());
                 }
@@ -121,17 +134,17 @@ public class DiscussionActivity extends AppCompatActivity {
 
         ImageView likedImageView = findViewById(R.id.like_image);
         //initialize like image
-        if (discussionThread.getLikeKeys().contains(mainUserKey)){
+        if (discussionThread.getLikeKeys().contains(mainUserKey)) {
             likedImageView.setImageResource(R.drawable.liked);
         } else {
             likedImageView.setImageResource(R.drawable.unliked);
         }
-        likedImageView.setOnClickListener(new View.OnClickListener(){
+        likedImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 //liked , unliked action
-                if (discussionThread.getLikeKeys().contains(mainUserKey)){
+                if (discussionThread.getLikeKeys().contains(mainUserKey)) {
                     discussionThread.removeLikeKey(mainUserKey);
                     db.collection("Discussion")
                             .document(discussionThread.getKey())
@@ -156,7 +169,7 @@ public class DiscussionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 DiscussionResponse response = new DiscussionResponse();
                 String answer = commentEditText.getText().toString();
-                if (answer.trim().equals("")){
+                if (answer.trim().equals("")) {
                     Toast.makeText(getBaseContext(), "Invalid text", Toast.LENGTH_SHORT);
                     return;
                 }
@@ -184,7 +197,7 @@ public class DiscussionActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         Toast.makeText(activity, "Deleting this post", Toast.LENGTH_SHORT);
-                                        DiscussionViewModel.removeDiscussionFireStore(activity,discussionThread);
+                                        DiscussionViewModel.removeDiscussionFireStore(activity, discussionThread);
                                         activity.finish();
                                     }
                                 })
@@ -201,7 +214,7 @@ public class DiscussionActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-        if (discussionThread.getPostedByKey().equals(mainUserKey)){
+        if (discussionThread.getPostedByKey().equals(mainUserKey)) {
             deleteButton.setVisibility(View.VISIBLE);
         } else {
             deleteButton.setVisibility(View.GONE);
@@ -218,7 +231,7 @@ public class DiscussionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;

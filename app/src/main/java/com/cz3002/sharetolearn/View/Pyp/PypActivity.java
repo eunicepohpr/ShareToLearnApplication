@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.PYPResponseAdapter;
 import com.cz3002.sharetolearn.models.PYP;
@@ -62,24 +64,35 @@ public class PypActivity extends AppCompatActivity {
         TextView topicView = findViewById(R.id.topic_title);
         topicView.setText(pyp.getTitle());
         final TextView postDetailsView = findViewById(R.id.postDetails);
-        if (mainUserKey.equals(pyp.getPostedByKey())) {
-            postDetailsView.setText("Posted by you on "+dateFormat.format(pyp.getPostedDateTime()));
-        } else {
-            userViewModel.getUsers().observe(this, new Observer<HashMap<String, User>>() {
-                @Override
-                public void onChanged(HashMap<String, User> userMap) {
+        final ImageView userImage = findViewById(R.id.userImage);
+        if (!mainUserKey.equals(pyp.getPostedByKey())) {
+            System.out.println("pyp postedByKey: " + pyp.getPostedByKey());
+            for (Map.Entry<String, User> item : userViewModel.getUsers().getValue().entrySet())
+                System.out.println(item.getKey() + ": " + item.getValue());
+        }
+        userViewModel.getUsers().observe(this, new Observer<HashMap<String, User>>() {
+            @Override
+            public void onChanged(HashMap<String, User> userMap) {
+                String imageUrl = "";
+                if (mainUserKey.equals(pyp.getPostedByKey())) {
+                    postDetailsView.setText("Posted by you on " + dateFormat.format(pyp.getPostedDateTime()));
+                    if (userMap.containsKey(mainUserKey))
+                        imageUrl = userMap.get(mainUserKey).getImageURL();
+                } else {
                     String name = "...";
-                    if(userMap.containsKey(pyp.getPostedByKey())) {
-                        name = userMap.get(pyp.getPostedByKey()).getName();
+                    if (userMap.containsKey(pyp.getPostedByKey())) {
+                        User user = userMap.get(pyp.getPostedByKey());
+                        name = user.getName();
+                        imageUrl = user.getImageURL();
                     }
                     postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(pyp.getPostedDateTime()));
                 }
-            });
-            System.out.println("pyp postedByKey: "+pyp.getPostedByKey());
-            for (Map.Entry<String, User> item: userViewModel.getUsers().getValue().entrySet()){
-                System.out.println(item.getKey()+": "+item.getValue());
+                if (imageUrl != "")
+                    Glide.with(getApplicationContext()).load(imageUrl).apply(RequestOptions.circleCropTransform()).into(userImage);
+                else
+                    Glide.with(getApplicationContext()).load(R.mipmap.ic_launcher_round).apply(RequestOptions.circleCropTransform()).into(userImage);
             }
-        }
+        });
 
         TextView questionView = findViewById(R.id.question);
         questionView.setText(pyp.getQuestion());
@@ -104,7 +117,7 @@ public class PypActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable HashMap<String, PYPResponse> PYPResponsesMap) {
                 List<PYPResponse> PYPResponses = new ArrayList<>();
-                for (Map.Entry<String, PYPResponse> item: PYPResponsesMap.entrySet()){
+                for (Map.Entry<String, PYPResponse> item : PYPResponsesMap.entrySet()) {
                     if (item.getValue().getPypKey().equals(pyp.getKey()))
                         PYPResponses.add(item.getValue());
                 }
@@ -122,17 +135,17 @@ public class PypActivity extends AppCompatActivity {
 
         ImageView likedImageView = findViewById(R.id.like_image);
         //initialize like image
-        if (pyp.getLikeKeys().contains(mainUserKey)){
+        if (pyp.getLikeKeys().contains(mainUserKey)) {
             likedImageView.setImageResource(R.drawable.liked);
         } else {
             likedImageView.setImageResource(R.drawable.unliked);
         }
-        likedImageView.setOnClickListener(new View.OnClickListener(){
+        likedImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 //liked , unliked action
-                if (pyp.getLikeKeys().contains(mainUserKey)){
+                if (pyp.getLikeKeys().contains(mainUserKey)) {
                     pyp.removeLikeKey(mainUserKey);
                     db.collection("PYP")
                             .document(pyp.getKey())
@@ -157,7 +170,7 @@ public class PypActivity extends AppCompatActivity {
             public void onClick(View view) {
                 PYPResponse response = new PYPResponse();
                 String answer = commentEditText.getText().toString();
-                if (answer.trim().equals("")){
+                if (answer.trim().equals("")) {
                     Toast.makeText(getBaseContext(), "Invalid text", Toast.LENGTH_SHORT);
                     return;
                 }
@@ -175,7 +188,7 @@ public class PypActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;

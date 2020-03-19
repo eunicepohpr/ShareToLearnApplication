@@ -52,7 +52,8 @@ public class UserViewModel extends ViewModel {
                             // get course details
                             String key = document.getId();
                             String name = document.getString("name");
-                            User user = new User(key, name);
+                            String imageUrl = document.getString("imageUrl");
+                            User user = new User(key, name, imageUrl);
                             userMap.put(key, user);
                         }
                     }

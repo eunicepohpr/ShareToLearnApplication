@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.PYP;
 import com.cz3002.sharetolearn.models.User;
@@ -46,6 +49,7 @@ public class PYPAdapter extends BaseAdapter {
         this.userViewModel = ViewModelProviders.of(activity).get(UserViewModel.class);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     public int getCount() {
         return PYPList.size();
@@ -83,20 +87,31 @@ public class PYPAdapter extends BaseAdapter {
             }
         });
         final TextView postDetailsView = view.findViewById(R.id.postDetails);
-        if (mainUserKey.equals(pyp.getPostedByKey())) {
-            postDetailsView.setText("Posted by you on "+dateFormat.format(pyp.getPostedDateTime()));
-        } else {
-            userViewModel.getUsers().observe(fragmentActivity, new Observer<HashMap<String, User>>() {
-                @Override
-                public void onChanged(HashMap<String, User> userMap) {
+        final ImageView userImage = view.findViewById(R.id.userImage);
+        final View finalView = view;
+        userViewModel.getUsers().observe(fragmentActivity, new Observer<HashMap<String, User>>() {
+            @Override
+            public void onChanged(HashMap<String, User> userMap) {
+                String imageUrl = "";
+                if (mainUserKey.equals(pyp.getPostedByKey())) {
+                    postDetailsView.setText("Posted by you on " + dateFormat.format(pyp.getPostedDateTime()));
+                    if (userMap.containsKey(mainUserKey))
+                        imageUrl = userMap.get(mainUserKey).getImageURL();
+                } else {
                     String name = "...";
-                    if(userMap.containsKey(pyp.getPostedByKey())) {
-                        name = userMap.get(pyp.getPostedByKey()).getName();
+                    if (userMap.containsKey(pyp.getPostedByKey())) {
+                        User user = userMap.get(pyp.getPostedByKey());
+                        name = user.getName();
+                        imageUrl = user.getImageURL();
                     }
                     postDetailsView.setText("Posted by " + name + " on " + dateFormat.format(pyp.getPostedDateTime()));
                 }
-            });
-        }
+                if (imageUrl != "")
+                    Glide.with(finalView.getContext()).load(imageUrl).apply(RequestOptions.circleCropTransform()).into(userImage);
+                else
+                    Glide.with(finalView.getContext()).load(R.mipmap.ic_launcher_round).apply(RequestOptions.circleCropTransform()).into(userImage);
+            }
+        });
         return view;
     }
 }
