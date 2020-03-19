@@ -111,7 +111,7 @@ public class MainFeed extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                Toast.makeText(getApplicationContext(), "Logging out", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Successfully logged out", Toast.LENGTH_LONG).show();
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(MainFeed.this, SignIn.class);
                 startActivity(intent);
