@@ -51,4 +51,12 @@ public class ChatMessage {
     public void setPostedByKey(String postedByKey) {
         this.postedByKey = postedByKey;
     }
+
+    @Override
+    public boolean equals(Object o){
+        ChatMessage cm;
+        if (!(o instanceof ChatMessage)) return false;
+        cm = (ChatMessage) o;
+        return cm.getMessage().equals(this.message) && cm.getPostedByKey().equals(this.postedByKey);
+    }
 }

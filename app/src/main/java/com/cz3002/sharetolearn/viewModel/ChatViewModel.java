@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
@@ -46,7 +47,7 @@ public class ChatViewModel extends ViewModel {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private DocumentReference chatDoc;
+    private Query query;
 
     public ChatViewModel() {
         // get current login user id
@@ -60,62 +61,67 @@ public class ChatViewModel extends ViewModel {
     }
 
     private void realtimeChatData(final Course course) {
-        chatDoc = db.collection("Chat").document();
-        chatDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        query = db.collection("Chat")
+                .whereEqualTo("course",
+                        db.collection("CourseModule").document(course.getKey()));
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
                     Log.w("Listen", "Listen failed.", e);
                     return;
                 }
-                if (snapshot != null && snapshot.exists()) getFireStoreChatData(course);
-                else getFireStoreChatData(course);
+                getFireStoreChatData(course);
             }
         });
     }
 
     private void getFireStoreChatData(final Course course) {
-        db.collection("Chat").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    boolean chatExist = false;
-                    chatMessages.clear();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (document != null) {
-                            String key = document.getId();
-                            String courseKey = document.getDocumentReference("course").getPath().substring(7);
-                            Date dateCreated = document.getTimestamp("dateCreated").toDate();
+        db.collection("Chat")
+                .whereEqualTo("course",
+                        db.collection("CourseModule").document(course.getKey()))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        boolean chatExist = false;
+                        chatMessages.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document != null) {
+                                String key = document.getId();
+                                String courseKey = document.getDocumentReference("course").getId();
+                                Date dateCreated = document.getTimestamp("dateCreated").toDate();
 
-                            Log.d("HEREE", courseKey);
-                            Log.d("HEREE", course.getKey());
-                            if (courseKey.equals(course.getKey())) {
-                                chatExist = true;
+                                Log.d("HEREE", courseKey);
+                                Log.d("HEREE", course.getKey());
+                                if (courseKey.equals(course.getKey())) {
+                                    chatExist = true;
 
-                                // get list of messages
-                                String b = String.valueOf(document.get("messages"));
-                                if (b != "null" && b != null && b != "[]") {
+                                    // get list of messages
+                                    String b = String.valueOf(document.get("messages"));
+                                    if (b != "null" && b != null && b != "[]") {
 
-                                    ArrayList<HashMap<String, String>> message = (ArrayList<HashMap<String, String>>) document.get("messages");
-                                    for (HashMap<String, String> msgAttr : message) {
-                                        String msg = msgAttr.get("message");
-                                        String postedBy = msgAttr.get("postedBy");
-                                        ChatMessage cm = new ChatMessage(msg, postedBy);
-                                        chatMessages.add(cm);
+                                        ArrayList<HashMap<String, String>> message = (ArrayList<HashMap<String, String>>) document.get("messages");
+                                        for (HashMap<String, String> msgAttr : message) {
+                                            String msg = msgAttr.get("message");
+                                            String postedBy = msgAttr.get("postedBy");
+                                            ChatMessage cm = new ChatMessage(msg, postedBy);
+                                            chatMessages.add(cm);
+                                        }
                                     }
+                                    Chat c = new Chat(key, courseKey, dateCreated);
+                                    c.setChatMessages(chatMessages);
+                                    mChat.setValue(c);
                                 }
-                                Chat c = new Chat(key, courseKey, dateCreated);
-                                c.setChatMessages(chatMessages);
-                                mChat.setValue(c);
                             }
                         }
-                    }
-                    if (chatExist == false) {
-                        newChat(course);
+                        if (chatExist == false) {
+                            newChat(course);
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     public void newChat(Course course) {
@@ -140,7 +146,7 @@ public class ChatViewModel extends ViewModel {
     }
 
     public void newChatMessage(String message) {
-        ChatMessage cm = new ChatMessage(message, "/User/" + currentUser.getUid());
+        ChatMessage cm = new ChatMessage(message, currentUser.getUid());
         mChat.getValue().addChatMessages(cm);
         HashMap<String, Object> cmDoc = mChat.getValue().getFireStoreFormat();
         db.collection("Chat").document(mChat.getValue().getKey()).update(cmDoc);

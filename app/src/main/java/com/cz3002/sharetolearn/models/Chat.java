@@ -27,7 +27,7 @@ public class Chat implements Serializable {
     public HashMap<String, Object> getFireStoreFormat() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         HashMap<String, Object> chatDocData = new HashMap<>();
-        chatDocData.put("course", db.collection("Course").document(this.courseKey));
+        chatDocData.put("course", db.collection("CourseModule").document(this.courseKey));
         chatDocData.put("dateCreated", new Timestamp(this.dateCreated));
         ArrayList<HashMap<String, Object>> cms = new ArrayList<>();
         for (ChatMessage cm : chatMessages) cms.add(cm.hashFormat());
