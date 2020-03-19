@@ -9,14 +9,13 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-<!--    <ListView
-        android:id="@+id/question_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="#00000000"
-        android:dividerHeight="1dp">
-
-    </ListView>-->
+    <!--    <ListView
+            android:id="@+id/question_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="#00000000"
+            android:dividerHeight="1dp">
+        </ListView>-->
 
     <TextView
         android:layout_width="match_parent"
