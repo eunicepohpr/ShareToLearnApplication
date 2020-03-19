@@ -1,6 +1,5 @@
 package com.cz3002.sharetolearn.View;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,12 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -25,13 +21,11 @@ import com.cz3002.sharetolearn.models.Discussion;
 import com.cz3002.sharetolearn.models.PYP;
 import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.Discussion.DiscussionViewModel;
-import com.cz3002.sharetolearn.viewModel.HomeViewModel;
 import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
 import com.cz3002.sharetolearn.viewModel.Pyp.PYPViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -46,6 +40,8 @@ public class HomeFragment extends Fragment {
     private PostAdapter postAdapter;
     private String mainUserKey;
     private int numOfDisplayed = 6;
+    private List<Discussion> discussionList;
+    private List<PYP> pypList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,94 +56,132 @@ public class HomeFragment extends Fragment {
         discussionViewModel.getDiscussionThreads().observe(this, new Observer<List<Discussion>>() {
             @Override
             public void onChanged(List<Discussion> discussions) {
-                if (mainUserViewModel.getUser().getValue() == null) return;
-                User user = mainUserViewModel.getUser().getValue();
-                if (discussions == null) discussions = new ArrayList<>();
-                List<Discussion> registeredDiscussion = new ArrayList<>();
-                for (Discussion dis: discussions){
-                    if (user.getRegisteredCourseKeys().contains(dis.getCourseKey()))
-                        registeredDiscussion.add(dis);
+                discussionList = discussions;
+                if (mainUserViewModel.getUser().getValue() == null) {
+                    return;
                 }
-                Collections.sort(registeredDiscussion, new Comparator<Discussion>() {
-                    @Override
-                    public int compare(Discussion d1, Discussion d2) {
-                        return d2.getPostedDateTime().compareTo(d1.getPostedDateTime());
-                    }
-                });
+                User user = mainUserViewModel.getUser().getValue();
+
                 List<PYP> pyps = pypViewModel.getpyps().getValue();
                 if (pyps == null) pyps = new ArrayList<>();
-                List<PYP> registeredPYPs = new ArrayList<>();
-                for (PYP pyp: pyps){
-                    if (user.getRegisteredCourseKeys().contains(pyp.getCourseKey())){
-                        registeredPYPs.add(pyp);
-                    }
-                }
-                Collections.sort(registeredPYPs, new Comparator<PYP>() {
-                    @Override
-                    public int compare(PYP p1, PYP p2) {
-                        return p1.getPostedDateTime().compareTo(p2.getPostedDateTime());
-                    }
-                });
+                pypList = pyps;
+
                 List<Object> newestPosts = new ArrayList<>();
-                for (int i=0; i < Math.min(registeredDiscussion.size(),numOfDisplayed); i++){
-                    newestPosts.add(registeredDiscussion.get(i));
+
+                if (mainUserViewModel.getUser().getValue().getDomain().equals("Student")) {
+                    List<Discussion> registeredDiscussion = new ArrayList<>();
+                    for (Discussion dis : discussions) {
+                        if (user.getRegisteredCourseKeys().contains(dis.getCourseKey()))
+                            registeredDiscussion.add(dis);
+                    }
+                    Collections.sort(registeredDiscussion, new Comparator<Discussion>() {
+                        @Override
+                        public int compare(Discussion d1, Discussion d2) {
+                            return d2.getPostedDateTime().compareTo(d1.getPostedDateTime());
+                        }
+                    });
+                    List<PYP> registeredPYPs = new ArrayList<>();
+                    for (PYP pyp : pyps) {
+                        if (user.getRegisteredCourseKeys().contains(pyp.getCourseKey())) {
+                            registeredPYPs.add(pyp);
+                        }
+                    }
+                    Collections.sort(registeredPYPs, new Comparator<PYP>() {
+                        @Override
+                        public int compare(PYP p1, PYP p2) {
+                            return p1.getPostedDateTime().compareTo(p2.getPostedDateTime());
+                        }
+                    });
+                    for (int i = 0; i < Math.min(registeredDiscussion.size(), numOfDisplayed); i++) {
+                        newestPosts.add(registeredDiscussion.get(i));
+                    }
+                    for (int i = 0; i < Math.min(registeredPYPs.size(), numOfDisplayed); i++) {
+                        newestPosts.add(registeredPYPs.get(i));
+                    }
+                } else {
+                    for (int i = 0; i < Math.min(discussionList.size(), numOfDisplayed); i++) {
+                        newestPosts.add(discussionList.get(i));
+                    }
+                    for (int i = 0; i < Math.min(pypList.size(), numOfDisplayed); i++) {
+                        newestPosts.add(pypList.get(i));
+                    }
                 }
-                for (int i=0; i < Math.min(registeredPYPs.size(),numOfDisplayed); i++){
-                    newestPosts.add(registeredPYPs.get(i));
-                }
+
                 Collections.sort(newestPosts, new Comparator<Object>() {
                     @Override
                     public int compare(Object o1, Object o2) {
                         Date d1, d2;
-                        if (o1 instanceof Discussion) d1 = ((Discussion) o1).getPostedDateTime();
+                        if (o1 instanceof Discussion)
+                            d1 = ((Discussion) o1).getPostedDateTime();
                         else d1 = ((PYP) o1).getPostedDateTime();
-                        if (o2 instanceof Discussion) d2 = ((Discussion) o2).getPostedDateTime();
+                        if (o2 instanceof Discussion)
+                            d2 = ((Discussion) o2).getPostedDateTime();
                         else d2 = ((PYP) o2).getPostedDateTime();
                         return d2.compareTo(d1);
                     }
                 });
-                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0,Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
+                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0, Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
+
             }
         });
 
         pypViewModel.getpyps().observe(this, new Observer<List<PYP>>() {
             @Override
             public void onChanged(List<PYP> pyps) {
-                if (mainUserViewModel.getUser().getValue() == null) return;
+                pypList = pyps;
+                if (mainUserViewModel.getUser().getValue() == null) {
+                    return;
+                }
+
                 User user = mainUserViewModel.getUser().getValue();
                 List<Discussion> discussions = discussionViewModel.getDiscussionThreads().getValue();
                 if (discussions == null) discussions = new ArrayList<>();
-                List<Discussion> registeredDiscussion = new ArrayList<>();
-                for (Discussion dis: discussions){
-                    if (user.getRegisteredCourseKeys().contains(dis.getCourseKey()))
-                        registeredDiscussion.add(dis);
-                }
-                Collections.sort(registeredDiscussion, new Comparator<Discussion>() {
-                    @Override
-                    public int compare(Discussion d1, Discussion d2) {
-                        return d2.getPostedDateTime().compareTo(d1.getPostedDateTime());
-                    }
-                });
+                discussionList = discussions;
+
                 if (pyps == null) pyps = new ArrayList<>();
-                List<PYP> registeredPYPs = new ArrayList<>();
-                for (PYP pyp: pyps){
-                    if (user.getRegisteredCourseKeys().contains(pyp.getCourseKey())){
-                        registeredPYPs.add(pyp);
-                    }
-                }
-                Collections.sort(registeredPYPs, new Comparator<PYP>() {
-                    @Override
-                    public int compare(PYP p1, PYP p2) {
-                        return p1.getPostedDateTime().compareTo(p2.getPostedDateTime());
-                    }
-                });
+
                 List<Object> newestPosts = new ArrayList<>();
-                for (int i=0; i < Math.min(registeredDiscussion.size(),numOfDisplayed); i++){
-                    newestPosts.add(registeredDiscussion.get(i));
+
+                if (mainUserViewModel.getUser().getValue().getDomain().equals("Student")) {
+                    List<Discussion> registeredDiscussion = new ArrayList<>();
+                    for (Discussion dis : discussions) {
+                        if (user.getRegisteredCourseKeys().contains(dis.getCourseKey()))
+                            registeredDiscussion.add(dis);
+                    }
+                    Collections.sort(registeredDiscussion, new Comparator<Discussion>() {
+                        @Override
+                        public int compare(Discussion d1, Discussion d2) {
+                            return d2.getPostedDateTime().compareTo(d1.getPostedDateTime());
+                        }
+                    });
+
+                    List<PYP> registeredPYPs = new ArrayList<>();
+                    for (PYP pyp : pyps) {
+                        if (user.getRegisteredCourseKeys().contains(pyp.getCourseKey())) {
+                            registeredPYPs.add(pyp);
+                        }
+                    }
+                    Collections.sort(registeredPYPs, new Comparator<PYP>() {
+                        @Override
+                        public int compare(PYP p1, PYP p2) {
+                            return p1.getPostedDateTime().compareTo(p2.getPostedDateTime());
+                        }
+                    });
+                    for (int i = 0; i < Math.min(registeredDiscussion.size(), numOfDisplayed); i++) {
+                        newestPosts.add(registeredDiscussion.get(i));
+                    }
+                    for (int i = 0; i < Math.min(registeredPYPs.size(), numOfDisplayed); i++) {
+                        newestPosts.add(registeredPYPs.get(i));
+                    }
+                } else {
+                    for (int i = 0; i < Math.min(discussionList.size(), numOfDisplayed); i++) {
+                        newestPosts.add(discussionList.get(i));
+                    }
+                    for (int i = 0; i < Math.min(pypList.size(), numOfDisplayed); i++) {
+                        newestPosts.add(pypList.get(i));
+                    }
                 }
-                for (int i=0; i < Math.min(registeredPYPs.size(),numOfDisplayed); i++){
-                    newestPosts.add(registeredPYPs.get(i));
-                }
+
                 Collections.sort(newestPosts, new Comparator<Object>() {
                     @Override
                     public int compare(Object o1, Object o2) {
@@ -166,41 +200,60 @@ public class HomeFragment extends Fragment {
         mainUserViewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                if (user == null) return;
+                if (user == null) {
+                    return;
+                }
                 List<Discussion> discussions = discussionViewModel.getDiscussionThreads().getValue();
                 if (discussions == null) discussions = new ArrayList<>();
-                List<Discussion> registeredDiscussion = new ArrayList<>();
-                for (Discussion dis: discussions){
-                    if (user.getRegisteredCourseKeys().contains(dis.getCourseKey()))
-                        registeredDiscussion.add(dis);
-                }
-                Collections.sort(registeredDiscussion, new Comparator<Discussion>() {
-                    @Override
-                    public int compare(Discussion d1, Discussion d2) {
-                        return d2.getPostedDateTime().compareTo(d1.getPostedDateTime());
-                    }
-                });
+                discussionList = discussions;
+
                 List<PYP> pyps = pypViewModel.getpyps().getValue();
                 if (pyps == null) pyps = new ArrayList<>();
-                List<PYP> registeredPYPs = new ArrayList<>();
-                for (PYP pyp: pyps){
-                    if (user.getRegisteredCourseKeys().contains(pyp.getCourseKey())){
-                        registeredPYPs.add(pyp);
-                    }
-                }
-                Collections.sort(registeredPYPs, new Comparator<PYP>() {
-                    @Override
-                    public int compare(PYP p1, PYP p2) {
-                        return p1.getPostedDateTime().compareTo(p2.getPostedDateTime());
-                    }
-                });
+                pypList = pyps;
+
                 List<Object> newestPosts = new ArrayList<>();
-                for (int i=0; i < Math.min(registeredDiscussion.size(),numOfDisplayed); i++){
-                    newestPosts.add(registeredDiscussion.get(i));
+
+                if (mainUserViewModel.getUser().getValue().getDomain().equals("Student")) {
+                    List<Discussion> registeredDiscussion = new ArrayList<>();
+                    for (Discussion dis : discussions) {
+                        if (user.getRegisteredCourseKeys().contains(dis.getCourseKey()))
+                            registeredDiscussion.add(dis);
+                    }
+                    Collections.sort(registeredDiscussion, new Comparator<Discussion>() {
+                        @Override
+                        public int compare(Discussion d1, Discussion d2) {
+                            return d2.getPostedDateTime().compareTo(d1.getPostedDateTime());
+                        }
+                    });
+
+                    List<PYP> registeredPYPs = new ArrayList<>();
+                    for (PYP pyp : pyps) {
+                        if (user.getRegisteredCourseKeys().contains(pyp.getCourseKey())) {
+                            registeredPYPs.add(pyp);
+                        }
+                    }
+                    Collections.sort(registeredPYPs, new Comparator<PYP>() {
+                        @Override
+                        public int compare(PYP p1, PYP p2) {
+                            return p1.getPostedDateTime().compareTo(p2.getPostedDateTime());
+                        }
+                    });
+
+                    for (int i = 0; i < Math.min(registeredDiscussion.size(), numOfDisplayed); i++) {
+                        newestPosts.add(registeredDiscussion.get(i));
+                    }
+                    for (int i = 0; i < Math.min(registeredPYPs.size(), numOfDisplayed); i++) {
+                        newestPosts.add(registeredPYPs.get(i));
+                    }
+                } else {
+                    for (int i = 0; i < Math.min(discussionList.size(), numOfDisplayed); i++) {
+                        newestPosts.add(discussionList.get(i));
+                    }
+                    for (int i = 0; i < Math.min(pypList.size(), numOfDisplayed); i++) {
+                        newestPosts.add(pypList.get(i));
+                    }
                 }
-                for (int i=0; i < Math.min(registeredPYPs.size(),numOfDisplayed); i++){
-                    newestPosts.add(registeredPYPs.get(i));
-                }
+
                 Collections.sort(newestPosts, new Comparator<Object>() {
                     @Override
                     public int compare(Object o1, Object o2) {

@@ -27,6 +27,9 @@
             android:name=".View.Discussion.AddDiscussion"
             android:label="@string/title_activity_add_discussion" />
         <activity
+            android:name=".View.Pyp.AddPYP"
+            android:label="@string/title_activity_add_pyp" />
+        <activity
             android:name=".View.AddCourseActivity"
             android:label="@string/title_activity_add_course">
             <intent-filter>

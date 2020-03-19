@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class PYP implements Serializable {
@@ -19,10 +20,12 @@ public class PYP implements Serializable {
     private Date postedDateTime;
     private String courseKey;
     private String postedByKey;
-    private ArrayList<String> responseKeys;
-    private ArrayList<String> likeKeys;
+    private HashSet<String> responseKeys;
+    private HashSet<String> likeKeys;
 
     public PYP() {
+        responseKeys = new HashSet<>();
+        likeKeys = new HashSet<>();
     }
 
     public PYP(String key, String courseKey, String postedByKey, String question, String title,
@@ -33,8 +36,8 @@ public class PYP implements Serializable {
         this.question = question;
         this.title = title;
         this.postedDateTime = postedDateTime;
-        this.responseKeys = new ArrayList<>();
-        this.likeKeys = new ArrayList<>();
+        this.responseKeys = new HashSet<>();
+        this.likeKeys = new HashSet<>();
     }
 
 
@@ -44,7 +47,7 @@ public class PYP implements Serializable {
         Map<String, Object> pypDocData = new HashMap<>();
         pypDocData.put("course", db.collection("CourseModule").document(this.courseKey));
         pypDocData.put("likes", this.getReferenceListFireStoreFormat(this.likeKeys, "User"));
-        pypDocData.put("postedBy", db.collection("CourseModule").document(this.postedByKey));
+        pypDocData.put("postedBy", db.collection("User").document(this.postedByKey));
         pypDocData.put("postedDateTime", new Timestamp(this.postedDateTime));
         pypDocData.put("question", this.question);
         pypDocData.put("responses", this.getReferenceListFireStoreFormat(this.responseKeys, "PYPResponse"));
@@ -53,11 +56,11 @@ public class PYP implements Serializable {
     }
 
     // format string into firestore document reference format
-    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(ArrayList<String> list, String collection) {
+    public ArrayList<DocumentReference> getReferenceListFireStoreFormat(HashSet<String> list, String collection) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<DocumentReference> docList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++)
-            docList.add(db.collection(collection).document(list.get(i)));
+        for (String docId: list)
+            docList.add(db.collection(collection).document(docId));
         return docList;
     }
 
@@ -111,16 +114,16 @@ public class PYP implements Serializable {
         return postedDateTime;
     }
 
-    public void setPostedDate(Date postedDateTime) {
+    public void setPostedDateTime(Date postedDateTime) {
         this.postedDateTime = postedDateTime;
     }
 
 
-    public ArrayList<String> getResponseKeys() {
+    public HashSet<String> getResponseKeys() {
         return responseKeys;
     }
 
-    public void setResponseKeys(ArrayList<String> responseKeys) {
+    public void setResponseKeys(HashSet<String> responseKeys) {
         this.responseKeys = responseKeys;
     }
 
@@ -129,11 +132,11 @@ public class PYP implements Serializable {
     }
 
 
-    public ArrayList<String> getLikeKeys() {
+    public HashSet<String> getLikeKeys() {
         return likeKeys;
     }
 
-    public void setLikeKeys(ArrayList<String> likeKeys) {
+    public void setLikeKeys(HashSet<String> likeKeys) {
         this.likeKeys = likeKeys;
     }
 

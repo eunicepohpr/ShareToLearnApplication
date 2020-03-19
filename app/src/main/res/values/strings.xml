@@ -6,6 +6,7 @@
     <string name="title_activity_add_course">Add Course</string>
     <string name="title_activity_discussion">Discussion</string>
     <string name="title_activity_add_discussion">Add Discussion</string>
+    <string name="title_activity_add_pyp">Add PYP</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_email">android.studio@android.com</string>

@@ -39,6 +39,7 @@ public class CoursesFragment extends Fragment {
     private ListView courseListView;
     private CourseAdapter courseAdapter;
     private EditText search;
+    private ArrayList<Course> courseList;
 
     public static CoursesFragment newInstance() {
         return new CoursesFragment();
@@ -52,26 +53,34 @@ public class CoursesFragment extends Fragment {
         View coursesFragmentView = inflater.inflate(R.layout.courses_fragment, container, false);
         ((MainFeed) getActivity()).hideFloatingActionButton();
         courseListView = coursesFragmentView.findViewById(R.id.course_list);
+        mainUserViewModel.getCourseList().observe(this, new Observer<ArrayList<Course>>() {
+            @Override
+            public void onChanged(ArrayList<Course> courses) {
+                courseList = courses;
+            }
+        });
         mainUserViewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 if (user != null){
-                    ArrayList<Course> registeredCourses = new ArrayList<>();
-                    Set<String> registeredCourseKeys = user.getRegisteredCourseKeys();
-                    for (Course course: coursesViewModel.getCourseList().getValue()){
-                        if (registeredCourseKeys.contains(course.getKey()))
-                            registeredCourses.add(course);
-                        if (registeredCourses.size() == registeredCourseKeys.size()) break;
-                    }
-                    Collections.sort(registeredCourses, new Comparator<Course>() {
-                        @Override
-                        public int compare(Course c1, Course c2) {
-                            return c1.getCourseCode().compareTo(c2.getCourseCode());
+                    if(user.getDomain().equals("Student")){
+                        ArrayList<Course> registeredCourses = new ArrayList<>();
+                        Set<String> registeredCourseKeys = user.getRegisteredCourseKeys();
+                        for (Course course: coursesViewModel.getCourseList().getValue()){
+                            if (registeredCourseKeys.contains(course.getKey()))
+                                registeredCourses.add(course);
+                            if (registeredCourses.size() == registeredCourseKeys.size()) break;
                         }
-                    });
-                    courseAdapter = new CourseAdapter(getActivity(), registeredCourses);
-                    courseListView.setAdapter(courseAdapter);
-                    courseAdapter.notifyDataSetChanged();
+                        Collections.sort(registeredCourses, new Comparator<Course>() {
+                            @Override
+                            public int compare(Course c1, Course c2) {
+                                return c1.getCourseCode().compareTo(c2.getCourseCode());
+                            }
+                        });
+                        courseAdapter = new CourseAdapter(getActivity(), registeredCourses);
+                        courseListView.setAdapter(courseAdapter);
+                        courseAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         });
@@ -79,22 +88,28 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onChanged(ArrayList<Course> courses) {
                 if (mainUserViewModel.getUser().getValue() != null){
-                    Set<String> registeredCourseKeys = mainUserViewModel.getUser().getValue().getRegisteredCourseKeys();
-                    ArrayList<Course> registeredCourses = new ArrayList<>();
-                    for (Course course: courses){
-                        if (registeredCourseKeys.contains(course.getKey()))
-                            registeredCourses.add(course);
-                        if (registeredCourses.size() == registeredCourseKeys.size()) break;
-                    }
-                    Collections.sort(registeredCourses, new Comparator<Course>() {
-                        @Override
-                        public int compare(Course c1, Course c2) {
-                            return c1.getCourseCode().compareTo(c2.getCourseCode());
+                    if(mainUserViewModel.getUser().getValue().getDomain().equals("Student")){
+                        Set<String> registeredCourseKeys = mainUserViewModel.getUser().getValue().getRegisteredCourseKeys();
+                        ArrayList<Course> registeredCourses = new ArrayList<>();
+                        for (Course course: courses){
+                            if (registeredCourseKeys.contains(course.getKey()))
+                                registeredCourses.add(course);
+                            if (registeredCourses.size() == registeredCourseKeys.size()) break;
                         }
-                    });
-                    courseAdapter = new CourseAdapter(getActivity(), registeredCourses);
-                    courseListView.setAdapter(courseAdapter);
-                    courseAdapter.notifyDataSetChanged();
+                        Collections.sort(registeredCourses, new Comparator<Course>() {
+                            @Override
+                            public int compare(Course c1, Course c2) {
+                                return c1.getCourseCode().compareTo(c2.getCourseCode());
+                            }
+                        });
+                        courseAdapter = new CourseAdapter(getActivity(), registeredCourses);
+                        courseListView.setAdapter(courseAdapter);
+                        courseAdapter.notifyDataSetChanged();
+                    }else{
+                        courseAdapter = new CourseAdapter(getActivity(), courses);
+                        courseListView.setAdapter(courseAdapter);
+                        courseAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         });

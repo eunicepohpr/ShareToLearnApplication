@@ -4,7 +4,14 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
 import com.cz3002.sharetolearn.models.PYP;
+import com.cz3002.sharetolearn.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,17 +26,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 public class PYPViewModel extends ViewModel {
     private MutableLiveData<List<PYP>> mPyps;
+    private MutableLiveData<User> mUser = new MutableLiveData<>();
+    private ArrayList<User> userList = new ArrayList<>();
     private List<PYP> PYPList = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference;
@@ -42,6 +46,11 @@ public class PYPViewModel extends ViewModel {
 
     public LiveData<List<PYP>> getpyps() {
         return mPyps;
+    }
+
+    public LiveData<User> getUser(String userKey) {
+        getAllUserData(userKey);
+        return mUser;
     }
 
     public void getFireStorePypData() {
@@ -138,5 +147,57 @@ public class PYPViewModel extends ViewModel {
                 .document(pyp.getKey())
                 .update(PYPDoc);
 
+    }
+
+    public void getAllUserData(final String userKey) {
+        db.collection("User").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document != null) {
+                            if (userKey.equals(document.getId())) {
+                                String key = document.getId();
+                                String name = document.getString("name");
+                                String grad = document.getString("expectedYearOfGrad");
+                                String course = document.getString("courseOfStudy");
+                                String bio = document.getString("biography");
+                                String email = document.getString("email");
+                                String domain = document.getString("domain");
+                                String imageUrl = document.getString("imageUrl");
+
+                                User user = new User(key, bio, email, course, grad, name, domain, imageUrl);
+
+                                // get list of user likes
+                                HashMap<String, Object> userLikes = (HashMap<String, Object>) document.get("likes");
+                                if (userLikes.containsKey("pyp"))
+                                    for (DocumentReference pypLike : (ArrayList<DocumentReference>) userLikes.get("pyp"))
+                                        user.addPypLikeKey(pypLike.getId());
+                                if (userLikes.containsKey("discussion"))
+                                    for (DocumentReference discussionLike : (ArrayList<DocumentReference>) userLikes.get("discussion"))
+                                        user.addDiscussionLikeKey(discussionLike.getId());
+
+                                // get list of user ratings
+                                HashMap<String, Object> userRatings = (HashMap<String, Object>) document.get("ratings");
+                                if (userRatings.containsKey("pyp"))
+                                    for (DocumentReference pypRating : (ArrayList<DocumentReference>) userRatings.get("pyp"))
+                                        user.addPypRatingKey(pypRating.getId());
+                                if (userRatings.containsKey("discussion"))
+                                    for (DocumentReference discussionRating : (ArrayList<DocumentReference>) userRatings.get("discussion"))
+                                        user.addDiscussionRatingKey(discussionRating.getId());
+
+                                // get list of registered courses
+                                String b = String.valueOf(document.get("registered"));
+                                if (b != "null" && b != null && b != "[]")
+                                    for (DocumentReference registeredCourse : (ArrayList<DocumentReference>) document.get("registered"))
+                                        user.addRegisteredCourseKey(registeredCourse.getId());
+
+                                mUser.setValue(user);
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 }

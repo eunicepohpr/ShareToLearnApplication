@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -18,8 +18,10 @@ import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.adapter.PYPAdapter;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.PYP;
+import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.Pyp.PYPViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class PypFragment extends Fragment {
     private PYPAdapter PYPAdapter;
     private FloatingActionButton fab;
 
+    public PypFragment(){}
+
     public PypFragment(Course course){
         this.course = course;
     }
@@ -43,29 +47,41 @@ public class PypFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         pypViewModel = ViewModelProviders.of(this).get(PYPViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_pyp, container, false);
+        final View root = inflater.inflate(R.layout.fragment_pyp, container, false);
         pypsListView = root.findViewById(R.id.pyp_thread_list);
         mainUserKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        fab = root.findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent launchactivity = new  Intent(getContext(), AddPYP.class);
-//                launchactivity.putExtra("course", course);
-//                launchactivity.putExtra("mainUserKey", mainUserKey);
-//                startActivity(launchactivity);
-//                /*Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();*/
-//            }
-//        })
+        fab = root.findViewById(R.id.fab);
+
+        pypViewModel.getUser(mainUserKey).observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if(user.getDomain().equals("Staff")){
+                    fab.show();
+                }else{
+                    fab.hide();
+                }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent launchactivity = new Intent(getContext(), AddPYP.class);
+                launchactivity.putExtra("course", course);
+                launchactivity.putExtra("mainUserKey", mainUserKey);
+                startActivity(launchactivity);
+/*                Snackbar.make(view, "Create post", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+            }
+        });
 
         pypViewModel.getpyps().observe(this, new Observer<List<PYP>>() {
             @Override
             public void onChanged(@Nullable List<PYP> pyps) {
                 List<PYP> PYPList = new ArrayList<>();
-                for (PYP dis: pyps){
-                    if (dis.getCourseKey().equals(course.getKey())) {
-                        PYPList.add(dis);
+                for (PYP pyp: pyps){
+                    if (pyp.getCourseKey().equals(course.getKey())) {
+                        PYPList.add(pyp);
                     }
                 }
                 Collections.sort(PYPList, new Comparator<PYP>() {
