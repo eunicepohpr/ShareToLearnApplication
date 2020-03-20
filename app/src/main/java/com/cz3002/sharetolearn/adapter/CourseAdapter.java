@@ -15,6 +15,8 @@ import com.cz3002.sharetolearn.models.CourseReview;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CourseAdapter extends BaseAdapter implements Filterable {
@@ -26,6 +28,12 @@ public class CourseAdapter extends BaseAdapter implements Filterable {
 
     public CourseAdapter(Context context, ArrayList<Course> courses) {
         this.context = context;
+        Collections.sort(courses, new Comparator<Course>() {
+            @Override
+            public int compare(Course c1, Course c2) {
+                return c1.getCourseCode().compareTo(c2.getCourseCode());
+            }
+        });
         this.courses = courses;
         this.filteredList = courses;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
