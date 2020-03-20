@@ -48,11 +48,14 @@ public class HomeFragment extends Fragment {
         discussionViewModel = ViewModelProviders.of(getActivity()).get(DiscussionViewModel.class);
         pypViewModel = ViewModelProviders.of(getActivity()).get(PYPViewModel.class);
         mainUserViewModel = ViewModelProviders.of(getActivity()).get(MainUserViewModel.class);
+
         mainUserKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        newestPostListView = root.findViewById(R.id.newest_post);
+
         postAdapter = new PostAdapter(getContext(), getActivity(), new ArrayList<Object>(), mainUserKey);
+        newestPostListView = root.findViewById(R.id.newest_post);
         newestPostListView.setAdapter(postAdapter);
+
         discussionViewModel.getDiscussionThreads().observe(this, new Observer<List<Discussion>>() {
             @Override
             public void onChanged(List<Discussion> discussions) {
