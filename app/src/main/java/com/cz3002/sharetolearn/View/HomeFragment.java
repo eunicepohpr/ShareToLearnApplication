@@ -3,15 +3,17 @@ package com.cz3002.sharetolearn.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.View.Discussion.DiscussionActivity;
@@ -36,10 +38,9 @@ public class HomeFragment extends Fragment {
     private DiscussionViewModel discussionViewModel;
     private PYPViewModel pypViewModel;
     private MainUserViewModel mainUserViewModel;
-    private ListView newestPostListView;
+    private RecyclerView newestPostsView;
     private PostAdapter postAdapter;
     private String mainUserKey;
-    private int numOfDisplayed = 10;
     private List<Discussion> discussionList;
     private List<PYP> pypList;
 
@@ -53,9 +54,12 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         postAdapter = new PostAdapter(getContext(), getActivity(), new ArrayList<Object>(), mainUserKey);
-        newestPostListView = root.findViewById(R.id.newest_post);
-        newestPostListView.setAdapter(postAdapter);
+        newestPostsView = root.findViewById(R.id.newest_post);
+        newestPostsView.setAdapter(postAdapter);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        newestPostsView.setLayoutManager(linearLayoutManager);
+        
         discussionViewModel.getDiscussionThreads().observe(this, new Observer<List<Discussion>>() {
             @Override
             public void onChanged(List<Discussion> discussions) {
@@ -95,18 +99,18 @@ public class HomeFragment extends Fragment {
                             return p1.getPostedDateTime().compareTo(p2.getPostedDateTime());
                         }
                     });
-                    for (int i = 0; i < Math.min(registeredDiscussion.size(), numOfDisplayed); i++) {
-                        newestPosts.add(registeredDiscussion.get(i));
+                    for (Object post: registeredDiscussion) {
+                        newestPosts.add(post);
                     }
-                    for (int i = 0; i < Math.min(registeredPYPs.size(), numOfDisplayed); i++) {
-                        newestPosts.add(registeredPYPs.get(i));
+                    for (Object post: registeredPYPs) {
+                        newestPosts.add(post);
                     }
                 } else {
-                    for (int i = 0; i < Math.min(discussionList.size(), numOfDisplayed); i++) {
-                        newestPosts.add(discussionList.get(i));
+                    for (Object post: discussionList) {
+                        newestPosts.add(post);
                     }
-                    for (int i = 0; i < Math.min(pypList.size(), numOfDisplayed); i++) {
-                        newestPosts.add(pypList.get(i));
+                    for (Object post: pypList) {
+                        newestPosts.add(post);
                     }
                 }
 
@@ -123,7 +127,7 @@ public class HomeFragment extends Fragment {
                         return d2.compareTo(d1);
                     }
                 });
-                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0, Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
+                postAdapter.updateData(getActivity(), getActivity(), newestPosts, mainUserKey);
 
             }
         });
@@ -170,18 +174,18 @@ public class HomeFragment extends Fragment {
                             return p1.getPostedDateTime().compareTo(p2.getPostedDateTime());
                         }
                     });
-                    for (int i = 0; i < Math.min(registeredDiscussion.size(), numOfDisplayed); i++) {
-                        newestPosts.add(registeredDiscussion.get(i));
+                    for (Object post: registeredDiscussion) {
+                        newestPosts.add(post);
                     }
-                    for (int i = 0; i < Math.min(registeredPYPs.size(), numOfDisplayed); i++) {
-                        newestPosts.add(registeredPYPs.get(i));
+                    for (Object post: registeredPYPs) {
+                        newestPosts.add(post);
                     }
                 } else {
-                    for (int i = 0; i < Math.min(discussionList.size(), numOfDisplayed); i++) {
-                        newestPosts.add(discussionList.get(i));
+                    for (Object post: discussionList) {
+                        newestPosts.add(post);
                     }
-                    for (int i = 0; i < Math.min(pypList.size(), numOfDisplayed); i++) {
-                        newestPosts.add(pypList.get(i));
+                    for (Object post: pypList) {
+                        newestPosts.add(post);
                     }
                 }
 
@@ -196,7 +200,7 @@ public class HomeFragment extends Fragment {
                         return d2.compareTo(d1);
                     }
                 });
-                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0, Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
+                postAdapter.updateData(getActivity(), getActivity(), newestPosts, mainUserKey);
             }
         });
 
@@ -216,7 +220,7 @@ public class HomeFragment extends Fragment {
 
                 List<Object> newestPosts = new ArrayList<>();
 
-                if (mainUserViewModel.getUser().getValue().getDomain().equals("Student")) {
+                if (user.getDomain().equals("Student")) {
                     List<Discussion> registeredDiscussion = new ArrayList<>();
                     for (Discussion dis : discussions) {
                         if (user.getRegisteredCourseKeys().contains(dis.getCourseKey()))
@@ -242,18 +246,18 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
-                    for (int i = 0; i < Math.min(registeredDiscussion.size(), numOfDisplayed); i++) {
-                        newestPosts.add(registeredDiscussion.get(i));
+                    for (Object post: registeredDiscussion) {
+                        newestPosts.add(post);
                     }
-                    for (int i = 0; i < Math.min(registeredPYPs.size(), numOfDisplayed); i++) {
-                        newestPosts.add(registeredPYPs.get(i));
+                    for (Object post: registeredPYPs) {
+                        newestPosts.add(post);
                     }
                 } else {
-                    for (int i = 0; i < Math.min(discussionList.size(), numOfDisplayed); i++) {
-                        newestPosts.add(discussionList.get(i));
+                    for (Object post: discussionList) {
+                        newestPosts.add(post);
                     }
-                    for (int i = 0; i < Math.min(pypList.size(), numOfDisplayed); i++) {
-                        newestPosts.add(pypList.get(i));
+                    for (Object post: pypList) {
+                        newestPosts.add(post);
                     }
                 }
 
@@ -268,7 +272,7 @@ public class HomeFragment extends Fragment {
                         return d2.compareTo(d1);
                     }
                 });
-                postAdapter.updateData(getActivity(), getActivity(), newestPosts.subList(0, Math.min(newestPosts.size(), numOfDisplayed)), mainUserKey);
+                postAdapter.updateData(getActivity(), getActivity(), newestPosts, mainUserKey);
             }
         });
 
@@ -277,28 +281,6 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        newestPostListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Object post = adapterView.getItemAtPosition(position);
-                if (post instanceof Discussion) {
-                    Discussion discussionThread = (Discussion) post;
-                    Intent launchactivity = new Intent(getContext(), DiscussionActivity.class);
-                    launchactivity.putExtra("key", mainUserKey);
-                    DiscussionActivity.discussionThread = discussionThread;
-                    startActivity(launchactivity);
-                } else {
-                    PYP pyp = (PYP) post;
-                    Intent launchactivity = new Intent(getContext(), PypActivity.class);
-                    launchactivity.putExtra("key", mainUserKey);
-                    PypActivity.pyp = pyp;
-                    startActivity(launchactivity);
-                }
 
-                /*Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);
-                toast.show();*/
-                //startActivity(new Intent(getActivity(), DiscussionPypChatActivity.class));
-            }
-        });
     }
 }

@@ -1,6 +1,7 @@
 package com.cz3002.sharetolearn.View.Pyp;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -95,6 +96,7 @@ public class PypActivity extends AppCompatActivity {
         });
 
         TextView questionView = findViewById(R.id.question);
+        questionView.setMovementMethod(new ScrollingMovementMethod());
         questionView.setText(pyp.getQuestion());
         final TextView commentNumberView = findViewById(R.id.comment_number);
         CommentNumberPypLiveData.getCommentNumber(pyp).observe(this, new Observer<Integer>() {

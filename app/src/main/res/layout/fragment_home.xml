@@ -5,12 +5,12 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newest_post"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="#00000000"
         android:dividerHeight="1dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>
