@@ -6,9 +6,9 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.View.Authentication.SignIn;
 import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
-import com.cz3002.sharetolearn.viewModel.ProfileViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -48,7 +48,7 @@ public class MainFeed extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_feed);
         mainUserViewModel = ViewModelProviders.of(this).get(MainUserViewModel.class);
-        
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);

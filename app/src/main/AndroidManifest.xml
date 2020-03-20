@@ -50,8 +50,8 @@
             android:name=".View.MainFeed"
             android:label="@string/title_activity_main_feed"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".View.SignUp" />
-        <activity android:name=".View.SignIn" />
+        <activity android:name=".View.Authentication.SignUp" />
+        <activity android:name=".View.Authentication.SignIn" />
         <activity android:name=".View.Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

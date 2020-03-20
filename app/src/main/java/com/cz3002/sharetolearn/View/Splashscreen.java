@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.ProgressBar;
 
 import com.cz3002.sharetolearn.R;
+import com.cz3002.sharetolearn.View.Authentication.SignIn;
 import com.cz3002.sharetolearn.models.Course;
 import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.models.Discussion;
@@ -20,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -67,10 +69,17 @@ public class Splashscreen extends AppCompatActivity {
                         sleep(200); //run for 2 secs then sleep
                         progressBar.setProgress(progress);
                     }
-                    Intent intent = new Intent(getApplicationContext(), SignIn.class);
-                    Bundle args = new Bundle();
-//                    args.putSerializable("ShareToLearnApp", shareToLearnApp);
-                    intent.putExtra("BUNDLE", args);
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    Intent intent;
+                    if (auth.getCurrentUser() != null) { // user is logged in
+                        intent = new Intent(getApplicationContext(), MainFeed.class);
+                    }else{ // user not logged in
+                        intent = new Intent(getApplicationContext(), SignIn.class);
+                    }
+                    //Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                    //Bundle args = new Bundle();
+                    //args.putSerializable("ShareToLearnApp", shareToLearnApp);
+                    //intent.putExtra("BUNDLE", args);
                     //to direct it to this activity after the splash screen finishes
                     startActivity(intent);
                     finish(); //to stop it from rerunning

@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     private ListView newestPostListView;
     private PostAdapter postAdapter;
     private String mainUserKey;
-    private int numOfDisplayed = 6;
+    private int numOfDisplayed = 10;
     private List<Discussion> discussionList;
     private List<PYP> pypList;
 
