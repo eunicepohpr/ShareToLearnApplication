@@ -70,17 +70,14 @@ public class ChatFragment extends Fragment {
                 if (chatMsg == null || !chatMsg.getCourseKey().equals(course.getKey())) return;
                 chat = chatMsg;
                 chatAdapter.updateData(chat.getChatMessages(), mainUserKey);
-                if (scrollBack){
-                    messageView.scrollToPosition(chatAdapter.getItemCount()-1);
-                    scrollBack = false;
-                }
+                messageView.scrollToPosition(chatAdapter.getItemCount() - 1);
             }
         });
         messageView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View view, int left, int top, int right, int bottom,
-                                                int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                messageView.scrollToPosition(chatAdapter.getItemCount()-1);
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                messageView.scrollToPosition(chatAdapter.getItemCount() - 1);
             }
         });
 
@@ -95,20 +92,20 @@ public class ChatFragment extends Fragment {
                 ChatMessage cm = new ChatMessage(ET.getText().toString(), mainUserKey);
                 if (!chat.getChatMessages().contains(cm))
                     db.collection("Chat")
-                        .document(chat.getKey())
-                        .update("messages", FieldValue.arrayUnion(cm.hashFormat()))
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.w("Success", "Done");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("Failure", "Error adding document", e);
-                            }
-                        });
+                            .document(chat.getKey())
+                            .update("messages", FieldValue.arrayUnion(cm.hashFormat()))
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.w("Success", "Done");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("Failure", "Error adding document", e);
+                                }
+                            });
                 else chatViewModel.newChatMessage(ET.getText().toString());
                 ET.setText("");// clear the input after adding
                 scrollBack = true;
