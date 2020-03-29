@@ -1,0 +1,12 @@
+com.cz3002.sharetolearn
+com.cz3002.sharetolearn.SQLite
+com.cz3002.sharetolearn.View
+com.cz3002.sharetolearn.View.Authentication
+com.cz3002.sharetolearn.View.CourseReview
+com.cz3002.sharetolearn.View.Discussion
+com.cz3002.sharetolearn.View.Pyp
+com.cz3002.sharetolearn.adapter
+com.cz3002.sharetolearn.models
+com.cz3002.sharetolearn.viewModel
+com.cz3002.sharetolearn.viewModel.Discussion
+com.cz3002.sharetolearn.viewModel.Pyp
