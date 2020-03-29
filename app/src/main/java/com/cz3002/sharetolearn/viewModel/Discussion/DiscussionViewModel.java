@@ -142,18 +142,5 @@ public class DiscussionViewModel extends ViewModel {
         db.collection("Discussion")
                 .document(discussionThread.getKey())
                 .update(discussionDoc);
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Toast.makeText(context, "Successfully updated", Toast.LENGTH_SHORT).show();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(context, "Update failed", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
     }
 }

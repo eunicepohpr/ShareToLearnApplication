@@ -1,12 +1,5 @@
 package com.cz3002.sharetolearn.View.Discussion;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,9 +9,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -150,14 +149,12 @@ public class DiscussionActivity extends AppCompatActivity {
                     db.collection("Discussion")
                             .document(discussionThread.getKey())
                             .update("likes", FieldValue.arrayRemove(db.collection("User").document(mainUserKey)));
-//                    DiscussionViewModel.updateDiscussion(getBaseContext(), discussionThread);
                     ((ImageView) view).setImageResource(R.drawable.unliked);
                 } else {
                     discussionThread.addLikeKey(mainUserKey);
                     db.collection("Discussion")
                             .document(discussionThread.getKey())
                             .update("likes", FieldValue.arrayUnion(db.collection("User").document(mainUserKey)));
-//                    DiscussionViewModel.updateDiscussion(getBaseContext(), discussionThread);
                     ((ImageView) view).setImageResource(R.drawable.liked);
                 }
             }

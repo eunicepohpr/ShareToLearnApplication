@@ -11,13 +11,10 @@ import android.widget.TextView;
 
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.Course;
-import com.cz3002.sharetolearn.models.CourseReview;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class CourseAdapter extends BaseAdapter implements Filterable {
 

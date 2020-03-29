@@ -6,7 +6,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -111,7 +110,6 @@ public class Discussion implements Serializable {
         this.postedDateTime = postedDateTime;
     }
 
-
     public String getTitle() {
         return title;
     }
@@ -119,7 +117,6 @@ public class Discussion implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
     public HashSet<String> getResponseKeys() {
         return responseKeys;
@@ -132,7 +129,6 @@ public class Discussion implements Serializable {
     public void addResponseKey(String responseKey) {
         this.responseKeys.add(responseKey);
     }
-
 
     public HashSet<String> getLikeKeys() {
         return likeKeys;
@@ -150,7 +146,6 @@ public class Discussion implements Serializable {
         this.likeKeys.remove(likeKey);
     }
 
-
     public String getPostedByKey() {
         return postedByKey;
     }
@@ -158,7 +153,6 @@ public class Discussion implements Serializable {
     public void setPostedByKey(String postedByKey) {
         this.postedByKey = postedByKey;
     }
-
 
     public String getCourseKey() {
         return courseKey;
@@ -184,5 +178,4 @@ public class Discussion implements Serializable {
         discussionThread = (Discussion) o;
         return key.equals(discussionThread.getKey());
     }
-
 }

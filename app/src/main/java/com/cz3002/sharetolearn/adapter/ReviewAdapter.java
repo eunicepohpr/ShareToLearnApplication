@@ -16,10 +16,10 @@ import com.cz3002.sharetolearn.models.CourseReview;
 import com.cz3002.sharetolearn.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ReviewAdapter extends BaseAdapter {
 
@@ -55,7 +55,6 @@ public class ReviewAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         if (view == null) view = inflater.inflate(R.layout.listitem_review, null);
 
-        //courseReview = courseReviews.get(i);
         CourseReview courseReview = (CourseReview) getItem(i);
         User user = courseReview.getRatedBy();
         if(user != null){

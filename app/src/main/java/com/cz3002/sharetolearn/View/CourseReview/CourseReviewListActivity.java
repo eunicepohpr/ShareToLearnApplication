@@ -39,7 +39,6 @@ public class CourseReviewListActivity extends AppCompatActivity {
     private ProgressBar progressBar1;
     private double count5, count4, count3, count2, count1;
     private ListView reviewListView;
-//    private CourseReviewViewModel courseReviewViewModel;
     private ReviewAdapter reviewAdapter;
 
     @Override

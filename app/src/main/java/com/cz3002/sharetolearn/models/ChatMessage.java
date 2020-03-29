@@ -18,13 +18,9 @@ public class ChatMessage {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         HashMap<String, Object> hashed = new HashMap<>();
         hashed.put("message", this.message);
-//        Log.d("Test", this.postedByKey); // /User/bgNcY2NTgObtT5vyBeLvdf9jJGh1
-//        Log.d("Test", this.postedByKey.substring(6)); // bgNcY2NTgObtT5vyBeLvdf9jJGh1
-//        hashed.put("postedBy", db.collection("User").document(this.postedByKey.substring(6)));
         hashed.put("postedBy", this.postedByKey);
         return hashed;
     }
-
 
     public String getMessage() {
         return message;
@@ -33,16 +29,6 @@ public class ChatMessage {
     public void setMessage(String message) {
         this.message = message;
     }
-
-
-//    public Date getPostedDateTime() {
-//        return postedDateTime;
-//    }
-//
-//    public void setPostedDateTime(Date postedDateTime) {
-//        this.postedDateTime = postedDateTime;
-//    }
-
 
     public String getPostedByKey() {
         return postedByKey;

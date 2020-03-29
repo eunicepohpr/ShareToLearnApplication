@@ -123,7 +123,6 @@ public class CourseReviewActivity extends AppCompatActivity implements Button.On
         postReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setContentView(R.layout.activity_course_review);
                 Bundle args = new Bundle();
                 Intent reviewpostActivity = new Intent(getApplicationContext(), CourseReviewPostActivity.class);
                 args.putSerializable("SELECTEDCOURSE", selectedCourse);

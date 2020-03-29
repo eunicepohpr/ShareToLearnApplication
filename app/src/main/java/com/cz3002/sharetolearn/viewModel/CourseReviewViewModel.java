@@ -156,7 +156,6 @@ public class CourseReviewViewModel extends ViewModel {
                             userList.add(user);
 
                             if (user.getKey().equals(currentFbUser.getUid())) {
-//                                currentUser = user;
                                 mUser.setValue(user);
                             }
                         }

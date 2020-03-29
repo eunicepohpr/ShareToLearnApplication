@@ -160,8 +160,6 @@ public class ProfileFragment extends Fragment {
 
                         // update user db
                         profileViewModel.uploadImage(mUri);
-
-//                        Toast.makeText(getContext(), mUri, Toast.LENGTH_SHORT).show();
                         pd.dismiss();
                     } else {
                         Toast.makeText(getContext(), "Failed!", Toast.LENGTH_SHORT).show();

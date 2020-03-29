@@ -84,8 +84,6 @@ public class ChatFragment extends Fragment {
         IB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(getContext(), ET.getText().toString(), Toast.LENGTH_SHORT);
-//                chatViewModel.newChatMessage(ET.getText().toString());
                 // add new bubble
                 if (chat == null || !chat.getCourseKey().equals(course.getKey())) return;
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -111,8 +109,6 @@ public class ChatFragment extends Fragment {
                 scrollBack = true;
             }
         });
-
         return root;
     }
-
 }

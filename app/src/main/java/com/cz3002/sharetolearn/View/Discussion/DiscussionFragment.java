@@ -91,9 +91,6 @@ public class DiscussionFragment extends Fragment {
                 launchactivity.putExtra("key", mainUserKey);
                 DiscussionActivity.discussionThread = discussionThread;
                 startActivity(launchactivity);
-                /*Toast toast = Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT);
-                toast.show();*/
-                //startActivity(new Intent(getActivity(), DiscussionPypChatActivity.class));
             }
         });
     }

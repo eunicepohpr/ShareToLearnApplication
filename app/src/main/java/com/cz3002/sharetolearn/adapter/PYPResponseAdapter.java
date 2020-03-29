@@ -11,6 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+
 import com.cz3002.sharetolearn.R;
 import com.cz3002.sharetolearn.models.PYPResponse;
 import com.cz3002.sharetolearn.models.User;
@@ -24,10 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 
 public class PYPResponseAdapter extends BaseAdapter {
     private String mainUserKey;
@@ -158,7 +158,6 @@ public class PYPResponseAdapter extends BaseAdapter {
                                     .update("upvotes", FieldValue.arrayRemove(db.collection("User").document(mainUserKey)));
                             Toast.makeText(context, "You have undone your upvote for this answer", Toast.LENGTH_SHORT).show();
                         }
-//                        PYPResponseViewModel.updatePYPResponseFireStore(context, response);
                         break;
                     case R.id.down_vote:
                         if (!response.getDownvoteKeys().contains(mainUserKey)){
@@ -181,7 +180,6 @@ public class PYPResponseAdapter extends BaseAdapter {
 
                             Toast.makeText(context, "You have undone your downvote for this answer", Toast.LENGTH_SHORT).show();
                         }
-//                        PYPResponseViewModel.updatePYPResponseFireStore(context, response);
                         break;
                 }
             }

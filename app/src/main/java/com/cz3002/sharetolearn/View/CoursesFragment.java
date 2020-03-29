@@ -137,9 +137,7 @@ public class CoursesFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                CoursesFragment.this.courseAdapter.getFilter().filter(s);
                 courseListView.setAdapter(courseAdapter);
-//                courseAdapter.notifyDataSetChanged();
             }
 
             @Override

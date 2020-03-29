@@ -58,7 +58,6 @@ public class CourseReview implements Serializable {
         return courseReviewDocData;
     }
 
-
     public String getKey() {
         return key;
     }
@@ -67,7 +66,6 @@ public class CourseReview implements Serializable {
         this.key = key;
     }
 
-
     public double getRating() {
         return rating;
     }
@@ -75,7 +73,6 @@ public class CourseReview implements Serializable {
     public void setRating(double rating) {
         this.rating = rating;
     }
-
 
     public Date getRatedDateTime() {
         return ratedDateTime;
@@ -93,7 +90,6 @@ public class CourseReview implements Serializable {
         this.ratedBy = ratedBy;
     }
 
-
     public String getRatedByKey() {
         return ratedByKey;
     }
@@ -102,7 +98,6 @@ public class CourseReview implements Serializable {
         this.ratedByKey = ratedByKey;
     }
 
-
     public String getDescription() {
         return description;
     }
@@ -110,7 +105,6 @@ public class CourseReview implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public String getCourseKey() {
         return courseKey;

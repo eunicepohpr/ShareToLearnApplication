@@ -16,7 +16,6 @@ public class Course implements Serializable {
     private String description;
     private ArrayList<String> reviewKeys;
     private String courseAssessment;
-//    private ArrayList<Chat> chatMessages;
 
     public Course() {
     }
@@ -134,16 +133,4 @@ public class Course implements Serializable {
         if (courseCode != null) return courseCode.hashCode();
         return super.hashCode();
     }
-
-//    public ArrayList<Chat> getChatMessages() {
-//        return chatMessages;
-//    }
-//
-//    public void setChatMessages(ArrayList<Chat> chatMessages) {
-//        this.chatMessages = chatMessages;
-//    }
-//
-//    public void addChatMessages(Chat chat) {
-//        this.chatMessages.add(chat);
-//    }
 }

@@ -14,14 +14,12 @@ public class Chat implements Serializable {
     private Date dateCreated;
     private ArrayList<ChatMessage> chatMessages;
 
-
     public Chat(String key, String courseKey, Date dateCreated) {
         this.key = key;
         this.courseKey = courseKey;
         this.dateCreated = dateCreated;
         this.chatMessages = new ArrayList<>();
     }
-
 
     // get firestore format to add
     public HashMap<String, Object> getFireStoreFormat() {
@@ -35,7 +33,6 @@ public class Chat implements Serializable {
         return chatDocData;
     }
 
-
     public String getCourseKey() {
         return courseKey;
     }
@@ -44,7 +41,6 @@ public class Chat implements Serializable {
         this.courseKey = courseKey;
     }
 
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -52,7 +48,6 @@ public class Chat implements Serializable {
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
-
 
     public ArrayList<ChatMessage> getChatMessages() {
         return chatMessages;
@@ -65,7 +60,6 @@ public class Chat implements Serializable {
     public void addChatMessages(ChatMessage chatMsg) {
         this.chatMessages.add(chatMsg);
     }
-
 
     public String getKey() {
         return key;

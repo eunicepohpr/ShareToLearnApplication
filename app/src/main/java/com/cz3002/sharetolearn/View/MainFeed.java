@@ -2,6 +2,22 @@ package com.cz3002.sharetolearn.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -10,30 +26,9 @@ import com.cz3002.sharetolearn.View.Authentication.SignIn;
 import com.cz3002.sharetolearn.models.User;
 import com.cz3002.sharetolearn.viewModel.MainUserViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.view.MenuItem;
-import android.view.View;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainFeed extends AppCompatActivity {
 
@@ -117,23 +112,6 @@ public class MainFeed extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // to stop it from rerunning
                 return true;
-//            case R.id.action_courseconfig:
-//                PypFragment fragment = new PypFragment();
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                FrameLayout fl = (FrameLayout) findViewById(R.id.nav_host_fragment);
-//                fl.removeAllViews();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.add(R.id.nav_host_fragment, fragment);
-//                fragmentTransaction.commit();
-//                //Sharing
-//                *//*Intent shareIntent = new Intent (Intent.ACTION_SEND);
-//                shareIntent.setType("text/plain");
-//                String shareBody = "your body here";
-//                String shareSub = "Your subject here";
-//                shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
-//                shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-//                startActivity(Intent.createChooser(shareIntent, "Share App Locker"));*//*
-//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
