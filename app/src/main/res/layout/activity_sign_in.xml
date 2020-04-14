@@ -26,7 +26,7 @@
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:hint="Enter Email"
-            android:text="jerry5.0@ntu.edu.sg"/>
+            android:text=""/>
 
         <EditText
             android:id="@+id/si_pwdInput"
@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:hint="Enter Password"
             android:inputType="textPassword"
-            android:text="12345678"/>
+            android:text=""/>
 
         <Spinner
             android:id="@+id/si_doaminInput"
